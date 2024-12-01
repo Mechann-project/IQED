@@ -22,10 +22,10 @@ const UserCard = () => {
     setAnchorEl(null);
   };
   useEffect(() => {
-    if (UserData?.ProfileImage?.base64) {
-        setProfile(UserData.ProfileImage.base64);
+    if (UserData?.profileImage) {
+        setProfile(UserData.profileImage);
     } else {
-        setProfile(''); // Fallback if no image is available
+        setProfile('https://avatarfiles.alphacoders.com/374/374848.png'); 
     }
 }, [UserData]);
   const theme = useTheme();
@@ -80,7 +80,7 @@ const UserCard = () => {
             width={44}
             height={44}
             alt={UserData?.name}
-            src={UserData?.profileImage || "/ing"}
+            src={Profile}
             sx={{
               bgcolor:'white'
             }}

@@ -12,4 +12,6 @@ export { default as QuizProgressBar } from "./Quiz/QuizProgressBar.jsx";
 export { default as QuestionDrawerList } from "./Quiz/QuestionDrawerList .jsx";
 export { default as LoadingScreen } from "./Loading/LoadingScreen.jsx";
 export {default as GameTopicArea} from "./Game/GameTopicArea.jsx";
-
+export {default as StoreBanner} from './Store/StoreBanner.jsx';
+export {default as ProductArea} from './Store/ProductArea.jsx';
+export {default as Shipping} from './Store/Shipping.jsx';

@@ -62,7 +62,7 @@ const ProfileCard = ({ onSettingsClick }) => {
     if (UserData?.profileImage) {
       setProfile(UserData.profileImage);
     } else {
-      setProfile(""); // Fallback if no image is available
+      setProfile("https://avatarfiles.alphacoders.com/374/374848.png");
     }
   }, [UserData]);
   return (

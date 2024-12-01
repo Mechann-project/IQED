@@ -8,7 +8,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import {useLocation, useNavigate } from "react-router-dom";
 import ErrorIcon from "@mui/icons-material/Error";
 import {Logo,LogoIcon} from "../../Common";
-
+import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 
 const MainNavBar = () => {
   const theme = useTheme();
@@ -26,15 +26,22 @@ const MainNavBar = () => {
       { label: "Leaderboard", icon: <LeaderboardIcon />, path: "/leaderboard" },
       { label: "Profile", icon: <PersonIcon />, path: "/profile" },
       ...(isSm
-        ? [{ label: "FeedBack", icon: <ErrorIcon />, path: "/feedBack" }]
+        ? [
+            { label: "FeedBack", icon: <ErrorIcon />, path: "/feedBack" },
+            { label: "Store", icon: <LocalGroceryStoreIcon />, path: "/Store" },
+          ]
         : []),
     ],
-    [isSm]
   );
 
   const bottomItems = useMemo(
-    () => [{ label: "FeedBack", icon: <ErrorIcon />, path: "/feedBack" }],
-    []
+    () => [
+      { label: "Store", icon: <LocalGroceryStoreIcon />, path: "/Store" },
+      ...(!isSm
+        ? [{ label: "FeedBack", icon: <ErrorIcon />, path: "/feedBack" }]
+        : []),
+    ],
+  
   );
 
   const renderButton = ({ label, icon, path, key }) => {
