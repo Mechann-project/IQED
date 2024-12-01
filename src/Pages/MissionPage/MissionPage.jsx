@@ -50,6 +50,8 @@ const MissionPage = () => {
     return <div>Loading...</div>; // Add a loading indicator
   }
 
+
+  
   return (
     <Box
       sx={{

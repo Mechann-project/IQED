@@ -18,8 +18,11 @@ import {
 import { useGetLessonsBySectionQuery } from "../../Redux/API/Career.Api";
 import PropTypes from "prop-types";
 import { Check } from "@mui/icons-material"; // Assuming you're using Check from MUI
-import { useSearchParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useCreateQuizSessionMutation } from "../../Redux/API/Quiz.Api";
+import { resetQuiz } from "../../Redux/Slice/QuizSlice/QuizSlice";
+import toast from "react-hot-toast";
 
 function QontoStepIcon(props) {
   const { active, completed, className } = props;
@@ -132,6 +135,9 @@ function LevelDetails() {
   const [searchParams] = useSearchParams();
   const sectionId = searchParams.get("section");
   const currentSelectindex = searchParams.get("index");
+  const [CreateQuizSession] = useCreateQuizSessionMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   // Fetch lessons and topics data
   const {
     data: lessons,
@@ -153,7 +159,31 @@ function LevelDetails() {
   if (isError) {
     return <Typography>Error fetching lessons</Typography>;
   }
-
+  const handleQuizCraetion = (id) => {
+    try {
+      dispatch(resetQuiz());
+      toast.promise(
+        CreateQuizSession({
+          topicId: id,
+          questionCount: 3,
+        }).unwrap(),
+        {
+          loading: "Creating Session...",
+          success: (res) => {
+            navigate(`/quiz/${res.sessionId}`, { replace: true });
+            return "Session Created Successfully!";
+          },
+          error: (e) => {
+            console.error(e);
+            return "Failed to create session. Please try again.";
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Failed to update quiz session:", error);
+      toast.error("sorry session not save");
+    }
+  };
   // Generate dynamic steps based on fetched lessons and topics
   return (
     <>
@@ -237,11 +267,17 @@ function LevelDetails() {
               <Stack sx={{ width: "100%" }} spacing={4}>
                 <Stepper
                   alternativeLabel
-                  activeStep={UserData.careerpath[currentSelectindex].Lessons[index].Topics.length-1} // Replace with dynamic activeStep based on user progress
+                  activeStep={
+                    UserData.careerpath[currentSelectindex].Lessons[index]
+                      .Topics.length - 1
+                  } // Replace with dynamic activeStep based on user progress
                   connector={<ColorlibConnector />}
                 >
                   {lesson.topics?.map((topic, index) => (
-                    <Step key={topic._id}>
+                    <Step
+                      key={topic._id}
+                      onClick={() => handleQuizCraetion(topic._id)} // Use an arrow function
+                    >
                       <StepLabel StepIconComponent={ColorlibStepIcon}>
                         <Typography variant="body" sx={{ fontWeight: "bold" }}>
                           {topic.name}
@@ -278,7 +314,12 @@ function LevelDetails() {
             >{`${UserData.careerpath[currentSelectindex].Lessons[index].Topics.length}/${lesson.totalTopic}`}</Typography>
             <LinearProgress
               variant="determinate"
-              value={(UserData.careerpath[currentSelectindex].Lessons[index].Topics.length /lesson.totalTopic) * 100}
+              value={
+                (UserData.careerpath[currentSelectindex].Lessons[index].Topics
+                  .length /
+                  lesson.totalTopic) *
+                100
+              }
               sx={{
                 height: "10px",
                 bgcolor: "#FFDA55",
