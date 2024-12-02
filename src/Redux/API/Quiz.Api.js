@@ -9,10 +9,10 @@ export const QuizApi = createApi({
   tagTypes: ["User"],
   endpoints: (builder) => ({
     createQuizSession: builder.mutation({
-      query: ({ topicId, questionCount }) => ({
+      query: ({ sectionIndex ,lessonIndex ,topicIndex,topicId, questionCount }) => ({
         url: "/createSession",
         method: "POST",
-        body: { topicId, questionCount },
+        body: { sectionIndex ,lessonIndex ,topicIndex,topicId, questionCount},
       }),
     }),
     getQuizSession: builder.query({

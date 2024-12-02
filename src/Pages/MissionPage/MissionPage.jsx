@@ -7,21 +7,23 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useGetAllSectionQuery } from "../../Redux/API/Career.Api";
 import trophy from "./trophy.png"
 import { useSelector } from "react-redux";
+import { useGetUserQuery } from "../../Redux/API/User.Api";
 const MissionPage = () => {
   const { data: SectionList, isLoading } = useGetAllSectionQuery();
+  const {data:userdata, isLoading:UserLoad} = useGetUserQuery()
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
   const navigate = useNavigate();
   const UserData = useSelector((state) => state.UserState);
   const [selectedSection, setSelectedSection] = useState(null);
-  console.log(SectionList)
+  console.log(UserData.careerPathProgress)
   // Update selected section based on URL parameter
   useEffect(() => {
     const sectionFromUrl = new URLSearchParams(location.search).get("section");
     if (sectionFromUrl && SectionList) {
-      const section = SectionList.find((s) => s._id === sectionFromUrl);
-      setSelectedSection(section || null); // Reset to null if section not found
+      
+      setSelectedSection(SectionList[sectionFromUrl] || null); // Reset to null if section not found
     } else {
       setSelectedSection(null); // Reset to null if no section in URL
     }
@@ -36,8 +38,8 @@ const MissionPage = () => {
     : [{ label: "Missions", to: null }];
 
   // Handler to select a section
-  const handleSelectSection = (id,index) => {
-    navigate(`/missions?section=${id}&index=${index}`); // Update URL with selected section
+  const handleSelectSection = (index) => {
+    navigate(`/missions?section=${index}`); // Update URL with selected section
   };
 
   // Handler to return to sections
@@ -51,7 +53,7 @@ const MissionPage = () => {
   }
 
 
-  
+
   return (
     <Box
       sx={{
@@ -84,20 +86,19 @@ const MissionPage = () => {
           scrollbarWidth: "none",
         }}
       >
-        {!selectedSection ? (
+        {!selectedSection && !UserLoad ? (
           SectionList.map((section,index) => (
             <Grid item xs={12} lg={12} key={section._id}>
               <Levelcard
                 level={{
                   level: section.index,
                   total: section.totalLessons,
-                  progress:UserData.careerpath[0]?.Lessons.length, // Update based on your logic
-                  image: trophy, // Placeholder for an image
-                  active: true, // Add logic for active/inactive sections
+                  progress:(UserData?.careerPathProgress?.sections[index]?.lessons?.length), // Update based on your logic
+                  image: trophy, // Placeholder for an image // Add logic for active/inactive sections
                   description: section.description,
                 }}
-                active={UserData.careerpath[index]!==undefined}
-                onSelect={() => handleSelectSection(section._id,index)}
+                active={ (UserData?.careerPathProgress?.sections[index] !=undefined)}
+                onSelect={() => handleSelectSection(index)}
               />
             </Grid>
           ))
