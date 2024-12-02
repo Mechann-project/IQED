@@ -13,7 +13,7 @@ const initialState = {
   error: null,
   earnings:{},
   valueBaseQuest:[],
-  careerpath:[]
+  careerPathProgress:{}
 };
 
 

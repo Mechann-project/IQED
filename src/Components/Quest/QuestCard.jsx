@@ -2,6 +2,7 @@ import { Avatar, Box, Card, LinearProgress, Typography } from "@mui/material";
 import React from "react";
 
 const QuestCard = ({ icon, title,current, progress, goal, reward, About }) => {
+  console.log(current,goal)
   return (
     <Card
       variant="outlined"

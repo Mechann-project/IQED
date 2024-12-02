@@ -15,7 +15,7 @@ import {
   Step,
   StepLabel,
 } from "@mui/material";
-import { useGetLessonsBySectionQuery } from "../../Redux/API/Career.Api";
+import { useGetAllSectionQuery } from "../../Redux/API/Career.Api";
 import PropTypes from "prop-types";
 import { Check } from "@mui/icons-material"; // Assuming you're using Check from MUI
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -127,24 +127,20 @@ ColorlibStepIcon.propTypes = {
 };
 
 function LevelDetails() {
+  const { data: SectionList,isError, isLoading } = useGetAllSectionQuery();
   const theme = useTheme();
   const UserData = useSelector((state) => state.UserState);
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
   const scrollContainerRef = useRef(null);
   const [searchParams] = useSearchParams();
-  const sectionId = searchParams.get("section");
-  const currentSelectindex = searchParams.get("index");
+  const sectionIndex = searchParams.get("section");
   const [CreateQuizSession] = useCreateQuizSessionMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   // Fetch lessons and topics data
-  const {
-    data: lessons,
-    isLoading,
-    isError,
-  } = useGetLessonsBySectionQuery(sectionId);
 
+  console.log("section data:",SectionList)
   const handleWheel = (e) => {
     if (scrollContainerRef.current) {
       e.preventDefault();
@@ -159,12 +155,15 @@ function LevelDetails() {
   if (isError) {
     return <Typography>Error fetching lessons</Typography>;
   }
-  const handleQuizCraetion = (id) => {
+  const handleQuizCraetion = (sectionIndex ,lessonIndex ,topicIndex,topicId, questionCount=3) => {
     try {
       dispatch(resetQuiz());
       toast.promise(
         CreateQuizSession({
-          topicId: id,
+          sectionIndex,
+          lessonIndex,
+          topicIndex,
+          topicId,
           questionCount: 3,
         }).unwrap(),
         {
@@ -187,7 +186,7 @@ function LevelDetails() {
   // Generate dynamic steps based on fetched lessons and topics
   return (
     <>
-      {lessons?.map((lesson, index) => (
+      {SectionList && SectionList[sectionIndex]?.lesson?.map((lesson, lessonIndex) => (
         <Box
           sx={{
             display: "flex",
@@ -267,17 +266,10 @@ function LevelDetails() {
               <Stack sx={{ width: "100%" }} spacing={4}>
                 <Stepper
                   alternativeLabel
-                  activeStep={
-                    UserData.careerpath[currentSelectindex].Lessons[index]
-                      .Topics.length - 1
-                  } // Replace with dynamic activeStep based on user progress
-                  connector={<ColorlibConnector />}
-                >
+                  activeStep={UserData?.careerPathProgress?.sections[sectionIndex]?.lessons[lessonIndex]?.topics.length-1} 
+                  connector={<ColorlibConnector />}>
                   {lesson.topics?.map((topic, index) => (
-                    <Step
-                      key={topic._id}
-                      onClick={() => handleQuizCraetion(topic._id)} // Use an arrow function
-                    >
+                    <Step key={topic._id} onClick={() => handleQuizCraetion(sectionIndex,lessonIndex,index,topic._id)}>
                       <StepLabel StepIconComponent={ColorlibStepIcon}>
                         <Typography variant="body" sx={{ fontWeight: "bold" }}>
                           {topic.name}
@@ -289,7 +281,6 @@ function LevelDetails() {
               </Stack>
             </Box>
           </Box>
-
           <Box
             sx={{
               display: "flex",
@@ -298,8 +289,7 @@ function LevelDetails() {
               bottom: 0,
               left: 0,
               right: 0,
-            }}
-          >
+            }}>
             <Typography
               variant="body"
               sx={{
@@ -311,15 +301,12 @@ function LevelDetails() {
                 borderRadius: "20px 0px 0px 0px",
                 alignSelf: "flex-end",
               }}
-            >{`${UserData.careerpath[currentSelectindex].Lessons[index].Topics.length}/${lesson.totalTopic}`}</Typography>
+            >
+              {UserData?.careerPathProgress?.sections[sectionIndex].lessons[lessonIndex].topics.length +"/"+lesson.totalTopic}
+            </Typography>
             <LinearProgress
               variant="determinate"
-              value={
-                (UserData.careerpath[currentSelectindex].Lessons[index].Topics
-                  .length /
-                  lesson.totalTopic) *
-                100
-              }
+              value={(UserData?.careerPathProgress?.sections[sectionIndex].lessons[lessonIndex].topics.length / lesson.totalTopic) * 100}
               sx={{
                 height: "10px",
                 bgcolor: "#FFDA55",
@@ -337,3 +324,4 @@ function LevelDetails() {
 }
 
 export default LevelDetails;
+

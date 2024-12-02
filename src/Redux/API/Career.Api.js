@@ -5,12 +5,9 @@ export const CareerApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/career" }), // Adjust your base URL
   endpoints: (builder) => ({
     getAllSection: builder.query({
-      query: () => `/sections`,
-    }),
-    getLessonsBySection: builder.query({
-      query: (sectionId) => `/sections/${sectionId}/lessons`,
+      query: () => `/sections/getall`,
     }),
   }),
 });
 
-export const { useGetAllSectionQuery, useGetLessonsBySectionQuery } = CareerApi;
+export const { useGetAllSectionQuery } = CareerApi;
