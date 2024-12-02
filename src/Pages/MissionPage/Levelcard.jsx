@@ -11,9 +11,6 @@ import { WhiteBackgroundSVG } from "../../assets";
 
 const LevelCard = ({
   level,
-  // progress,
-  // total,
-  // image,
   onSelect,
   active
 }) => {

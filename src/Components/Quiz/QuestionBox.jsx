@@ -1,9 +1,21 @@
+import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import React from "react";
 import { OptionButton } from "../../Common";
 import { RabbitIMG } from "../../assets/Image";
 
 const QuestionBox = ({ index, Question }) => {
+  const [fade, setFade] = useState(false);
+
+  // Trigger transition when the question changes
+  useEffect(() => {
+    setFade(false); // Reset to false before the next render
+    const timer = setTimeout(() => {
+      setFade(true); // Trigger the fade-in and scale transition after the question change
+    }, 800); // Delay for smooth transition
+
+    return () => clearTimeout(timer); // Clean up timeout on unmount or re-render
+  }, [index]); // Dependency on index ensures the effect runs when the question changes
+
   // Ensure Question and options exist before trying to render
   if (!Question || !Question.options || Question.options.length === 0) {
     return <Typography variant="h6" color="white">No options available for this question.</Typography>;
@@ -28,6 +40,9 @@ const QuestionBox = ({ index, Question }) => {
           justifyContent: "center",
           alignItems: "center",
           borderRadius: 2,
+          opacity: fade ? 1 : 0, 
+          transform: fade ? "scale(1)" : "scale(0.8)", 
+          transition: "opacity 0.5s ease, transform 0.5s ease", 
         }}
         gap={3}
       >
@@ -59,7 +74,7 @@ const QuestionBox = ({ index, Question }) => {
               component="img"
               src={RabbitIMG}
               sx={{
-                width:"250px",
+                width: "250px",
                 height: "auto",
                 maxWidth: "100%",
               }}

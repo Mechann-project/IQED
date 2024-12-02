@@ -10,3 +10,4 @@ export { default as ProfilePage } from "./ProfilePage/ProfilePage.jsx";
 export { default as LeaderboardPage } from "./LeaderBoardPage/LeaderboardPage.jsx";
 export { default as FeedBackPage } from "./FeedBackPage/FeedBack.jsx";
 export { default as StorePage } from "./Store/StorePage.jsx";
+export { default as MPQuizPage } from "./MPQuiz/MPQuizPage.jsx";

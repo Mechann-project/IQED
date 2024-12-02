@@ -153,7 +153,9 @@ function LevelDetails() {
   };
 
   if (isLoading) {
-    return <Typography>Loading...</Typography>;
+    return <Typography sx={{
+      color:'black'
+    }}>Loading...</Typography>;
   }
 
   if (isError) {
@@ -262,6 +264,10 @@ function LevelDetails() {
                 overflowX: "auto",
                 display: "flex",
                 padding: "10px 0",
+                scrollbarWidth: "none", 
+                "&::-webkit-scrollbar": {
+                  display: "none", 
+                },
               }}
             >
               <Stack sx={{ width: "100%" }} spacing={4}>

@@ -19,7 +19,8 @@ import {
   LeaderboardPage,
   FeedBackPage,
   Quizloader,
-  StorePage
+  StorePage,
+  MPQuizPage
 } from "../Pages";
 import UserLayout from "../Pages/Layout/UserLayout";
 import MatchLayout from "../Pages/Layout/MatchLayout";
@@ -54,6 +55,7 @@ export const Routers = createBrowserRouter(
           </Route>
         </Route>
       </Route>
+      <Route path="MPQ" element={<MPQuizPage />}  />
       <Route path="match" element={<MatchLayout />}>
         <Route index element={<MatchLobby />} loader={OnLoadLobby} />
         <Route path=":code" />

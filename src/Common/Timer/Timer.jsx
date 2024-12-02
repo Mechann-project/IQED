@@ -41,7 +41,7 @@ const Timer = forwardRef(({ start, initialTime }, ref) => {
       alignItems="center"
       sx={{
         position: "fixed",
-        top: "5%",
+        top:  {lg: "6%", xs: "11%",sm:'11%'},
         right: "5%",
       }}
       gap={1}
