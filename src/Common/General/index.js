@@ -1,5 +1,0 @@
-export { default as Logo } from './Logo'
-export { default as LogoIcon } from './LogoIcon'
-export { default as StreakBox } from './MicroElement/StreakBox'
-export { default as GemsBox } from './MicroElement/GemsBox'
-export { default as MenuBox } from './MicroElement/MenuBox'
