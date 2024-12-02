@@ -18,7 +18,7 @@ const DandFQuests = () => {
     <Box width={'100%'}>
       {/* Daily Quests */}
       <Typography variant="h6" fontWeight="bold" gutterBottom>
-        Daily Quests
+        Quests
       </Typography>
       <Grid container spacing={2} padding={'20px'}>
         <Grid item xs={12} sm={6}>
@@ -35,7 +35,7 @@ const DandFQuests = () => {
       </Grid>
 
       {/* Friends Quests */}
-      <Typography
+      {/* <Typography
         variant="h6"
         fontWeight="bold"
         gutterBottom
@@ -62,7 +62,7 @@ const DandFQuests = () => {
             reward={300}
           />
         </Grid>
-      </Grid>
+      </Grid> */}
     </Box>
   );
 };
