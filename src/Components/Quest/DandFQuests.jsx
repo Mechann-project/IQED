@@ -26,7 +26,7 @@ const DandFQuests = () => {
             icon={<AdsClickIcon />}
             title={UserData?.valueBaseQuest?.Quest?.title}
             progress={UserData?.valueBaseQuest.progress}
-            current={UserData?.valueBaseQuest.Quest?.params.currentValue=="streak"? UserData?.earnings[UserData?.valueBaseQuest.Quest?.params.currentValue].count:UserData?.earnings[UserData?.valueBaseQuest.Quest?.params.currentValue]}
+            current={UserData?.valueBaseQuest.Quest?.params?.currentValue=="streak"? UserData?.earnings[UserData?.valueBaseQuest.Quest?.params.currentValue].count:UserData?.earnings[UserData?.valueBaseQuest.Quest?.params.currentValue]}
             goal={UserData?.valueBaseQuest.Quest?.params?.targetValue}
             reward={UserData?.valueBaseQuest.Quest?.reward?.value + ' ' + UserData?.valueBaseQuest.Quest?.reward?.type}
             About={UserData?.valueBaseQuest.Quest?.description}

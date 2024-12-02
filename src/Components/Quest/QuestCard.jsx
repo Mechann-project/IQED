@@ -1,7 +1,7 @@
 import { Avatar, Box, Card, LinearProgress, Typography } from "@mui/material";
 import React from "react";
 
-const QuestCard = ({ icon, title,current, progress, goal, reward, About }) => {
+const QuestCard = ({ icon, title,current, progress, goal, reward, About,active=true }) => {
   console.log(current,goal)
   return (
     <Card
@@ -15,6 +15,7 @@ const QuestCard = ({ icon, title,current, progress, goal, reward, About }) => {
         borderRadius: "10px",
         border: "2px solid",
         borderColor: "#02216F",
+        filter: active ? "none" : "grayscale(100%)",
       }}
     >
       <Avatar sx={{ backgroundColor: "#FF7324" }}>{icon}</Avatar>
