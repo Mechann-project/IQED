@@ -12,12 +12,11 @@ import {
   LoadingScreen,
   QuestionBox,
   QuestionDrawerList,
+  Quizloader,
   QuizProgressBar,
   VSCard,
 } from "../../Components";
 import { useGetQuizSessionQuery } from "../../Redux/API/Quiz.Api";
-import MPQuizloader from "./MPQuizloader";
-
 const QuizPage = () => {
   const [initialLoading, setInitialLoading] = useState(true); 
   const [fadeIn, setFadeIn] = useState(false); 
@@ -71,7 +70,7 @@ const QuizPage = () => {
         sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
         open={true}
       >
-        <MPQuizloader onComplete={() => setInitialLoading(false)} />
+        <Quizloader onComplete={() => setInitialLoading(false)} />
       </Backdrop>
     );
   }
@@ -83,9 +82,10 @@ const QuizPage = () => {
         height: "100%",
         opacity: fadeIn ? 1 : 0, 
         transition: "opacity 1s ease", 
+        
       }}
     >
-      <Timer ref={timerRef} initialTime={25 * 60} start={!sessionLoading} />
+      <Timer ref={timerRef} initialTime={25 * 60} start={!sessionLoading} isMP />
       <VSCard />
       <QuestionDrawerList
         open={isQuestionList}
@@ -98,7 +98,7 @@ const QuizPage = () => {
         sx={{
           position: "fixed",
           left: "-2px",
-          top: { lg: "40%", xs: "11%", sm: "11%" },
+          top: { lg: "40%", xs: "10%", sm: "10%" },
           height: "50px",
           backgroundColor: "#ffffff30",
           color: "white",

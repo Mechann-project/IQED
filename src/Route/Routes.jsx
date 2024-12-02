@@ -18,7 +18,6 @@ import {
   ProfilePage,
   LeaderboardPage,
   FeedBackPage,
-  Quizloader,
   StorePage,
   MPQuizPage
 } from "../Pages";
@@ -48,7 +47,6 @@ export const Routers = createBrowserRouter(
           </Route>
         </Route>
         <Route path="quiz" element={<Outlet />}>
-          <Route path="loader/:sessionId" element={<Quizloader />} />
           <Route path=":sessionId" element={<QuizLayout />}>
             <Route index element={<QuizPage />} />
             <Route path="result" element={<></>} />
