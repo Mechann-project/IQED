@@ -52,7 +52,10 @@ const MPQuizloader = ({ onComplete }) => {
   }, [countdown, onComplete]);
 
   const getIllustratedNumber = (num) => (
-    <img ref={countdownRef} src={countdownImages[3 - num]} alt={num === 0 ? "Lets Go" : num} />
+    <img ref={countdownRef} src={countdownImages[3 - num]} alt={num === 0 ? "Lets Go" : num} style={{
+      maxWidth: "80%", 
+      height: "auto",
+    }} />
   );
 
   return (

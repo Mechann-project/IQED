@@ -12,6 +12,7 @@ import {
   LoadingScreen,
   QuestionBox,
   QuestionDrawerList,
+  Quizloader,
   QuizProgressBar,
   VSCard,
 } from "../../Components";
@@ -19,6 +20,7 @@ import MPQuizloader from "./MPQuizloader";
 import { useHandleGamePage } from "../util";
 import { useSelector } from "react-redux";
 
+import { useGetQuizSessionQuery } from "../../Redux/API/Quiz.Api";
 const QuizPage = () => {
   const GameData = useSelector((state) => state.GameState);
 
@@ -69,7 +71,7 @@ const QuizPage = () => {
         sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
         open={true}
       >
-        <MPQuizloader onComplete={() => setInitialLoading(false)} />
+        <Quizloader onComplete={() => setInitialLoading(false)} />
       </Backdrop>
     );
   }
@@ -78,11 +80,13 @@ const QuizPage = () => {
     <Box
       sx={{
         height: "100%",
+
         opacity: fadeIn ? 1 : 0,
         transition: "opacity 1s ease",
+
       }}
     >
-      <Timer ref={timerRef} initialTime={25 * 60} start={!sessionLoading} />
+      <Timer ref={timerRef} initialTime={25 * 60} start={!sessionLoading} isMP />
       <VSCard />
       <QuestionDrawerList
         sessionState={GameSessionState}
@@ -96,7 +100,7 @@ const QuizPage = () => {
         sx={{
           position: "fixed",
           left: "-2px",
-          top: { lg: "40%", xs: "11%", sm: "11%" },
+          top: { lg: "40%", xs: "10%", sm: "10%" },
           height: "50px",
           backgroundColor: "#ffffff30",
           color: "white",

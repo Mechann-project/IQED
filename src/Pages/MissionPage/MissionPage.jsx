@@ -8,6 +8,7 @@ import { useGetAllSectionQuery } from "../../Redux/API/Career.Api";
 import trophy from "./trophy.png"
 import { useSelector } from "react-redux";
 import { useGetUserQuery } from "../../Redux/API/User.Api";
+import { LoadingScreen } from "../../Components";
 const MissionPage = () => {
   const { data: SectionList, isLoading } = useGetAllSectionQuery();
   const {data:userdata, isLoading:UserLoad} = useGetUserQuery()
@@ -49,7 +50,7 @@ const MissionPage = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>; // Add a loading indicator
+    return <LoadingScreen/>; // Add a loading indicator
   }
 
 
