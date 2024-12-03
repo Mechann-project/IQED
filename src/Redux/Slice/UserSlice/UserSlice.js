@@ -25,6 +25,9 @@ const UserSlice = createSlice({
     UpdateUser: (state, action) => {
       Object.assign(state, action.payload);
     },
+    ResetUser: (state, action) => {
+      Object.assign(state, initialState);
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -45,5 +48,5 @@ const UserSlice = createSlice({
   },
 });
 
-export const { UpdateUser } = UserSlice.actions;
+export const { UpdateUser ,ResetUser} = UserSlice.actions;
 export default UserSlice;

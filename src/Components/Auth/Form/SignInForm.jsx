@@ -7,12 +7,13 @@ import { FormTextField, InputDialogBox } from "../../../Common";
 import toast from "react-hot-toast";
 import { useLoginMutation } from "../../../Redux/API/Auth.Api";
 import Cookies from "js-cookie";
+import { useGetUserQuery } from "../../../Redux/API/User.Api";
 
 const SignInForm = ({ PageSwitch }) => {
   const [open, setOpen] = useState(false);
   const [UserLogin] = useLoginMutation();
   const navigate = useNavigate();
-
+  const {isLoading} = useGetUserQuery()
   const handleFormSubmit = async (values, { setSubmitting }) => {
     console.log(values);
     try {
@@ -21,7 +22,7 @@ const SignInForm = ({ PageSwitch }) => {
         {
           loading: "Logging in...",
           success: (res) => {
-            if (res.data != null ) {
+            if (res.data != null  && !isLoading) {
               navigate("/Explore"); 
               return <b>Login successful!</b>;
             } else {

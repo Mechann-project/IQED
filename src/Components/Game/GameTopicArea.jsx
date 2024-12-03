@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { AI_Icon, MathBannerIMG } from "../../assets";
 import { useSocket } from "../../Socket/SocketContext";
 import { useDispatch, useSelector } from "react-redux";
-import { setPlayers, setRoomId } from "../../Redux/Slice/GameSlice/GameSlice";
+import { ResetGame, setPlayers, setRoomId } from "../../Redux/Slice/GameSlice/GameSlice";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Grow ref={ref} {...props} />;
@@ -74,11 +74,12 @@ const GameTopicArea = () => {
   function createRoom(playerData) {
     socket.emit("create-room",({ playerData }), (response) => {
       if (response.roomId) {
+        dispatch(ResetGame)
         dispatch(setPlayers(response.playerList))
         console.log("Room created with ID:", response);
         sessionStorage.setItem("RoomID", response.roomId);
+        navigate(`/match/${response.roomId}`);
         dispatch(setRoomId(response.roomId))
-        navigate("/match");
       } else {
         console.error("Failed to create room.");
       }

@@ -50,6 +50,7 @@ const QuizPage = () => {
         start={!sessionLoading}
       />
       <QuestionDrawerList
+        sessionState={quizState}
         open={isQuestionList}
         handleClose={() => setisQuestionList(false)}
         quizData={quizState?.questionsList}

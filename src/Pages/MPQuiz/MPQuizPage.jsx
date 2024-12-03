@@ -7,7 +7,7 @@ import { KeyboardDoubleArrowRight } from "@mui/icons-material";
 
 // Components and Hooks
 import { ResultDialogBox, Timer } from "../../Common";
-import { useHandleQuizPage } from "../util";
+
 import {
   LoadingScreen,
   QuestionBox,
@@ -15,15 +15,17 @@ import {
   QuizProgressBar,
   VSCard,
 } from "../../Components";
-import { useGetQuizSessionQuery } from "../../Redux/API/Quiz.Api";
 import MPQuizloader from "./MPQuizloader";
+import { useHandleGamePage } from "../util";
+import { useSelector } from "react-redux";
 
 const QuizPage = () => {
-  const [initialLoading, setInitialLoading] = useState(true); 
-  const [fadeIn, setFadeIn] = useState(false); 
-  const { data, error, isLoading } = useGetQuizSessionQuery();
+  const GameData = useSelector((state) => state.GameState);
+
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [fadeIn, setFadeIn] = useState(false);
   const {
-    quizState,
+    GameSessionState,
     sessionLoading,
     ResultDialog,
     isQuestionList,
@@ -35,20 +37,17 @@ const QuizPage = () => {
     handleOnNext,
     handleQuit,
     handleSubmit,
-  } = useHandleQuizPage();
+  } = useHandleGamePage({ GameSessionId: GameData?.SessionID });
 
   const enterFullscreen = () => {
     const elem = document.documentElement;
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
     } else if (elem.mozRequestFullScreen) {
-      
       elem.mozRequestFullScreen();
     } else if (elem.webkitRequestFullscreen) {
-      
       elem.webkitRequestFullscreen();
     } else if (elem.msRequestFullscreen) {
-     
       elem.msRequestFullscreen();
     }
   };
@@ -58,13 +57,12 @@ const QuizPage = () => {
   }, []);
 
   useEffect(() => {
-    
     if (!initialLoading) {
       setFadeIn(true);
     }
   }, [initialLoading]);
+  console.log(GameSessionState);
 
- 
   if (initialLoading) {
     return (
       <Backdrop
@@ -76,21 +74,21 @@ const QuizPage = () => {
     );
   }
 
-  
   return (
     <Box
       sx={{
         height: "100%",
-        opacity: fadeIn ? 1 : 0, 
-        transition: "opacity 1s ease", 
+        opacity: fadeIn ? 1 : 0,
+        transition: "opacity 1s ease",
       }}
     >
       <Timer ref={timerRef} initialTime={25 * 60} start={!sessionLoading} />
       <VSCard />
       <QuestionDrawerList
+        sessionState={GameSessionState}
         open={isQuestionList}
         handleClose={() => setisQuestionList(false)}
-        quizData={quizState?.questionsList}
+        quizData={GameSessionState?.questionsList}
         handleSubmit={handleSubmit}
         handleQuit={() => handleQuit()}
       />
@@ -110,12 +108,16 @@ const QuizPage = () => {
         <KeyboardDoubleArrowRight />
       </Button>
       <QuestionBox
-        index={quizState?.currentQuestionIndex}
-        Question={quizState?.questionsList[quizState?.currentQuestionIndex]}
+        index={GameSessionState?.currentQuestionIndex}
+        Question={
+          GameSessionState?.questionsList[
+            GameSessionState?.currentQuestionIndex
+          ]
+        }
       />
       <QuizProgressBar
-        currentQuestion={quizState?.currentQuestionIndex + 1}
-        totalQuestions={quizState?.questionsList.length}
+        currentQuestion={GameSessionState?.currentQuestionIndex + 1}
+        totalQuestions={GameSessionState?.questionsList.length}
         progressValue={progressValue}
         onPrevious={handleOnPrevious}
         onNext={handleOnNext}

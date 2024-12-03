@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setQuestionIndex } from "../../Redux/Slice/QuizSlice/QuizSlice";
 
 export default function QuestionDrawerList({
+  sessionState,
   open,
   handleClose,
   quizData = [],
@@ -31,7 +32,7 @@ export default function QuestionDrawerList({
     if (index === currentQuestionIndex) return "1px solid #FFDA55";
     return "";
   };
-  const QuizState = useSelector((state) => state.QuizState);
+
 
  
 
@@ -62,7 +63,7 @@ export default function QuestionDrawerList({
               <ListItem
                 key={index}
                 sx={{
-                  bgcolor:QuizState.answeredQuestions[index]?"#BFFFE2":"#c5c5c5",
+                  bgcolor:sessionState.answeredQuestions[index]?"#BFFFE2":"#c5c5c5",
                   border: getBorderColor(index),
                   borderRadius: "10px",
                   mt: 1,
