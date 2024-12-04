@@ -41,7 +41,7 @@ const ResultDialogBox = ({
     {
       title: "Time Taken",
       leftText: formatTime(SessionState.timeTaken),
-      coinValue: (25 -(SessionState.timeTaken/60))*1,
+      coinValue: Math.floor((25 - (SessionState.timeTaken/60)) * 1),
     },
     { title: "Total Coins Earned", coinValue: Totalxp },
   ];
