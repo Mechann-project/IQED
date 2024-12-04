@@ -12,6 +12,7 @@ const initialState = {
   score: 0,
   isLive: true,
   timeTaken: 0,
+  Totalxp: 0,
 };
 
 const QuizSlice = createSlice({
@@ -47,6 +48,9 @@ const QuizSlice = createSlice({
     },
     setQuestionIndex: (state, action) => {
       state.currentQuestionIndex = action.payload;
+    },
+    setTotalxp: (state, action) => {
+      state.Totalxp = action.payload;
     },
     resetQuiz: (state) => {
       state.currentQuestionIndex = 0;
@@ -93,6 +97,7 @@ export const {
   submitQuiz,
   setQuestionIndex,
   setTimer,
+  setTotalxp
 } = QuizSlice.actions;
 
 export default QuizSlice;

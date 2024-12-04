@@ -23,6 +23,7 @@ import { AI_Icon, MathBannerIMG } from "../../assets";
 import { useSocket } from "../../Socket/SocketContext";
 import { useDispatch, useSelector } from "react-redux";
 import { ResetGame, setPlayers, setRoomId } from "../../Redux/Slice/GameSlice/GameSlice";
+import { resetQuiz } from "../../Redux/Slice/GameSlice/GameSessionSlice";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Grow ref={ref} {...props} />;
@@ -38,6 +39,7 @@ const GameTopicArea = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const UserData = useSelector((state) => state.UserState);
+
   const cardData = [
     { id: 1, title: "Types of Numbers", image: MathBannerIMG, questions: 10 },
     { id: 2, title: "Prime Numbers", image: MathBannerIMG, questions: 15 },
@@ -72,14 +74,15 @@ const GameTopicArea = () => {
     card.title.toLowerCase().includes(searchInput.toLowerCase())
   );
   function createRoom(playerData) {
+    dispatch(ResetGame());
+    dispatch(resetQuiz());
     socket.emit("create-room",({ playerData }), (response) => {
       if (response.roomId) {
-        dispatch(ResetGame)
         dispatch(setPlayers(response.playerList))
         console.log("Room created with ID:", response);
         sessionStorage.setItem("RoomID", response.roomId);
-        navigate(`/match/${response.roomId}`);
         dispatch(setRoomId(response.roomId))
+        navigate(`/match/${response.roomId}`);
       } else {
         console.error("Failed to create room.");
       }

@@ -20,7 +20,6 @@ import {
   FeedBackPage,
   StorePage,
   MPQuizPage,
-  GameLobby,
 } from "../Pages";
 import UserLayout from "../Pages/Layout/UserLayout";
 import MatchLayout from "../Pages/Layout/MatchLayout";

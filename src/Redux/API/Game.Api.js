@@ -2,7 +2,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const GameApi = createApi({
   reducerPath: 'GameApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/game' }), // Ensure correct backend URL
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/game' }),
+  tagTypes: ["Game"], // Ensure correct backend URL
   endpoints: (builder) => ({
     getGameSession: builder.mutation({
       query: ({ GameSessionId, SocketId }) => ({
@@ -10,6 +11,7 @@ export const GameApi = createApi({
         method: 'POST',
         body: { GameSessionId, SocketId },  // Pass the GameSessionId and index
       }),
+      providesTags: ["Game"],
     }),
     updateGameSessionAnswers: builder.mutation({
       query: ({ GameSessionId, SocketId, answeredQuestions, timeTaken }) => ({
@@ -17,7 +19,9 @@ export const GameApi = createApi({
         method: 'POST',
         body: { GameSessionId, SocketId, answeredQuestions, timeTaken },  // Send the game session details
       }),
+      invalidatesTags: ["Game"],
     }),
+
   }),
 });
 

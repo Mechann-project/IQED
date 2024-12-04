@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { SVGLoader } from "../../../assets";
+import { SVGLoader } from "../../assets";
 import { useParams } from "react-router-dom";
 
 const GuestDialog = ({ open,onJoin }) => {

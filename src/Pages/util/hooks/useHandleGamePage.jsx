@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import {
   nextQuestion,
   prevQuestion,
+  resetQuiz,
   setTimer,
   submitQuiz,
 } from "../../../Redux/Slice/GameSlice/GameSessionSlice";
@@ -20,22 +21,25 @@ const useHandleGamePage = ({ GameSessionId }) => {
   const GameSessionState = useSelector((state) => state.GameSessionState);
   console.log(GameData);
 
-  const [getGameSession,{ data: sessionData, error: sessionError, isLoading: sessionLoading }] = useGetGameSessionMutation();
+  const [
+    getGameSession,
+    { data: sessionData, error: sessionError, isLoading: sessionLoading },
+  ] = useGetGameSessionMutation();
   const [updateQuizSession, { data }] = useUpdateGameSessionAnswersMutation();
   const [updateUserXP] = useAddXPMutation();
   const { data: userData } = useGetUserQuery();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const GameState = useSelector((state) => state.QuizState);
   const [isQuestionList, setisQuestionList] = useState(false);
   const [ResultDialog, setResultDialog] = useState(false);
   const timerRef = useRef();
+  const [Totalxp, setTotalxp] = useState(0);
 
   useEffect(() => {
     getGameSession({
-      GameSessionId:GameData?.SessionID,
+      GameSessionId: GameData?.SessionID,
       SocketId: GameData?.Players[GameData?.index]?.SocketId,
-    })
+    });
     if (sessionError) {
       toast.error("Session Expired");
       navigate("/missions");
@@ -53,6 +57,7 @@ const useHandleGamePage = ({ GameSessionId }) => {
   const handleQuit = (test = false) => {
     setResultDialog(false);
     document.exitFullscreen();
+    dispatch(resetQuiz());
     if (test) {
       toast.success("Quiz Completed");
     } else {
@@ -65,22 +70,27 @@ const useHandleGamePage = ({ GameSessionId }) => {
     timerRef.current.pauseTimer();
     const currentTime = timerRef.current.getCurrentTime();
     dispatch(setTimer(currentTime));
-
     try {
       updateQuizSession({
-        answeredQuestions: GameSessionState.answeredQuestions,
+        GameSessionId: GameData?.SessionID,
+        SocketId: GameData?.Players[GameData?.index]?.SocketId,
+        answeredQuestions: GameSessionState?.answeredQuestions,
         timeTaken: currentTime,
       })
         .unwrap()
         .then(() => {
+          let xp = 0
+          xp += GameSessionState.score *2 
+          xp +=  Math.floor((25 - (SessionState.timeTaken/60)) * 1)
+          setTotalxp(xp);
           dispatch(submitQuiz());
           setResultDialog(true);
-          console.log(data);
+          updateUserXP({ xp: xp }).then(() => {
+            dispatch(UpdateUser(userData));
+          });
+          
           toast.success("session Complated");
         });
-      updateUserXP({ xp: 100 }).then(() => {
-        dispatch(UpdateUser(userData));
-      });
     } catch (error) {
       console.error("Failed to update quiz session:", error);
       toast.error("sorry session not save");
@@ -92,8 +102,9 @@ const useHandleGamePage = ({ GameSessionId }) => {
     (GameSessionState?.answeredQuestions.length /
       GameSessionState?.questionsList.length) *
     100;
-console.log(sessionData);
+  console.log(sessionData);
   return {
+    Totalxp,
     GameSessionState,
     sessionError,
     sessionLoading,

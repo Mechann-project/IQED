@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Divider,
@@ -14,21 +14,20 @@ import {
 import { RewardCard } from "../../Common";
 import { useNavigate } from "react-router-dom";
 import { SuccessManSVG } from "../../assets";
-import { useSelector } from "react-redux";
 
 const ResultDialogBox = ({
+  SessionState,
   open,
-  Score,
   handleReview,
   Level,
-  handleDone
+  handleDone,
+  Totalxp,
 }) => {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const inLevel = Level;
   const navigate = useNavigate();
-  const QuizState = useSelector((state) => state.QuizState);
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -38,11 +37,14 @@ const ResultDialogBox = ({
 
 
   const cardData = [
-    { title: "Answered", leftText:QuizState.score, coinValue:QuizState.score*2 },
-    { title: "Time Taken", leftText: formatTime(QuizState.timeTaken), coinValue: (((QuizState?.questionsList.length*60)-QuizState.timeTaken)*1)},
-    { title: "Total Coins Earned", coinValue: ((((QuizState?.questionsList.length*60)-QuizState.timeTaken)*1)+(QuizState.score*2))},
+    { title: "Answered", leftText: SessionState.score, coinValue: SessionState.score *1 },
+    {
+      title: "Time Taken",
+      leftText: formatTime(SessionState.timeTaken),
+      coinValue: Math.floor((25 - (SessionState.timeTaken/60)) * 1),
+    },
+    { title: "Total Coins Earned", coinValue: Totalxp },
   ];
-
   return (
     <Dialog
       open={open}

@@ -32,7 +32,7 @@ const useHandleQuizPage = () => {
   const [isQuestionList, setisQuestionList] = useState(false);
   const [ResultDialog, setResultDialog] = useState(false);
   const timerRef = useRef();
-
+  const [Totalxp, setTotalxp] = useState(0);
   useEffect(() => {
     if (sessionError) {
       toast.error("Session Expired");
@@ -70,13 +70,16 @@ const useHandleQuizPage = () => {
         answeredQuestions: quizState.answeredQuestions,
         timeTaken:currentTime
       }).unwrap().then(() => {
+        let xp = 0
+        xp += GameSessionState.score *2 
+        xp +=  Math.floor((25 - (SessionState.timeTaken/60)) * 1)
+        setTotalxp(xp);
         dispatch(submitQuiz());
         setResultDialog(true);
-        console.log(data);
+        updateUserXP({ xp: xp }).then(() => {
+          dispatch(UpdateUser(userData));
+        });
         toast.success("session Complated");
-      });
-      updateUserXP({ xp:  100 }).then(() => {
-        dispatch(UpdateUser(userData));
       });
     } catch (error) {
       console.error("Failed to update quiz session:", error);
@@ -90,6 +93,7 @@ const useHandleQuizPage = () => {
     100;
 
   return {
+    Totalxp,
     quizState,
     sessionError,
     sessionLoading,
