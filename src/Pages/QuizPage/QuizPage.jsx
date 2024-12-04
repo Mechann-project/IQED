@@ -17,12 +17,15 @@ import {
   VSCard,
 } from "../../Components";
 import { useGetQuizSessionQuery } from "../../Redux/API/Quiz.Api";
+import { useDispatch } from "react-redux";
+import { setTotalxp } from "../../Redux/Slice/QuizSlice/QuizSlice";
 
 const QuizPage = () => {
   const [initialLoading, setInitialLoading] = useState(true);
   const [fadeIn, setFadeIn] = useState(false);
   const { data, error, isLoading } = useGetQuizSessionQuery();
   const {
+    Totalxp,
     quizState,
     sessionLoading,
     ResultDialog,
@@ -36,7 +39,7 @@ const QuizPage = () => {
     handleQuit,
     handleSubmit,
   } = useHandleQuizPage();
-
+  const dispatch= useDispatch();
   const enterFullscreen = () => {
     const elem = document.documentElement;
     if (elem.requestFullscreen) {
@@ -119,9 +122,11 @@ const QuizPage = () => {
         onNext={handleOnNext}
       />
       <ResultDialogBox
+        SessionState={quizState}
         open={ResultDialog}
         handleReview={() => setResultDialog(false)}
         handleDone={() => handleQuit(true)}
+        Totalxp ={Totalxp}
       />
     </Box>
   );

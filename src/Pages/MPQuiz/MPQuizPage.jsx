@@ -6,27 +6,22 @@ import { Backdrop, Box, Button, CircularProgress } from "@mui/material";
 import { KeyboardDoubleArrowRight } from "@mui/icons-material";
 
 // Components and Hooks
-import { ResultDialogBox, Timer } from "../../Common";
+import { ResultDialogBox, Timer, VSCard } from "../../Common";
 
-import {
-  LoadingScreen,
-  QuestionBox,
-  QuestionDrawerList,
-  Quizloader,
-  QuizProgressBar,
-  VSCard,
-} from "../../Components";
-import MPQuizloader from "./MPQuizloader";
 import { useHandleGamePage } from "../util";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import MPQuestionDrawerList from "../../Components/MpQuiz/MPQuestionDrawerList";
+import MPQuestionBox from "../../Components/MpQuiz/MPQuestionBox";
+import MpQuizProgressBar from "../../Components/MpQuiz/MpQuizProgressBar";
+import MPQuizloader from "../../Components/Quiz/Quizloader";
+import { setTotalxp } from "../../Redux/Slice/GameSlice/GameSessionSlice";
 
-import { useGetQuizSessionQuery } from "../../Redux/API/Quiz.Api";
 const QuizPage = () => {
   const GameData = useSelector((state) => state.GameState);
-
   const [initialLoading, setInitialLoading] = useState(true);
   const [fadeIn, setFadeIn] = useState(false);
   const {
+    Totalxp,
     GameSessionState,
     sessionLoading,
     ResultDialog,
@@ -40,7 +35,7 @@ const QuizPage = () => {
     handleQuit,
     handleSubmit,
   } = useHandleGamePage({ GameSessionId: GameData?.SessionID });
-
+  const dispatch = useDispatch();
   const enterFullscreen = () => {
     const elem = document.documentElement;
     if (elem.requestFullscreen) {
@@ -71,7 +66,7 @@ const QuizPage = () => {
         sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
         open={true}
       >
-        <Quizloader onComplete={() => setInitialLoading(false)} />
+        <MPQuizloader onComplete={() => setInitialLoading(false)} />
       </Backdrop>
     );
   }
@@ -80,15 +75,18 @@ const QuizPage = () => {
     <Box
       sx={{
         height: "100%",
-
         opacity: fadeIn ? 1 : 0,
         transition: "opacity 1s ease",
-
       }}
     >
-      <Timer ref={timerRef} initialTime={25 * 60} start={!sessionLoading} isMP />
+      <Timer
+        ref={timerRef}
+        initialTime={25 * 60}
+        start={!sessionLoading}
+        isMP
+      />
       <VSCard />
-      <QuestionDrawerList
+      <MPQuestionDrawerList
         sessionState={GameSessionState}
         open={isQuestionList}
         handleClose={() => setisQuestionList(false)}
@@ -111,7 +109,7 @@ const QuizPage = () => {
       >
         <KeyboardDoubleArrowRight />
       </Button>
-      <QuestionBox
+      <MPQuestionBox
         index={GameSessionState?.currentQuestionIndex}
         Question={
           GameSessionState?.questionsList[
@@ -119,7 +117,7 @@ const QuizPage = () => {
           ]
         }
       />
-      <QuizProgressBar
+      <MpQuizProgressBar
         currentQuestion={GameSessionState?.currentQuestionIndex + 1}
         totalQuestions={GameSessionState?.questionsList.length}
         progressValue={progressValue}
@@ -127,9 +125,11 @@ const QuizPage = () => {
         onNext={handleOnNext}
       />
       <ResultDialogBox
+        SessionState={GameSessionState}
         open={ResultDialog}
         handleReview={() => setResultDialog(false)}
         handleDone={() => handleQuit(true)}
+        Totalxp ={Totalxp}
       />
     </Box>
   );

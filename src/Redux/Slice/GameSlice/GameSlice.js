@@ -25,7 +25,7 @@ const GameSlice = createSlice({
       state.index = action.payload;
     },
     ResetGame: (state, action) => {
-      Object.assign(state, initialState);
+      return { ...initialState };
     },
   },
 });

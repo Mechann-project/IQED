@@ -4,17 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { useSocket } from "../../../Socket/SocketContext";
 import {
+  ResetGame,
   setIndex,
   setPlayers,
   setRoomId,
   setSessionId,
 } from "../../../Redux/Slice/GameSlice/GameSlice";
 import toast from "react-hot-toast";
-import InviteCard from "./InviteCard";
-import PlayerCard from "./PlayerCard";
-import GuestDialog from "./GuestDialog";
+
 import { VS } from "../../../assets";
 import { useLoaderData, useLocation, useNavigate } from "react-router-dom";
+import { GuestDialog, InviteCard, PlayerCard } from "../../../Common";
+import { resetQuiz } from "../../../Redux/Slice/GameSlice/GameSessionSlice";
+
 
 const MatchLobby = () => {
   const islogin = useLoaderData();
@@ -26,7 +28,7 @@ const MatchLobby = () => {
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const UserData = useSelector((state) => state.UserState);
   const GameData = useSelector((state) => state.GameState);
-
+  const GameSessionState = useSelector((state) => state.GameSessionState);
   useEffect(() => {
     if (!socket) return;
 
@@ -37,7 +39,10 @@ const MatchLobby = () => {
 
     socket.on("game-started", (data) => {
       toast.success("Game started successfully.");
-      console.log(data);
+      console.log("pre",GameSessionState);
+      dispatch(resetQuiz);
+      dispatch(ResetGame);
+      console.log("post",GameSessionState);
       dispatch(setSessionId(data.GameSession._id));
       navigate(`/match/${data.roomId}/${data.GameSession._id}`)
     });
@@ -74,6 +79,7 @@ const MatchLobby = () => {
   const handleStartClick = () => {
     if (GameData?.Players?.length <= 2) {
       const roomId = GameData?.RoomID;
+      
       socket.emit("start-game", {roomId,UserId:UserData._id}, (response) => {
         if (response.success) {
           console.log("Game started successfully.");
