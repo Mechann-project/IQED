@@ -81,7 +81,7 @@ const useHandleGamePage = ({ GameSessionId }) => {
         .then(() => {
           let xp = 0
           xp += GameSessionState.score *2 
-          xp +=  Math.floor((25 - (SessionState.timeTaken/60)) * 1)
+          xp +=  Math.floor((25 - (GameSessionState.timeTaken/60)) * 1)
           setTotalxp(xp);
           dispatch(submitQuiz());
           setResultDialog(true);
