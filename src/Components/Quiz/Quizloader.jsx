@@ -2,31 +2,27 @@ import { Box } from "@mui/material";
 import React, { useEffect, useState, useRef } from "react";
 import { LetsGo, one, two, three, countdownSound, letsGoSound } from "../../assets";
 import gsap from "gsap";
-
+const audiosound = new Audio(countdownSound);
 const MPQuizloader = ({ onComplete }) => {
-  const [countdown, setCountdown] = useState(3); // Start countdown from 3
+  const [countdown, setCountdown] = useState(3); 
   const countdownRef = useRef(null);
   const audioRef = useRef(null);
-
   const countdownImages = [three, two, one, LetsGo];
+  const playSound = (num) => {
+ 
+    // if (num > 0) {
+    //   audio = new Audio(countdownSound);
+    // } else if (num === 0) {
+    //   audio = new Audio(letsGoSound);
+    // }
 
+    if (audiosound) {
+      audiosound.volume = 0.5;
+      audiosound.play();
+    }
+  };
   useEffect(() => {
-    const playSound = (num) => {
-      if (audioRef.current) audioRef.current.pause(); // Stop any previous sound
-      let sound;
-
-      if (num > 0) {
-        sound = new Audio(countdownSound);
-      } else if (num === 0) {
-        sound = new Audio(letsGoSound);
-      }
-
-      audioRef.current = sound;
-      if (sound) {
-        sound.volume = 0.5; // Set volume to 50%
-        sound.play();
-      }
-    };
+    
 
     if (countdown >= 0) {
       playSound(countdown);
@@ -43,7 +39,7 @@ const MPQuizloader = ({ onComplete }) => {
       // Delay before showing the next countdown number
       const timer = setTimeout(() => {
         setCountdown((prev) => prev - 1);
-      }, 1300);
+      }, 1000);
 
       return () => clearTimeout(timer);
     } else {

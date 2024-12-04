@@ -14,6 +14,6 @@ export { default as LoadingScreen } from "./Loading/LoadingScreen.jsx";
 export {default as GameTopicArea} from "./Game/GameTopicArea.jsx";
 export {default as StoreBanner} from './Store/StoreBanner.jsx';
 export {default as ProductArea} from './Store/ProductArea.jsx';
-export {default as Shipping} from './Store/Shipping.jsx';
+export {default as Shipping} from '../Pages/Store/ShippingPage.jsx';
 export {default as VSCard} from './Quiz/VSCard.jsx';
 export {default as Quizloader} from './Quiz/Quizloader.jsx';

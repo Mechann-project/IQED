@@ -16,6 +16,7 @@ import SVGLoader from "./Others/SVGLoader.jsx";
 import VSIcon from "./Icons/VSIcon.png";
 import popGIF from "./Gif/pop.gif";
 import SuccessManSVG from "./Others/SuccessMan.svg";
+import ProductBG from "./Others/ProductBG.svg";
 export {
   WhiteBackgroundSVG,
   YellowBackgroundSVG,
@@ -34,5 +35,6 @@ export {
   VS,
   VSIcon,
   popGIF,
-  SuccessManSVG
+  SuccessManSVG,
+  ProductBG
 };

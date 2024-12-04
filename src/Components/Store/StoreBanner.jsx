@@ -1,7 +1,7 @@
 import React from "react";
 import Carousel from "react-material-ui-carousel";
 import { Box, Typography, Button } from "@mui/material";
-import { TShirtPNG } from "../../assets";
+import { ProductBG, TShirtPNG } from "../../assets";
 
 const StoreBanner = () => {
   const items = [
@@ -31,14 +31,16 @@ const StoreBanner = () => {
     <Carousel
       indicators={true}
       animation="slide"
-      interval={4000}
-      duration={1000}
-      
+      interval={5000}
+      duration={300}
       swipe={true}
       stopAutoPlayOnHover={true}
-      sx={{ 
+      sx={{
         borderRadius: "10px",
-        
+        height: "200px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
       indicatorContainerProps={{
         style: {
@@ -51,18 +53,18 @@ const StoreBanner = () => {
       }}
     >
       {items.map((item) => (
-        <Box  
+        <Box
           key={item.id}
           sx={{
             backgroundColor: "#FBF0E4",
-            paddingX: { xs: "10px", sm: "20px" }, // Adjust padding for smaller screens
+            paddingX: { xs: "10px", sm: "20px" },
             boxSizing: "border-box",
             display: "flex",
-            flexDirection: "row", // Stack elements on small screens and align horizontally on larger screens
+            flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
             height: "200px",
-            
+            gap: "10px",
           }}
         >
           <Box sx={{ flex: 1 }}>
@@ -70,31 +72,58 @@ const StoreBanner = () => {
               variant="h4"
               fontWeight="bold"
               sx={{
-                fontSize: { xs: "1rem", sm: "1.5rem", md: "2rem" }, // Adjust font size for different screens
-                textAlign: { xs: "center", sm: "left" }, // Center text on smaller screens
+                fontSize: { xs: "1rem", sm: "1.5rem", md: "2rem" },
+                textAlign: { xs: "center", sm: "left" },
               }}
             >
               {item.title}
             </Typography>
-            
           </Box>
           <Box
             sx={{
-              marginTop: { xs: "10px", sm: "0" }, // Adjust margin for smaller screens
+              marginTop: { xs: "10px", sm: "0" },
               flex: 1,
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              bgcolor: "black",
+              position: "relative",
             }}
           >
             <img
+              src={ProductBG}
+              alt="Product Background"
+              style={{
+                borderRadius: "10px",
+                maxWidth: "100%",
+                objectFit: "fill",
+                position: "absolute",
+                zIndex: 1,
+              }}
+            />
+            {/* <img
               src={item.img}
               alt="Product"
               style={{
-                maxHeight: "150px", // Reduce image size on smaller screens
+                maxHeight: { lg: "150px", sm: "100px", xs: "100px" },
                 borderRadius: "10px",
                 maxWidth: "100%",
-                objectFit: "cover", // Ensure the image fits well
+                objectFit: "cover",
+                position: "absolute",
+                zIndex: 2,
+              }}
+            /> */}
+            <Box
+              component="img"
+              src={item.img}
+              alt="Product"
+              sx={{
+                maxHeight: { lg: "150px", sm: "100px", xs: "100px" },
+                maxWidth: "100%",
+                objectFit: "cover",
+                position: "absolute",
+                zIndex: 2,
+                borderRadius: "50px", 
               }}
             />
           </Box>

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { TShirtImg } from "../../assets";
 import {
   Box,
   Grid,
@@ -13,10 +12,13 @@ import {
   Typography,
   InputBase,
   IconButton,
+  Collapse,
 } from "@mui/material";
-import ProductCard from "./ProductCard";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import ProductCard from "./ProductCard";
+import { TShirtImg } from "../../assets";
+import { useNavigate } from "react-router-dom";
 
 const products = [
   {
@@ -90,26 +92,23 @@ const products = [
 const ProductArea = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const navigate = useNavigate()
   const [selectedType, setSelectedType] = useState("All Types");
   const [sortOrder, setSortOrder] = useState("HighToLow");
   const [showFilter, setShowFilter] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Get all unique product types
   const productTypes = [
     "All Types",
     ...new Set(products.map((product) => product.type)),
   ];
 
-  // Filter and sort products
   const filteredProducts = products
     .filter((product) => {
-      // Filter by type
-      const matchesType = selectedType === "All Types" || product.type === selectedType;
-
-      // Filter by search query (case insensitive)
-      const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      const matchesType =
+        selectedType === "All Types" || product.type === selectedType;
+      const matchesSearch =
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.description.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesType && matchesSearch;
     })
@@ -119,7 +118,7 @@ const ProductArea = () => {
       } else if (sortOrder === "HighToLow") {
         return b.discountedPrice - a.discountedPrice;
       }
-      return 0; // No sorting
+      return 0;
     });
 
   const handleFilterClick = () => {
@@ -151,7 +150,6 @@ const ProductArea = () => {
           justifyContent: "space-between",
         }}
       >
-        {/* Search Bar, Filter Icon, and Cart Icon */}
         <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
           <InputBase
             placeholder="Search..."
@@ -167,23 +165,22 @@ const ProductArea = () => {
           <IconButton onClick={handleFilterClick} sx={{ marginLeft: "10px" }}>
             <FilterListIcon />
           </IconButton>
-          <Typography sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-            <AddShoppingCartIcon />
-            Cart
-          </Typography>
+          <Button variant="outlined" startIcon={<AddShoppingCartIcon />} onClick={()=>{navigate('/store/orders')}}>
+            Orders
+          </Button>
         </Box>
 
-        {/* Show selected filter below the search bar when filter icon is clicked */}
-        {showFilter && (
+        {/* Smoothly show filter options */}
+        <Collapse in={showFilter} timeout="auto" unmountOnExit>
           <Box
             sx={{
               display: "flex",
               flexDirection: "row",
               gap: "5px",
               width: "100%",
+              mt: 2,
             }}
           >
-            {/* Type Filter */}
             <FormControl
               size="small"
               variant="standard"
@@ -208,7 +205,6 @@ const ProductArea = () => {
               </Select>
             </FormControl>
 
-            {/* Sort By Filter */}
             <FormControl
               size="small"
               variant="standard"
@@ -231,14 +227,15 @@ const ProductArea = () => {
               </Select>
             </FormControl>
           </Box>
-        )}
+        </Collapse>
       </Box>
 
       <Divider />
 
-      {/* Show "No Results Found" if no products match the search/filter criteria */}
       {filteredProducts.length === 0 ? (
-        <Typography sx={{ textAlign: "center", fontSize: "18px", color: "#777" }}>
+        <Typography
+          sx={{ textAlign: "center", fontSize: "18px", color: "#777" }}
+        >
           No results found.
         </Typography>
       ) : (

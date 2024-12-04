@@ -28,6 +28,7 @@ import { OnLoadLobby } from "../Pages/GamePage/MatchPage/MatchLobby";
 import QuizLayout from "../Pages/Layout/QuizLayout";
 import GQSuccessPage from "../Pages/QuizPage/GQResultPage";
 import { Shipping } from "../Components";
+import OrdersPage from "../Pages/Store/OrdersPage";
 export const Routers = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
@@ -45,6 +46,7 @@ export const Routers = createBrowserRouter(
           <Route path="store" element={<Outlet />}>
             <Route index element={<StorePage />} />
             <Route path="shipping/:productId" element={<Shipping />} />
+            <Route path="Orders" element={<OrdersPage />} />
           </Route>
         </Route>
         <Route path="quiz" element={<Outlet />}>

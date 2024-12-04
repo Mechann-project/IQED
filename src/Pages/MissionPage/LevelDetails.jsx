@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCreateQuizSessionMutation } from "../../Redux/API/Quiz.Api";
 import { resetQuiz } from "../../Redux/Slice/QuizSlice/QuizSlice";
 import toast from "react-hot-toast";
+import { LoadingScreen } from "../../Components";
 
 function QontoStepIcon(props) {
   const { active, completed, className } = props;
@@ -149,9 +150,7 @@ function LevelDetails() {
   };
 
   if (isLoading) {
-    return <Typography sx={{
-      color:'black'
-    }}>Loading...</Typography>;
+    return <LoadingScreen/>;
   }
 
   if (isError) {

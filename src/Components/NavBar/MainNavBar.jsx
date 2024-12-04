@@ -45,7 +45,7 @@ const MainNavBar = () => {
   );
 
   const renderButton = ({ label, icon, path, key }) => {
-    const isSelected = currentOutlet.toLowerCase() === path.toLowerCase();
+    const isSelected = currentOutlet.toLowerCase().startsWith(path.toLowerCase());
 
     return (
       <Button

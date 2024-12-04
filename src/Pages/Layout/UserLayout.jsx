@@ -32,7 +32,7 @@ const UserLayout = () => {
           height: "100%",
           marginTop: isSm ? "50px" : null,
           mb: isSm ? "30px" : null,
-          padding: "0 20px",
+          padding: "0 10px",
           overflow: "scroll",
           "::-webkit-scrollbar": {
             display: "none",
