@@ -15,14 +15,8 @@ const RootLayout = () => {
     const backgroundMap = {
       "/": YellowBackgroundSVG,
       "/auth": BlueBackgroundSVG,
-      "/signup": BlueBackgroundSVG,
-      "/general-quiz-test": YellowBackgroundSVG,
-      "/gq-success": YellowBackgroundSVG,
-      "/gq-get-result": YellowBackgroundSVG,
-      "/gq-get-result-vai-wa": YellowBackgroundSVG,
-      "/commenquiztest": YellowBackgroundSVG,
       "/match": YellowBackgroundSVG,
-      "/result": YellowBackgroundSVG,
+      "/iqquiz/result": YellowBackgroundSVG,
     };
     console.log(location.pathname.toLowerCase());
     return backgroundMap[location.pathname.toLowerCase()] || WhiteBackgroundSVG;

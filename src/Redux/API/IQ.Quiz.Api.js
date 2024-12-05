@@ -25,6 +25,15 @@ export const IQQuizApi = createApi({
         body: { answeredQuestions,timeTaken },
       }),
     }),
+    uploadFile: builder.mutation({
+      query: (data) => {
+        return {
+          url: "/upload",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
@@ -32,4 +41,5 @@ export const {
   useCreateQuizSessionMutation,
   useGetQuizSessionQuery,
   useUpdateQuizSessionMutation,
+  useUploadFileMutation,
 } = IQQuizApi;

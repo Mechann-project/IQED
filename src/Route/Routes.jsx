@@ -25,7 +25,7 @@ import UserLayout from "../Pages/Layout/UserLayout";
 import MatchLayout from "../Pages/Layout/MatchLayout";
 import { OnLoadLobby } from "../Pages/GamePage/MatchPage/MatchLobby";
 import QuizLayout from "../Pages/Layout/QuizLayout";
-import GQSuccessPage from "../Pages/QuizPage/GQResultPage";
+import GQSuccessPage from "../Pages/IQQuizPage/GQResultPage";
 import { Shipping } from "../Components";
 import OrdersPage from "../Components/Store/OrderDetail";
 import StoreOrderLayout from "../Pages/Layout/StoreOrderLayout";
