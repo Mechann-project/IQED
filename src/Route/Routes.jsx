@@ -27,7 +27,11 @@ import { OnLoadLobby } from "../Pages/GamePage/MatchPage/MatchLobby";
 import QuizLayout from "../Pages/Layout/QuizLayout";
 import GQSuccessPage from "../Pages/QuizPage/GQResultPage";
 import { Shipping } from "../Components";
-import OrdersPage from "../Pages/Store/OrdersPage";
+import OrdersPage from "../Components/Store/OrderDetail";
+import StoreOrderLayout from "../Pages/Layout/StoreOrderLayout";
+import YourOrders from "../Components/Store/YourOrders";
+import OrderDetail from "../Components/Store/OrderDetail";
+
 export const Routers = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
@@ -45,7 +49,10 @@ export const Routers = createBrowserRouter(
           <Route path="store" element={<Outlet />}>
             <Route index element={<StorePage />} />
             <Route path="shipping/:productId" element={<Shipping />} />
-            <Route path="Orders" element={<OrdersPage />} />
+            <Route path="Orders" element={<StoreOrderLayout />}>
+              <Route index element={<YourOrders />} />
+              <Route path=":orderId" element={<OrderDetail/>} />
+            </Route>
           </Route>
         </Route>
         <Route path="quiz" element={<Outlet />}>

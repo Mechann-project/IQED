@@ -16,7 +16,7 @@ import MpQuizProgressBar from "../../Components/MpQuiz/MpQuizProgressBar";
 import MPQuizloader from "../../Components/Quiz/Quizloader";
 import { setTotalxp } from "../../Redux/Slice/GameSlice/GameSessionSlice";
 
-const QuizPage = () => {
+const MPQuizPage = () => {
   const GameData = useSelector((state) => state.GameState);
   const [initialLoading, setInitialLoading] = useState(true);
   const [fadeIn, setFadeIn] = useState(false);
@@ -135,4 +135,4 @@ const QuizPage = () => {
   );
 };
 
-export default QuizPage;
+export default MPQuizPage;

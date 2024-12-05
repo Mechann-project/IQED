@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 
 const products = [
   {
-    id: 1,
+    productID: 1,
     name: "Wireless Earbuds, IPX8",
     rating: 4.5,
     reviews: 121,
@@ -33,7 +33,7 @@ const products = [
     type: "Electronics",
   },
   {
-    id: 2,
+    productID: 2,
     name: "AirPods Max",
     rating: 4.8,
     reviews: 121,
@@ -44,7 +44,7 @@ const products = [
     type: "Electronics",
   },
   {
-    id: 3,
+    productID: 3,
     name: "Kids IQ Puzzle Toy",
     rating: 4.3,
     reviews: 121,
@@ -55,7 +55,7 @@ const products = [
     type: "Toys",
   },
   {
-    id: 4,
+    productID: 4,
     name: "Men's T-Shirt",
     rating: 4.0,
     reviews: 121,
@@ -66,7 +66,7 @@ const products = [
     type: "Clothing",
   },
   {
-    id: 5,
+    productID: 5,
     name: "Men's ",
     rating: 4.0,
     reviews: 121,
@@ -77,7 +77,7 @@ const products = [
     type: "sum",
   },
   {
-    id: 6,
+    productID: 6,
     name: "Men T-Shirt",
     rating: 4.0,
     reviews: 121,

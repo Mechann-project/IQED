@@ -12,11 +12,13 @@ import {
 } from "@mui/material";
 import { IQGemIcon } from "../../assets/Image";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const ProductCard = ({ product }) => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const userCoin = 150; // Assume this value is dynamic
+  const UserData = useSelector((state) => state.UserState);
+  const userCoin = UserData?.earnings?.iqGems;
   const isAffordable = userCoin >= product.discountedPrice;
   const [openTooltip, setOpenTooltip] = useState(false);
 
