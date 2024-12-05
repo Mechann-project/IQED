@@ -1,12 +1,13 @@
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React from "react";
 import { VS } from "../../assets";
+import { useSelector } from "react-redux";
 
 const VSCard = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
-  
+  const GameData = useSelector((state) => state.GameState);
   return (
    
     <Box
@@ -36,7 +37,7 @@ const VSCard = () => {
           fontSize: { lg: "18px", xs: "12px", sm: "12px" },
         }}
       >
-        Player 1
+        {GameData?.Players[0]?.Name}
       </Typography>
 
       <Box
@@ -69,7 +70,7 @@ const VSCard = () => {
           fontSize: { lg: "18px", xs: "12px", sm: "12px" },
         }}
       >
-        Player 2
+       {GameData?.Players[1]?.Name}
       </Typography>
     </Box>
   );

@@ -62,6 +62,7 @@ export const Routers = createBrowserRouter(
           <Route path=":GameSessionId" element={<MPQuizPage />} />
         </Route>
       </Route>
+      <Route path="*" element={<h1>404</h1>} />
     </Route>
   )
 );

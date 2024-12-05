@@ -6,6 +6,7 @@ import {
   nextQuestion,
   prevQuestion,
   resetQuiz,
+  setSession,
   setTimer,
   submitQuiz,
 } from "../../../Redux/Slice/GameSlice/GameSessionSlice";
@@ -15,6 +16,7 @@ import {
   useGetGameSessionMutation,
   useUpdateGameSessionAnswersMutation,
 } from "../../../Redux/API/Game.Api";
+import { useSocket } from "../../../Socket/SocketContext";
 
 const useHandleGamePage = ({ GameSessionId }) => {
   const GameData = useSelector((state) => state.GameState);
@@ -34,7 +36,17 @@ const useHandleGamePage = ({ GameSessionId }) => {
   const [ResultDialog, setResultDialog] = useState(false);
   const timerRef = useRef();
   const [Totalxp, setTotalxp] = useState(0);
-
+  const socket = useSocket();
+  useEffect(() => {
+    if (!socket) return;
+    socket.on("game-ended", (data) => {
+      console.log("game-ended",data);
+      dispatch(setSession(data.GameSession));
+    }); 
+    return () => {
+      socket.off("game-ended");
+    };
+  }, [socket]);
   useEffect(() => {
     getGameSession({
       GameSessionId: GameData?.SessionID,
@@ -63,7 +75,7 @@ const useHandleGamePage = ({ GameSessionId }) => {
     } else {
       toast.error("Session Expire");
     }
-    navigate("/missions");
+    navigate("/game");
   };
 
   const handleSubmit = async () => {
@@ -85,6 +97,7 @@ const useHandleGamePage = ({ GameSessionId }) => {
           setTotalxp(xp);
           dispatch(submitQuiz());
           setResultDialog(true);
+          socket.emit("game-ended",{roomId:GameData?.RoomID ,GameSessionId:GameData?.SessionID})
           updateUserXP({ xp: xp }).then(() => {
             dispatch(UpdateUser(userData));
           });
