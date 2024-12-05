@@ -6,20 +6,21 @@ import { Backdrop, Box, Button, CircularProgress } from "@mui/material";
 import { KeyboardDoubleArrowRight } from "@mui/icons-material";
 
 // Components and Hooks
-import { ResultDialogBox, Timer, VSCard } from "../../Common";
+import { ResultDialogBox, Timer } from "../../Common";
+import { useHandleIQQuizPage } from "../util";
+import { useGetQuizSessionQuery } from "../../Redux/API/IQ.Quiz.Api";
+import { useDispatch } from "react-redux";
+import { setTotalxp } from "../../Redux/Slice/IQQuizSlice/IQQuizSlice";
+import {IQQuestionDrawerList,IQQuestionBox,IQQuizProgressBar,Quizloader } from "../../Components";
 
-import { useHandleGamePage } from "../util";
-import { useDispatch, useSelector } from "react-redux";
-import {MPQuestionDrawerList,MPQuestionBox,Quizloader, MPQuizProgressBar} from "../../Components";
-import { setTotalxp } from "../../Redux/Slice/GameSlice/GameSessionSlice";
 
-const MPQuizPage = () => {
-  const GameData = useSelector((state) => state.GameState);
+const IQQuizPage = () => {
   const [initialLoading, setInitialLoading] = useState(true);
   const [fadeIn, setFadeIn] = useState(false);
+  const { data, error, isLoading } = useGetQuizSessionQuery();
   const {
     Totalxp,
-    GameSessionState,
+    quizState,
     sessionLoading,
     ResultDialog,
     isQuestionList,
@@ -31,8 +32,8 @@ const MPQuizPage = () => {
     handleOnNext,
     handleQuit,
     handleSubmit,
-  } = useHandleGamePage({ GameSessionId: GameData?.SessionID });
-  const dispatch = useDispatch();
+  } = useHandleIQQuizPage();
+  const dispatch= useDispatch();
   const enterFullscreen = () => {
     const elem = document.documentElement;
     if (elem.requestFullscreen) {
@@ -55,7 +56,6 @@ const MPQuizPage = () => {
       setFadeIn(true);
     }
   }, [initialLoading]);
-  console.log(GameSessionState);
 
   if (initialLoading) {
     return (
@@ -78,16 +78,14 @@ const MPQuizPage = () => {
     >
       <Timer
         ref={timerRef}
-        initialTime={25 * 60}
+        initialTime={quizState?.questionsList.length * 60}
         start={!sessionLoading}
-        isMP
       />
-      <VSCard />
-      <MPQuestionDrawerList
-        sessionState={GameSessionState}
+      <IQQuestionDrawerList
+        sessionState={quizState}
         open={isQuestionList}
         handleClose={() => setisQuestionList(false)}
-        quizData={GameSessionState?.questionsList}
+        quizData={quizState?.questionsList}
         handleSubmit={handleSubmit}
         handleQuit={() => handleQuit()}
       />
@@ -95,7 +93,7 @@ const MPQuizPage = () => {
         sx={{
           position: "fixed",
           left: "-2px",
-          top: { lg: "40%", xs: "10%", sm: "10%" },
+          top: { lg: "40%", xs: "3%", sm: "3%" },
           height: "50px",
           backgroundColor: "#ffffff30",
           color: "white",
@@ -106,30 +104,26 @@ const MPQuizPage = () => {
       >
         <KeyboardDoubleArrowRight />
       </Button>
-      <MPQuestionBox
-        index={GameSessionState?.currentQuestionIndex}
-        Question={
-          GameSessionState?.questionsList[
-            GameSessionState?.currentQuestionIndex
-          ]
-        }
+      <IQQuestionBox
+        index={quizState?.currentQuestionIndex}
+        Question={quizState?.questionsList[quizState?.currentQuestionIndex]}
       />
-      <MPQuizProgressBar
-        currentQuestion={GameSessionState?.currentQuestionIndex + 1}
-        totalQuestions={GameSessionState?.questionsList.length}
+      <IQQuizProgressBar
+        currentQuestion={quizState?.currentQuestionIndex + 1}
+        totalQuestions={quizState?.questionsList.length}
         progressValue={progressValue}
         onPrevious={handleOnPrevious}
         onNext={handleOnNext}
       />
-      <ResultDialogBox
-        SessionState={GameSessionState}
+      {/* <ResultDialogBox
+        SessionState={quizState}
         open={ResultDialog}
         handleReview={() => setResultDialog(false)}
         handleDone={() => handleQuit(true)}
         Totalxp ={Totalxp}
-      />
+      /> */}
     </Box>
   );
 };
 
-export default MPQuizPage;
+export default IQQuizPage;

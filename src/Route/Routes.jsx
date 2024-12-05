@@ -31,13 +31,15 @@ import OrdersPage from "../Components/Store/OrderDetail";
 import StoreOrderLayout from "../Pages/Layout/StoreOrderLayout";
 import YourOrders from "../Components/Store/YourOrders";
 import OrderDetail from "../Components/Store/OrderDetail";
+import IQQuizLayout from "../Pages/Layout/IQQuizLayout";
+import IQQuizPage from "../Pages/IQQuizPage/IQQuizPage";
 
 export const Routers = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<LandingPage />} />
       <Route path="auth" element={<AuthPage />} />
-      <Route path="Result" element={<GQSuccessPage />} />
+
       <Route element={<AuthLayout />}>
         <Route element={<UserLayout />}>
           <Route path="explore" element={<ExplorePage />} />
@@ -51,7 +53,7 @@ export const Routers = createBrowserRouter(
             <Route path="shipping/:productId" element={<Shipping />} />
             <Route path="Orders" element={<StoreOrderLayout />}>
               <Route index element={<YourOrders />} />
-              <Route path=":orderId" element={<OrderDetail/>} />
+              <Route path=":orderId" element={<OrderDetail />} />
             </Route>
           </Route>
         </Route>
@@ -62,7 +64,12 @@ export const Routers = createBrowserRouter(
           </Route>
         </Route>
       </Route>
-
+      <Route path="IQquiz" element={<Outlet />}>
+        <Route path=":sessionId" element={<IQQuizLayout />}>
+          <Route index element={<IQQuizPage />} />
+        </Route>
+        <Route path="result" element={<GQSuccessPage />} />
+      </Route>
       <Route path="match" element={<MatchLayout />}>
         <Route path=":GameCode" element={<Outlet />}>
           <Route index element={<MatchLobby />} loader={OnLoadLobby} />

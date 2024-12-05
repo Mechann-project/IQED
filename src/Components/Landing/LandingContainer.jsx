@@ -12,10 +12,12 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
-import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-// import { useCreateQuizSessionMutation } from "../../Redux/RTK/QuizAPI/QuizAPI";
+import toast from "react-hot-toast";
+import { useCreateQuizSessionMutation } from "../../Redux/API/IQ.Quiz.Api";
+import { resetQuiz } from "../../Redux/Slice/IQQuizSlice/IQQuizSlice";
+
 const CustomListItem = ({ content }) => (
   <ListItem sx={{ display: "list-item" }} disablePadding>
     <ListItemText
@@ -34,6 +36,8 @@ const LandingContainer = () => {
   const [selectedAgeGroup, setSelectedAgeGroup] = useState(null);
   const dispatch = useDispatch()
   const navigate = useNavigate();
+  const [CreateQuizSession] = useCreateQuizSessionMutation();
+  
   const listItems = [
     "This test consists of 35 questions, designed to assess various cognitive skills.",
     "The assessment covers logical reasoning, verbal comprehension, working memory, and spatial reasoning.",
@@ -41,9 +45,31 @@ const LandingContainer = () => {
     "Each correct answer scores one point, contributing to your overall cognitive score.",
     "The test duration is approximately 25 minutes.",
   ];
-  const handleQuizCraetion = () => {
-    navigate(`quiz/loader/Quiz`,{ replace: true } );
-};
+  const handleQuizCreation = async () => {
+    try {
+      dispatch(resetQuiz());
+      toast.promise(
+        CreateQuizSession({
+          categoryName: "IQTEST",
+          hostId: "6736b861b254c95e3de18308",
+        }).unwrap(),
+        {
+          loading: "Creating Session...",
+          success: (response) => {
+            navigate(`/IQquiz/${response.sessionId}`, { replace: true });
+            return <b>Session Created</b>;
+          },
+          error: (e) => {
+            console.error(e);
+            return "Failed to create session.";
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Failed to create quiz session:", error);
+      toast.error("Sorry, session not saved.");
+    }
+  };
 
   const ageGroups = [
     { label: "6-12", value: "children" },
@@ -194,7 +220,7 @@ const LandingContainer = () => {
 
           <Box sx={{ display: "flex", justifyContent: "right", width: "100%" }}>
             <Button
-              onClick={handleQuizCraetion}
+              onClick={handleQuizCreation}
               variant="contained"
               sx={{
                 fontWeight: "bold",
