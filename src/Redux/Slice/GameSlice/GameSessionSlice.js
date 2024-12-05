@@ -24,6 +24,10 @@ const gameSessionSlice = createSlice({
       setQuestions: (state, action) => {
         state.questionsList = action.payload;
       },
+      setSession: (state, action) => {
+        state.status = action.payload.status;
+        state.Winner = action.payload.Winner;
+      },
       answerQuestion: (state, action) => {
         const { questionId, answer, answerindex } = action.payload;
         const question = state.questionsList.find((q) => q._id === questionId);
@@ -95,6 +99,7 @@ export const {
   resetQuiz,
   submitQuiz,
   setTotalxp,
+  setSession
 } = gameSessionSlice.actions;
 
 export default gameSessionSlice;

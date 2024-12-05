@@ -6,7 +6,7 @@ import { Backdrop, Box, Button, CircularProgress } from "@mui/material";
 import { KeyboardDoubleArrowRight } from "@mui/icons-material";
 
 // Components and Hooks
-import { ResultDialogBox, Timer, VSCard } from "../../Common";
+import { MPResultDialogBox, ResultDialogBox, Timer, VSCard } from "../../Common";
 
 import { useHandleGamePage } from "../util";
 import { useDispatch, useSelector } from "react-redux";
@@ -121,7 +121,7 @@ const MPQuizPage = () => {
         onPrevious={handleOnPrevious}
         onNext={handleOnNext}
       />
-      <ResultDialogBox
+      <MPResultDialogBox
         SessionState={GameSessionState}
         open={ResultDialog}
         handleReview={() => setResultDialog(false)}
