@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { replace, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import {
@@ -7,13 +7,13 @@ import {
   prevQuestion,
   setTimer,
   submitQuiz,
-} from "../../../Redux/Slice/QuizSlice/QuizSlice";
+} from "../../../Redux/Slice/IQQuizSlice/IQQuizSlice";
 import { UpdateUser } from "../../../Redux/Slice/UserSlice/UserSlice";
 import {
   useGetQuizSessionQuery,
   useUpdateQuizSessionMutation,
-} from "../../../Redux/API/Quiz.Api";
-import { useAddXPMutation, useGetUserQuery } from "../../../Redux/API/User.Api";
+} from "../../../Redux/API/IQ.Quiz.Api";
+
 
 const useHandleIQQuizPage = () => {
   const {
@@ -22,13 +22,10 @@ const useHandleIQQuizPage = () => {
     isLoading: sessionLoading,
   } = useGetQuizSessionQuery();
   const [updateQuizSession, { data }] = useUpdateQuizSessionMutation();
-  const [updateUserXP] = useAddXPMutation();
-  const { data: userData } = useGetUserQuery();
 
-  const UserData = useSelector((state) => state.UserState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const quizState = useSelector((state) => state.QuizState);
+  const IQQuizState = useSelector((state) => state.IQQuizState);
   const [isQuestionList, setisQuestionList] = useState(false);
   const [ResultDialog, setResultDialog] = useState(false);
   const timerRef = useRef();
@@ -67,19 +64,13 @@ const useHandleIQQuizPage = () => {
     
     try {
       updateQuizSession({
-        answeredQuestions: quizState.answeredQuestions,
+        answeredQuestions: IQQuizState.answeredQuestions,
         timeTaken:currentTime
       }).unwrap().then(() => {
-        let xp = 0
-        xp += quizState.score *2 
-        xp +=  Math.floor((25 - (quizState.timeTaken/60)) * 1)
-        setTotalxp(xp);
         dispatch(submitQuiz());
         setResultDialog(true);
-        updateUserXP({ xp: xp }).then(() => {
-        dispatch(UpdateUser(userData));
-        });
         toast.success("session Complated");
+        navigate(`/IQquiz/${IQQuizState._id}/result`);
       });
     } catch (error) {
       console.error("Failed to update quiz session:", error);
@@ -89,12 +80,12 @@ const useHandleIQQuizPage = () => {
   };
 
   const progressValue =
-    (quizState?.answeredQuestions.length / quizState?.questionsList.length) *
+    (IQQuizState?.answeredQuestions.length / IQQuizState?.questionsList.length) *
     100;
 
   return {
     Totalxp,
-    quizState,
+    IQQuizState,
     sessionError,
     sessionLoading,
     timerRef,

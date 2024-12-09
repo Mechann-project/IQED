@@ -49,10 +49,7 @@ const LandingContainer = () => {
     try {
       dispatch(resetQuiz());
       toast.promise(
-        CreateQuizSession({
-          categoryName: "IQTEST",
-          hostId: "6736b861b254c95e3de18308",
-        }).unwrap(),
+        CreateQuizSession().unwrap(),
         {
           loading: "Creating Session...",
           success: (response) => {

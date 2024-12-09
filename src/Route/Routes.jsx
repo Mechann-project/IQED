@@ -60,15 +60,14 @@ export const Routers = createBrowserRouter(
         <Route path="quiz" element={<Outlet />}>
           <Route path=":sessionId" element={<QuizLayout />}>
             <Route index element={<QuizPage />} />
-            <Route path="result" element={<></>} />
           </Route>
         </Route>
       </Route>
       <Route path="IQquiz" element={<Outlet />}>
         <Route path=":sessionId" element={<IQQuizLayout />}>
           <Route index element={<IQQuizPage />} />
+          <Route path="result" element={<GQSuccessPage />} />
         </Route>
-        <Route path="result" element={<GQSuccessPage />} />
       </Route>
       <Route path="match" element={<MatchLayout />}>
         <Route path=":GameCode" element={<Outlet />}>

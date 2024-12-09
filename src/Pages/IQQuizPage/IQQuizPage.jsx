@@ -10,7 +10,6 @@ import { ResultDialogBox, Timer } from "../../Common";
 import { useHandleIQQuizPage } from "../util";
 import { useGetQuizSessionQuery } from "../../Redux/API/IQ.Quiz.Api";
 import { useDispatch } from "react-redux";
-import { setTotalxp } from "../../Redux/Slice/IQQuizSlice/IQQuizSlice";
 import {IQQuestionDrawerList,IQQuestionBox,IQQuizProgressBar,Quizloader } from "../../Components";
 
 
@@ -19,15 +18,12 @@ const IQQuizPage = () => {
   const [fadeIn, setFadeIn] = useState(false);
   const { data, error, isLoading } = useGetQuizSessionQuery();
   const {
-    Totalxp,
-    quizState,
+    IQQuizState,
     sessionLoading,
-    ResultDialog,
     isQuestionList,
     progressValue,
     timerRef,
     setisQuestionList,
-    setResultDialog,
     handleOnPrevious,
     handleOnNext,
     handleQuit,
@@ -78,14 +74,14 @@ const IQQuizPage = () => {
     >
       <Timer
         ref={timerRef}
-        initialTime={quizState?.questionsList.length * 60}
+        initialTime={IQQuizState?.questionsList.length * 60}
         start={!sessionLoading}
       />
       <IQQuestionDrawerList
-        sessionState={quizState}
+        sessionState={IQQuizState}
         open={isQuestionList}
         handleClose={() => setisQuestionList(false)}
-        quizData={quizState?.questionsList}
+        quizData={IQQuizState?.questionsList}
         handleSubmit={handleSubmit}
         handleQuit={() => handleQuit()}
       />
@@ -105,12 +101,12 @@ const IQQuizPage = () => {
         <KeyboardDoubleArrowRight />
       </Button>
       <IQQuestionBox
-        index={quizState?.currentQuestionIndex}
-        Question={quizState?.questionsList[quizState?.currentQuestionIndex]}
+        index={IQQuizState?.currentQuestionIndex}
+        Question={IQQuizState?.questionsList[IQQuizState?.currentQuestionIndex]}
       />
       <IQQuizProgressBar
-        currentQuestion={quizState?.currentQuestionIndex + 1}
-        totalQuestions={quizState?.questionsList.length}
+        currentQuestion={IQQuizState?.currentQuestionIndex + 1}
+        totalQuestions={IQQuizState?.questionsList.length}
         progressValue={progressValue}
         onPrevious={handleOnPrevious}
         onNext={handleOnNext}

@@ -2,17 +2,18 @@ import { createSlice } from "@reduxjs/toolkit";
 import { IQQuizApi } from "../../API/IQ.Quiz.Api"; // Import the API slice
 
 const initialState = {
-  host: "",
+  _id:null,
+  name:"",
+  email:"",
   status: "",
   questionsList: [],
-  Topics: "",
   currentQuestionIndex: 0,
   answeredQuestions: [],
   questionCount: 0,
   score: 0,
+  IQscore: 0,
   isLive: true,
   timeTaken: 0,
-  Totalxp: 0,
 };
 
 const IQQuizSlice = createSlice({
@@ -59,7 +60,6 @@ const IQQuizSlice = createSlice({
       state.isLive = true;
     },
     submitQuiz: (state) => {
-      state.isLive = false;
       state.status = "completed";
     },
   },
@@ -67,21 +67,16 @@ const IQQuizSlice = createSlice({
     builder.addMatcher(
       IQQuizApi.endpoints.getQuizSession.matchFulfilled,
       (state, action) => {
-        const { questionsList, answeredQuestions, status, score } =
-          action.payload;
-        state.questionsList = questionsList;
-        state.answeredQuestions = answeredQuestions;
-        state.score = score;
-        state.status = status;
-        state.isLive = status != "completed";
+        Object.assign(state,action.payload);
+        state.isLive = (action.payload.status != "completed");
       }
     );
     builder.addMatcher(
       IQQuizApi.endpoints.updateQuizSession.matchFulfilled,
       (state, action) => {
         const data = action.payload;
+        console.log(data);
         Object.assign(state,data);
-        console.log(data)
       }
     );
   },
