@@ -54,7 +54,7 @@ const CssTextField = withStyles({
 
 const GQSuccessPage = () => {
   const location = useLocation();
-  const QuizState = useSelector((state) => state.QuizState);
+  const IQQuizState = useSelector((state) => state.IQQuizState);
   // const { Score, totalTimeTaken } = location.state;
   const [selectedMethod, setSelectedMethod] = useState(null);
   const theme = useTheme();
@@ -73,8 +73,8 @@ const GQSuccessPage = () => {
     setImageData(data); // Store the image data
     console.log("imageData:", imageData);
   };
-  console.log("QuizState.IQScore",QuizState.IQScore)
-  console.log("QuizState.score",QuizState.score)
+  console.log("QuizState.IQScore",IQQuizState.IQScore)
+  console.log("QuizState.score",IQQuizState.score)
   
 
   const textFieldStyles = {
@@ -187,13 +187,12 @@ const GQSuccessPage = () => {
     // const pdfBytes = await pdfDoc.save();
     // const blob = new Blob([pdfBytes], { type: "application/pdf" });
     // console.log("chart is writed",blob);
-
+    console.log(contact,name,IQQuizState.IQScore)
     toast.promise(
       UploadFileMutation({
         file: imageData,
         email: contact,
         name: name,
-        score: QuizState.IQScore,
       }),
       {
         loading: "Send...",
@@ -228,7 +227,7 @@ const GQSuccessPage = () => {
     } else {
       setError(false);
     
-      generatePdf(name, QuizState.IQScore);
+      generatePdf(name, IQQuizState.IQScore);
     }
   };
 
@@ -493,7 +492,7 @@ const GQSuccessPage = () => {
             </Stack>
             
               <BellCurveChart
-                userIQ={QuizState.IQScore}
+                userIQ={IQQuizState.IQScore}
                 onChartRendered={handleChartRendered}
               />
             

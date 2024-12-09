@@ -1,16 +1,16 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { answerQuestion, nextQuestion } from "../../Redux/Slice/QuizSlice/QuizSlice";
+import { answerQuestion, nextQuestion } from "../../Redux/Slice/IQQuizSlice/IQQuizSlice";
 
 const IQOptionButton = ({ quiz, type = "text", content ,index}) => {
-  const QuizState = useSelector((state) => state.QuizState);
+  const IQQuizState = useSelector((state) => state.IQQuizState);
   const dispatch = useDispatch();
 
   // Determine the button background and text color based on the quiz state
-  const isAnswered = QuizState?.answeredQuestions[QuizState.currentQuestionIndex]?.answer ==  content;
-  const isCorrectAnswer = QuizState?.answeredQuestions[index]?.correct;
-  const isLive = QuizState?.isLive;
+  const isAnswered = IQQuizState?.answeredQuestions[IQQuizState.currentQuestionIndex]?.answer ==  content;
+  const isCorrectAnswer = IQQuizState?.answeredQuestions[index]?.correct;
+  const isLive = IQQuizState?.isLive;
   const backgroundColor = isAnswered && !isLive && isCorrectAnswer
     ? "#19ff95" 
     : isAnswered

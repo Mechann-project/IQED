@@ -3,32 +3,32 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const IQQuizApi = createApi({
   reducerPath: "IQQuizApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3000/quiz",
+    baseUrl: "http://localhost:3000/IQ",
     credentials: "include",
   }),
   tagTypes: ["User"],
   endpoints: (builder) => ({
     createQuizSession: builder.mutation({
-      query: ({ sectionIndex ,lessonIndex ,topicIndex,topicId, questionCount }) => ({
+      query: () => ({
         url: "/createSession",
         method: "POST",
-        body: { sectionIndex ,lessonIndex ,topicIndex,topicId, questionCount},
+        body: { questionCount: 3 },
       }),
     }),
     getQuizSession: builder.query({
       query: () => `/getSession`,
     }),
     updateQuizSession: builder.mutation({
-      query: ({ answeredQuestions,timeTaken }) => ({
+      query: ({ answeredQuestions, timeTaken }) => ({
         url: `/updateAnswers`,
         method: "PUT",
-        body: { answeredQuestions,timeTaken },
+        body: { answeredQuestions, timeTaken },
       }),
     }),
     uploadFile: builder.mutation({
       query: (data) => {
         return {
-          url: "/upload",
+          url: "/SendEmail",
           method: "POST",
           body: data,
         };
