@@ -4,10 +4,10 @@ const InviteCard = ({GameData ,onStart}) => {
   return (
     <Card
     sx={{
-      maxWidth: { xs: "100%", lg: 450 },
+      maxWidth: { xs: "90%", lg: 450 , md:450},
       width: "100%",
-      position: { xs: "", lg: "fixed" },
-      bottom: { xs: "0", lg: 20 },
+      position: "fixed",
+      bottom: { xs: "5%", lg: 20 },
       left: "50%",
       transform: "translateX(-50%)",
       zIndex: 2,

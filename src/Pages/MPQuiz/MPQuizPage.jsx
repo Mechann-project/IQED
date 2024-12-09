@@ -123,6 +123,7 @@ const MPQuizPage = () => {
       />
       <MPResultDialogBox
         SessionState={GameSessionState}
+        // open={ResultDialog}
         open={ResultDialog}
         handleReview={() => setResultDialog(false)}
         handleDone={() => handleQuit(true)}

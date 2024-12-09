@@ -40,9 +40,9 @@ const useHandleGamePage = ({ GameSessionId }) => {
   useEffect(() => {
     if (!socket) return;
     socket.on("game-ended", (data) => {
-      console.log("game-ended",data);
+      console.log("game-ended", data);
       dispatch(setSession(data.GameSession));
-    }); 
+    });
     return () => {
       socket.off("game-ended");
     };
@@ -54,7 +54,7 @@ const useHandleGamePage = ({ GameSessionId }) => {
     });
     if (sessionError) {
       toast.error("Session Expired");
-      navigate("/missions");
+      navigate("/game");
     }
   }, [sessionError, navigate]);
 
@@ -91,17 +91,20 @@ const useHandleGamePage = ({ GameSessionId }) => {
       })
         .unwrap()
         .then(() => {
-          let xp = 0
-          xp += GameSessionState.score *2 
-          xp +=  Math.floor((25 - (GameSessionState.timeTaken/60)) * 1)
+          let xp = 0;
+          xp += GameSessionState.score * 2;
+          xp += Math.floor((25 - GameSessionState.timeTaken / 60) * 1);
           setTotalxp(xp);
           dispatch(submitQuiz());
           setResultDialog(true);
-          socket.emit("game-ended",{roomId:GameData?.RoomID ,GameSessionId:GameData?.SessionID})
+          socket.emit("game-ended", {
+            roomId: GameData?.RoomID,
+            GameSessionId: GameData?.SessionID,
+          });
           updateUserXP({ xp: xp }).then(() => {
             dispatch(UpdateUser(userData));
           });
-          
+
           toast.success("session Complated");
         });
     } catch (error) {
