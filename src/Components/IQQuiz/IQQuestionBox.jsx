@@ -20,7 +20,7 @@ const IQQuestionBox = ({ index, Question }) => {
   if (!Question || !Question.options || Question.options.length === 0) {
     return <Typography variant="h6" color="white">No options available for this question.</Typography>;
   }
-
+console.log(Question)
   return (
     <Box
       sx={{
@@ -67,12 +67,12 @@ const IQQuestionBox = ({ index, Question }) => {
               color: "white",
             }}
           >
-            Q{index + 1}) {Question.question}
+            Q{index + 1} {Question.question}
           </Typography>
           {Question.type === "text-image" && (
             <Box
               component="img"
-              src={RabbitIMG}
+              src={Question.questionImage}
               sx={{
                 width: "250px",
                 height: "auto",

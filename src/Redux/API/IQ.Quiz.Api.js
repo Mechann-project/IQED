@@ -12,7 +12,7 @@ export const IQQuizApi = createApi({
       query: () => ({
         url: "/createSession",
         method: "POST",
-        body: { questionCount: 3 },
+        body: { questionCount: 35 },
       }),
     }),
     getQuizSession: builder.query({
