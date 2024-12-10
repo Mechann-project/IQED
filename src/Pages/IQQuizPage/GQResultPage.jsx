@@ -73,7 +73,7 @@ const GQSuccessPage = () => {
     setImageData(data); // Store the image data
     console.log("imageData:", imageData);
   };
-  console.log("QuizState.IQScore",IQQuizState.IQScore)
+  console.log("QuizState.IQScore",IQQuizState.IQscore)
   console.log("QuizState.score",IQQuizState.score)
   
 
@@ -187,7 +187,7 @@ const GQSuccessPage = () => {
     // const pdfBytes = await pdfDoc.save();
     // const blob = new Blob([pdfBytes], { type: "application/pdf" });
     // console.log("chart is writed",blob);
-    console.log(contact,name,IQQuizState.IQScore)
+    console.log(contact,name,IQQuizState.IQscore)
     toast.promise(
       UploadFileMutation({
         file: imageData,
@@ -227,7 +227,7 @@ const GQSuccessPage = () => {
     } else {
       setError(false);
     
-      generatePdf(name, IQQuizState.IQScore);
+      generatePdf(name, IQQuizState.IQscore);
     }
   };
 
@@ -492,7 +492,7 @@ const GQSuccessPage = () => {
             </Stack>
             
               <BellCurveChart
-                userIQ={IQQuizState.IQScore}
+                userIQ={IQQuizState.IQscore}
                 onChartRendered={handleChartRendered}
               />
             

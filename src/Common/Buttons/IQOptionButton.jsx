@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography,useMediaQuery, useTheme } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { answerQuestion, nextQuestion } from "../../Redux/Slice/IQQuizSlice/IQQuizSlice";
@@ -6,7 +6,10 @@ import { answerQuestion, nextQuestion } from "../../Redux/Slice/IQQuizSlice/IQQu
 const IQOptionButton = ({ quiz, type = "text", content ,index}) => {
   const IQQuizState = useSelector((state) => state.IQQuizState);
   const dispatch = useDispatch();
-
+  const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.down("md"));
+  const isSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const isLg = useMediaQuery(theme.breakpoints.down("lg"));
   // Determine the button background and text color based on the quiz state
   const isAnswered = IQQuizState?.answeredQuestions[IQQuizState.currentQuestionIndex]?.answer ==  content;
   const isCorrectAnswer = IQQuizState?.answeredQuestions[index]?.correct;
@@ -26,7 +29,7 @@ const IQOptionButton = ({ quiz, type = "text", content ,index}) => {
     <Box
       component={"button"}
       sx={{
-        height: { xs: "5rem", lg: "6rem", md: "5rem" },
+        height: { xs: "4rem", lg: "7rem", md: "6rem" },
         width: "100%",
         display: "flex",
         backgroundColor:!isLive ? backgroundColor: isAnswered?"#FFDA55":"#02216F" ,
@@ -54,7 +57,7 @@ const IQOptionButton = ({ quiz, type = "text", content ,index}) => {
       {type === "text" ? (
         <Typography fontWeight={700} fontSize={20}>{content}</Typography>
       ) : (
-        <img src={content} width={100} height={100} alt="Option" />
+        <img src={content} width={isSm?60:isMd?70:90} height={isSm?60:isMd?70:90} alt="Option" />
       )}
     </Box>
   );

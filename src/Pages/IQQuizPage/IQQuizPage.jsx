@@ -23,6 +23,7 @@ const IQQuizPage = () => {
     isQuestionList,
     progressValue,
     timerRef,
+    quizAllCompleted,
     setisQuestionList,
     handleOnPrevious,
     handleOnNext,
@@ -74,7 +75,7 @@ const IQQuizPage = () => {
     >
       <Timer
         ref={timerRef}
-        initialTime={IQQuizState?.questionsList.length * 60}
+        initialTime={25* 60}
         start={!sessionLoading}
       />
       <IQQuestionDrawerList
@@ -84,6 +85,7 @@ const IQQuizPage = () => {
         quizData={IQQuizState?.questionsList}
         handleSubmit={handleSubmit}
         handleQuit={() => handleQuit()}
+        quizAllCompleted={quizAllCompleted}
       />
       <Button
         sx={{
@@ -100,6 +102,7 @@ const IQQuizPage = () => {
       >
         <KeyboardDoubleArrowRight />
       </Button>
+      
       <IQQuestionBox
         index={IQQuizState?.currentQuestionIndex}
         Question={IQQuizState?.questionsList[IQQuizState?.currentQuestionIndex]}
@@ -110,6 +113,7 @@ const IQQuizPage = () => {
         progressValue={progressValue}
         onPrevious={handleOnPrevious}
         onNext={handleOnNext}
+        handleSubmit={handleSubmit}
       />
       {/* <ResultDialogBox
         SessionState={quizState}

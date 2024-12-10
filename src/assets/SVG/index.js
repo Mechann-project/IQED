@@ -17,6 +17,7 @@ import VSIcon from "./Icons/VSIcon.png";
 import popGIF from "./Gif/pop.gif";
 import SuccessManSVG from "./Others/SuccessMan.svg";
 import ProductBG from "./Others/ProductBG.svg";
+import PNF_404 from "./Others/404.svg"
 export {
   WhiteBackgroundSVG,
   YellowBackgroundSVG,
@@ -36,5 +37,6 @@ export {
   VSIcon,
   popGIF,
   SuccessManSVG,
-  ProductBG
+  ProductBG,
+  PNF_404,
 };

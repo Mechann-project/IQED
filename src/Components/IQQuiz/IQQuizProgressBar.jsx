@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, IconButton, LinearProgress, Typography } from "@mui/material";
+import { Box, Button, IconButton, LinearProgress, Typography } from "@mui/material";
 import {
   KeyboardDoubleArrowRight,
   KeyboardDoubleArrowLeft,
@@ -11,6 +11,7 @@ const IQQuizProgressBar = ({
   progressValue = 0,
   onPrevious,
   onNext,
+  handleSubmit,
 }) => {
   return (
     <Box sx={{ width: "100%", position: "fixed", bottom: 0, color: "white" }}>
@@ -22,7 +23,7 @@ const IQQuizProgressBar = ({
           alignItems: "center",
         }}
       >
-        <Box width={20}>
+        <Box width={50}>
           <Typography fontWeight={600} fontSize={14}>
             Q{currentQuestion}/{totalQuestions}
           </Typography>
@@ -36,6 +37,9 @@ const IQQuizProgressBar = ({
           >
             <KeyboardDoubleArrowLeft />
           </IconButton>
+
+         
+
           <IconButton
             aria-label="Next question"
             sx={{ color: "white", backgroundColor: "#ffffff30" }}

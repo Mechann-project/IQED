@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Modal, Typography } from "@mui/material";
 import { OptionButton } from "../../Common";
 import { RabbitIMG } from "../../assets/Image";
 
 const IQQuestionBox = ({ index, Question }) => {
   const [fade, setFade] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  // Trigger transition when the question changes
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  
   useEffect(() => {
     setFade(false); // Reset to false before the next render
     const timer = setTimeout(() => {
@@ -14,9 +17,9 @@ const IQQuestionBox = ({ index, Question }) => {
     }, 800); // Delay for smooth transition
 
     return () => clearTimeout(timer); // Clean up timeout on unmount or re-render
-  }, [index]); // Dependency on index ensures the effect runs when the question changes
+  }, [index]); 
 
-  // Ensure Question and options exist before trying to render
+  
   if (!Question || !Question.options || Question.options.length === 0) {
     return <Typography variant="h6" color="white">No options available for this question.</Typography>;
   }
@@ -53,7 +56,7 @@ console.log(Question)
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            maxHeight: { xs: "40vh", md: "60vh" },
+            maxHeight: { xs: "40vh", md: "55vh" },
             minHeight: "20vh",
           }}
           gap={2}
@@ -74,10 +77,12 @@ console.log(Question)
               component="img"
               src={Question.questionImage}
               sx={{
-                width: "250px",
+                width:{lg: "250px", md: "200px", xs: "180px"},
                 height: "auto",
                 maxWidth: "100%",
+                 mb:'4%'
               }}
+              onClick={handleOpen}
               alt="Rabbit"
             />
           )}
@@ -105,6 +110,33 @@ console.log(Question)
           ))}
         </Box>
       </Box>
+      <Modal open={open} onClose={handleClose}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 2,
+            outline: "none",
+            borderRadius: "8px",
+            maxWidth: "90vw",
+            maxHeight: "90vh",
+          }}
+        >
+          <img
+            src={Question.questionImage}
+            alt={"img"}
+            style={{
+              width: "100%",
+              height: "auto",
+              borderRadius: "8px",
+            }}
+          />
+        </Box>
+      </Modal>
     </Box>
   );
 };

@@ -19,7 +19,14 @@ const RootLayout = () => {
       "/iqquiz/result": YellowBackgroundSVG,
     };
     console.log(location.pathname.toLowerCase());
-    return backgroundMap[location.pathname.toLowerCase()] || WhiteBackgroundSVG;
+
+    const path = location.pathname.toLowerCase();
+    if (path.endsWith("/result")) {
+      return YellowBackgroundSVG;  
+    }
+
+    
+    return backgroundMap[path] || WhiteBackgroundSVG;
   }, [location.pathname]);
 
   return (

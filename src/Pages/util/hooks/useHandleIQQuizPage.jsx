@@ -28,6 +28,7 @@ const useHandleIQQuizPage = () => {
   const IQQuizState = useSelector((state) => state.IQQuizState);
   const [isQuestionList, setisQuestionList] = useState(false);
   const [ResultDialog, setResultDialog] = useState(false);
+  const [quizAllCompleted, setQuizAllCompleted] = useState(false);
   const timerRef = useRef();
   const [Totalxp, setTotalxp] = useState(0);
   useEffect(() => {
@@ -36,6 +37,20 @@ const useHandleIQQuizPage = () => {
       navigate("/");
     }
   }, [sessionError, navigate]);
+
+
+  useEffect(() => {
+    if (
+      sessionData &&
+      IQQuizState?.questionsList.length ==
+        Object.keys(IQQuizState.answeredQuestions).length
+    ) {
+      toast.success("All Quiz Completed");
+      setQuizAllCompleted(true);
+      setisQuestionList(true);
+    }
+  }, [IQQuizState.answeredQuestions]);
+
 
   const handleOnPrevious = () => {
     dispatch(prevQuestion());
@@ -92,6 +107,7 @@ const useHandleIQQuizPage = () => {
     isQuestionList,
     ResultDialog,
     progressValue,
+    quizAllCompleted,
     handleSubmit,
     handleQuit,
     handleOnNext,
