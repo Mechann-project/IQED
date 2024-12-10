@@ -224,7 +224,7 @@ const MPResultDialogBox = ({
           "& .MuiDialog-paper": {
             // backgroundColor: "transparent",
             boxShadow: "none",
-            boxShadow: "2px 3px #FFDA55 !important",
+            
             // border:'1px solid black'
           },
         }}

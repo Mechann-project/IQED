@@ -27,7 +27,7 @@ const MPRewardCard = ({ title, leftText, coinValue }) => {
         boxSizing:'border-box',
         width: "100%",
         // maxWidth: "200px",
-        boxSizing: "border-box",
+        
         mb: 2,
       }}
     >
