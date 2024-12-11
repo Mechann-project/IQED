@@ -73,7 +73,7 @@ export const Routers = createBrowserRouter(
       <Route path="match" element={<MatchLayout />}>
         <Route path=":GameCode" element={<Outlet />}>
           <Route index element={<MatchLobby />} loader={OnLoadLobby} />
-          <Route path=":GameSessionId" element={<MPQuizPage />} />3w
+          <Route path=":GameSessionId" element={<MPQuizPage />} />
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound/>} />
