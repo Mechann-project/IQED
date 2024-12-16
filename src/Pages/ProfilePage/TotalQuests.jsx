@@ -12,12 +12,11 @@ import { Group, PersonAdd } from "@mui/icons-material/";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import AdsClickIcon from "@mui/icons-material/AdsClick";
 import QuestCard from "../../Components/Quest/QuestCard";
-import { useSelector } from "react-redux";
+
 
 const TotalQuests = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const theme = useTheme();
-  const UserData = useSelector((state) => state.UserState);
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -54,40 +53,35 @@ const TotalQuests = () => {
           },
         }}
       >
-        <Tab label="Quests" />
-        <Tab label="Achievement" />
+        <Tab label="Daily Quests" />
         <Tab label="Friends Quests" />
+        <Tab label="Achievement" />
       </Tabs>
 
       {/* Content for Daily Quests */}
       {selectedTab === 0 && (
         <Box>
+          <Typography variant="h6" fontWeight="bold" gutterBottom>
+            Daily Quests
+          </Typography>
           <Grid container spacing={2} padding={"20px"}>
             <Grid item xs={12} sm={6}>
-              {!UserData.valueBaseQuest.isCompleted && (
-                <QuestCard
-                  icon={<AdsClickIcon />}
-                  title={UserData?.valueBaseQuest?.Quest?.title}
-                  progress={UserData?.valueBaseQuest.progress}
-                  current={
-                    UserData?.valueBaseQuest.Quest?.params.currentValue ==
-                    "streak"
-                      ? UserData?.earnings[
-                          UserData?.valueBaseQuest.Quest?.params.currentValue
-                        ].count
-                      : UserData?.earnings[
-                          UserData?.valueBaseQuest.Quest?.params.currentValue
-                        ]
-                  }
-                  goal={UserData?.valueBaseQuest.Quest?.params?.targetValue}
-                  reward={
-                    UserData?.valueBaseQuest.Quest?.reward?.value +
-                    " " +
-                    UserData?.valueBaseQuest.Quest?.reward?.type
-                  }
-                  About={UserData?.valueBaseQuest.Quest?.description}
-                />
-              )}
+              <QuestCard
+                icon={<LocalFireDepartmentIcon />}
+                title="Start a Streak"
+                progress={2}
+                goal={7}
+                reward={100}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <QuestCard
+                icon={<AdsClickIcon />}
+                title="Score 90% in 2 topics"
+                progress={1}
+                goal={2}
+                reward={100}
+              />
             </Grid>
           </Grid>
         </Box>
@@ -96,19 +90,28 @@ const TotalQuests = () => {
       {/* Content for Friends Quests */}
       {selectedTab === 1 && (
         <Box>
+          <Typography variant="h6" fontWeight="bold" gutterBottom>
+            Friends Quests
+          </Typography>
           <Grid container spacing={2} padding={"20px"}>
-            {UserData?.AchivedQuest?.map((quest, index) => (
-              <Grid item xs={12} sm={6} key={index}>
-                <QuestCard
-                  icon={<Group />}
-                  title={quest.title}
-                  progress={100}
-                  goal={100}
-                  reward={100}
-                  active={false}
-                />
-              </Grid>
-            ))}
+            <Grid item xs={12} sm={6}>
+              <QuestCard
+                icon={<Group />}
+                title="Challenge Your Friends"
+                progress={2}
+                goal={10}
+                reward={100}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <QuestCard
+                icon={<PersonAdd />}
+                title="Invite 3 Friends"
+                progress={0}
+                goal={3}
+                reward={300}
+              />
+            </Grid>
           </Grid>
         </Box>
       )}
@@ -116,6 +119,9 @@ const TotalQuests = () => {
       {/* Content for Achievement */}
       {selectedTab === 2 && (
         <Box>
+          <Typography variant="h6" fontWeight="bold" gutterBottom>
+            Achievement
+          </Typography>
           <Grid container spacing={2} padding={"20px"}>
             <Grid item xs={12} sm={6}>
               <QuestCard

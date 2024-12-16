@@ -1,14 +1,11 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import removeConsole from 'vite-plugin-remove-console';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
+// https://vitejs.dev/config/
 export default defineConfig({
-  base: "/",
-  plugins: [
-    react(),
-    removeConsole(), 
-  ],
-  server: {
-    port: 5173,
-  },
-});
+  plugins: [react()],
+
+  server:{
+    port:5173
+  }
+})

@@ -1,21 +1,13 @@
 import { Logout, Person, PersonAdd, Settings } from "@mui/icons-material";
 import { Avatar, Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
-import Cookies from "js-cookie";
 import React from "react";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ResetUser } from "../../../Redux/Slice/UserSlice/UserSlice";
-import { useGetUserQuery } from "../../../Redux/API/User.Api";
 
 const MenuBox = ({ open, anchorEl, handleClose }) => {
-  const dispatch = useDispatch()
-  
   const navigate = useNavigate();
   const handleLogOut = () => {
     sessionStorage.clear();
-    Cookies.remove('connect.sid');
-    dispatch(ResetUser);
     navigate("/auth");
     toast.success("Logout..");
     handleClose();

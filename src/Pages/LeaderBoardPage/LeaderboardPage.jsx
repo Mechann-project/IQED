@@ -8,11 +8,10 @@ import {
 } from "@mui/material";
 import React, { useState, useMemo } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-// import { useGetUsersSortedByMaxStreakAndMinRankQuery } from "../../Redux/RTK/AuthAPI/AuthAPI";
+import { useGetUsersSortedByMaxStreakAndMinRankQuery } from "../../Redux/RTK/AuthAPI/AuthAPI";
 
 import { LoadingScreen } from "../../Components";
 import { B_Medal, CUP, G_Medal, Null_Medal, S_Medal } from "../../assets";
-import { useGetleaderboardQuery } from "../../Redux/API/User.Api";
 
 const mockLeaderboardData = [
   {
@@ -117,9 +116,9 @@ const LeaderboardHeader = () => (
 const LeaderboardRow = ({ player, index }) => {
   // Determine which medal to display based on rank
   let medalSrc = Null_Medal;
-  if (index+1 === 1) medalSrc = G_Medal; // Gold medal for 1st place
-  else if (index+1  === 2) medalSrc = S_Medal; // Silver medal for 2nd place
-  else if (index+1  === 3) medalSrc = B_Medal;
+  if (player.Rank === 1) medalSrc = G_Medal; // Gold medal for 1st place
+  else if (player.Rank === 2) medalSrc = S_Medal; // Silver medal for 2nd place
+  else if (player.Rank === 3) medalSrc = B_Medal;
 
   return (
     <Box
@@ -156,7 +155,7 @@ const LeaderboardRow = ({ player, index }) => {
             overflow: "hidden",
             // filter: "drop-shadow(3px 3px 0px #02216F )", // Adjust values as needed
           }}
-          src={player.profileImage}
+          src={player.profile}
         />
       </Box>
 
@@ -178,10 +177,10 @@ const LeaderboardRow = ({ player, index }) => {
       >
         {[
           {
-            label: String(index+1).padStart(2, "0"),
+            label: String(player.Rank).padStart(2, "0"),
           },
-          { label: player.name },
-          { label: player.earnings.xp },
+          { label: player.Name },
+          { label: player.XP },
           { label: player.CurrentLevel },
         ].map((item, index) => (
           <Box
@@ -204,13 +203,14 @@ const LeaderboardPage = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const [searchQuery, setSearchQuery] = useState("");
-  const { data, error, isLoading } = useGetleaderboardQuery();
-  console.log(data,error);
+  const { data, error, isLoading } =
+    useGetUsersSortedByMaxStreakAndMinRankQuery();
+  console.log(data);
 
   const filteredLeaderboardData = useMemo(() => {
-    if (!data?.users || !Array.isArray(data.users)) return [];
+    if (!data.users || !Array.isArray(data.users)) return [];
     return data.users.filter((player) =>
-      player.name.toLowerCase().includes(searchQuery.toLowerCase())
+      player.Name.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [data, searchQuery]);
 

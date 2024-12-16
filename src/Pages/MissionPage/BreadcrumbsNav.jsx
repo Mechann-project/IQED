@@ -15,16 +15,14 @@ const BreadcrumbNav = ({ paths }) => {
               color="inherit"
               onClick={crumb.onClick}
               style={{ cursor: 'pointer' }}
-              sx={{ typography: 'h6' , fontWeight:'bold'}}
+              sx={{ typography: 'body1' , fontWeight:'bold'}}
             >
               {crumb.label}
             </Link>
           );
         } else {
           return (
-            <Typography  key={index} 
-            sx={{ typography: 'h6' , fontWeight:'bold'}}
-            >
+            <Typography  key={index} >
               {crumb.label}
             </Typography>
           );

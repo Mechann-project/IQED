@@ -1,332 +1,211 @@
-import React, { useRef } from "react";
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { styled } from "@mui/material/styles";
 import {
-  Box,
-  Button,
-  Grid,
-  LinearProgress,
-  Stack,
   Stepper,
-  styled,
-  Typography,
-  useMediaQuery,
-  useTheme,
-  StepConnector,
-  stepConnectorClasses,
   Step,
   StepLabel,
+  Typography,
+  Box,
+  StepConnector,
+  Grid,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
-import { useGetAllSectionQuery } from "../../Redux/API/Career.Api";
-import PropTypes from "prop-types";
-import { Check } from "@mui/icons-material"; // Assuming you're using Check from MUI
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useCreateQuizSessionMutation } from "../../Redux/API/Quiz.Api";
-import { resetQuiz } from "../../Redux/Slice/QuizSlice/QuizSlice";
+import { useLocation, useNavigate } from "react-router-dom";
+import { DaTa } from "./LevelDatas";
+import { useCreateQuizSessionMutation } from "../../Redux/RTK/QuizAPI/QuizAPI";
 import toast from "react-hot-toast";
-import { LoadingScreen } from "../../Components";
+import { useDispatch } from "react-redux";
+import { resetQuiz } from "../../Redux/Slice/QuizSlice/QuizSlice";
 
-function QontoStepIcon(props) {
-  const { active, completed, className } = props;
-
-  return (
-    <QontoStepIconRoot ownerState={{ active }} className={className}>
-      {completed ? (
-        <Check className="QontoStepIcon-completedIcon" />
-      ) : (
-        <div className="QontoStepIcon-circle" />
-      )}
-    </QontoStepIconRoot>
-  );
-}
-QontoStepIcon.propTypes = {
-  active: PropTypes.bool,
-  className: PropTypes.string,
-  completed: PropTypes.bool,
-};
-
-const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
-  [`&.${stepConnectorClasses.alternativeLabel}`]: {
-    top: 20,
-  },
-  [`&.${stepConnectorClasses.active}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      backgroundColor: "#FFDA55",
-    },
-  },
-  [`&.${stepConnectorClasses.completed}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      backgroundColor: "#FFDA55",
-    },
-  },
-  [`& .${stepConnectorClasses.line}`]: {
-    height: 5,
-    border: 0,
-    backgroundColor: "#eaeaf0",
-    borderRadius: 1,
-  },
-}));
-
-const ColorlibStepIconRoot = styled("div")(({ theme }) => ({
-  backgroundColor: "#ccc",
-  zIndex: 1,
-  color: "#fff",
+// Styled components
+const StepCircle = styled("div")(({ theme, completed }) => ({
   width: "40px",
   height: "40px",
   borderRadius: "50%",
+  backgroundColor: completed ? "#FFD700" : "#FFF", // Change background for completed steps
+  border: "2px solid #02216F",
   display: "flex",
-  justifyContent: "center",
   alignItems: "center",
+  justifyContent: "center",
+  fontWeight: "bold",
+  fontSize: "1.5rem",
+  color: "#02216F",
+  boxShadow: "2px 2px #02216F",
+  fontFamily: "Suranna",
   cursor: "pointer",
-  border: "2px solid #ccc",
-  variants: [
-    {
-      props: ({ ownerState }) => ownerState.active,
-      style: {
-        backgroundColor: "#FFDA55",
-        boxShadow: "2px 2px #02216F",
-        color: "#02216F",
-        border: "2px solid #02216F",
-      },
-    },
-    {
-      props: ({ ownerState }) => ownerState.completed,
-      style: {
-        backgroundColor: "#FFDA55",
-        color: "#02216F",
-        border: "2px solid #02216F",
-      },
-    },
-  ],
 }));
 
-function ColorlibStepIcon(props) {
-  const { active, completed, className } = props;
+const StepIconRoot = styled("div")(({ theme }) => ({
+  display: "flex",
+  height: 22,
+  alignItems: "center",
+}));
 
+function StepIcon(props) {
+  const { completed, icon } = props;
   return (
-    <ColorlibStepIconRoot
-      ownerState={{ completed, active }}
-      className={className}
-    >
-      <Typography
-        sx={{
-          fontWeight: "bold",
-          fontFamily: "'Suranna'  !important",
-          fontSize: "20px",
-        }}
-      >
-        {props.icon}
-      </Typography>
-    </ColorlibStepIconRoot>
+    <StepIconRoot>
+      <StepCircle completed={completed}>{icon}</StepCircle>
+    </StepIconRoot>
   );
 }
 
-ColorlibStepIcon.propTypes = {
-  active: PropTypes.bool,
-  className: PropTypes.string,
+StepIcon.propTypes = {
   completed: PropTypes.bool,
   icon: PropTypes.node,
 };
 
-function LevelDetails() {
-  const { data: SectionList,isError, isLoading } = useGetAllSectionQuery();
+// Custom connector for updating the line color based on completion
+const CustomConnector = styled(StepConnector)(({ theme }) => ({
+  [`& .MuiStepConnector-line`]: {
+    borderColor: "#02216F", // Default color
+    borderTopWidth: 3,
+  },
+  [`& .Mui-active .MuiStepConnector-line`]: {
+    borderColor: "#FF5722", // Active step color
+  },
+  [`& .Mui-completed .MuiStepConnector-line`]: {
+    borderColor: "yellow",
+  },
+}));
+
+export default function LevelDetails(LevelData) {
+  const [activeStep, setActiveStep] = useState(0);
+  const [completedSteps, setCompletedSteps] = useState(new Set([]));
+  const location = useLocation();
+  const navigate = useNavigate();
   const theme = useTheme();
-  const UserData = useSelector((state) => state.UserState);
-  const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
-  const scrollContainerRef = useRef(null);
-  const [searchParams] = useSearchParams();
-  const sectionIndex = searchParams.get("section");
+  const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const [CreateQuizSession] = useCreateQuizSessionMutation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  // Fetch lessons and topics data
-
-  console.log("section data:",SectionList)
-  const handleWheel = (e) => {
-    if (scrollContainerRef.current) {
-      e.preventDefault();
-      scrollContainerRef.current.scrollLeft += e.deltaY;
+  useEffect(() => {
+    const state = location.state;
+    if (state) {
+      const { passed, stepIndex } = state;
+      if (passed) {
+        setCompletedSteps((prev) => new Set(prev).add(stepIndex));
+      }
     }
+  }, [location.state]);
+
+  const handleStepClick = async (stepIndex) => {
+    setActiveStep(stepIndex);
+    navigate(`/quiz/loader/Quiz`,{ replace: true } );
+    
   };
 
-  if (isLoading) {
-    return <LoadingScreen/>;
-  }
-
-  if (isError) {
-    return <Typography>Error fetching lessons</Typography>;
-  }
-  const handleQuizCraetion = (sectionIndex ,lessonIndex ,topicIndex,topicId, questionCount=3) => {
-    try {
-      dispatch(resetQuiz());
-      toast.promise(
-        CreateQuizSession({
-          sectionIndex,
-          lessonIndex,
-          topicIndex,
-          topicId,
-          questionCount: 3,
-        }).unwrap(),
-        {
-          loading: "Creating Session...",
-          success: (res) => {
-            navigate(`/quiz/${res.sessionId}`, { replace: true });
-            return "Session Created Successfully!";
-          },
-          error: (e) => {
-            console.error(e);
-            return "Failed to create session. Please try again.";
-          },
-        }
-      );
-    } catch (error) {
-      console.error("Failed to update quiz session:", error);
-      toast.error("sorry session not save");
+  // Function to arrange steps into rows
+  const arrangeSteps = (steps, stepsPerRow) => {
+    const rows = [];
+    for (let i = 0; i < steps.length; i += stepsPerRow) {
+      const currentRow = steps.slice(i, i + stepsPerRow);
+      // Check if the row index is even or odd
+      if (Math.floor(i / stepsPerRow) % 2 === 0) {
+        // Even index row - normal order
+        rows.push(currentRow);
+      } else {
+        // Odd index row - reverse order
+        rows.push(currentRow.reverse());
+      }
     }
+    return rows;
   };
-  // Generate dynamic steps based on fetched lessons and topics
+
+  const setLevel = LevelData.LevelData;
+  console.log("setLevel", setLevel);
+  const currentLevelData = DaTa[setLevel - 1].categories;
   return (
-    <>
-      {SectionList && SectionList[sectionIndex]?.lesson?.map((lesson, lessonIndex) => (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "20px",
-            borderRadius: "10px",
-            backgroundColor: "#fff",
-            mb: "16px",
-            mr: isSm ? null : "30px",
-            border: "2px solid",
-            borderColor: "#02216F",
-            gap: "20px",
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              gap: "20px",
-              width: "100%",
-              mb: isSm ? "40px" : "20px",
-            }}
-          >
+    <Box>
+      {currentLevelData.map((section, index) => {
+        // Calculate stepRows for each section here
+        const stepsPerRow = isSm ? 3 : 5;
+        const stepRows = arrangeSteps(section.steps, stepsPerRow); // Use section.steps instead of DaTa[0].steps
+
+        return (
+          <Box key={index} p={isSm ? 0 : 4}>
             <Box
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
+                textAlign: index % 2 === 0 ? "left" : "right",
                 width: "100%",
               }}
             >
               <Typography
-                variant={isMd ? "h6" : "h5"}
+                variant="h5"
                 sx={{
-                  fontWeight: "bold",
+                  display: "inline-block",
+                  backgroundColor: "#FFD700",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "8px",
                   color: "#02216F",
-                }}
-              >
-                {lesson.name}
-              </Typography>
-              <Button
-                variant="contained"
-                sx={{
-                  height: "40px",
-                  width: "150px",
                   fontWeight: "bold",
-                  backgroundColor: "#1A49BA",
-                  color: "#fff",
-                  borderRadius: "50px",
-                  textTransform: "none",
-                  border: "1px solid",
-                  borderColor: "#FFDA55",
-                  "&:hover": {
-                    color: "#1A49BA",
-                    backgroundColor: "#FFDA55",
-                  },
+                  fontSize: "1.5rem",
+                  boxShadow: "2px 2px #02216F",
+                  mb: 6,
                 }}
               >
-                Start
-              </Button>
+                {section.title}
+              </Typography>
             </Box>
+            <Grid container spacing={10}>
+              {stepRows.map((row, rowIndex) => (
+                <Grid item xs={12} key={rowIndex}>
+                  <Stepper
+                    alternativeLabel
+                    activeStep={activeStep}
+                    connector={<CustomConnector />}
+                  >
+                    {row.map((step, stepIndex) => {
+                      const globalStepIndex =
+                        rowIndex * stepsPerRow + stepIndex; // Calculate the correct index for navigation
 
-            <Box
-              ref={scrollContainerRef}
-              onWheel={handleWheel}
-              sx={{
-                width: "100%",
-                overflowX: "auto",
-                display: "flex",
-                padding: "10px 0",
-                scrollbarWidth: "none", 
-                "&::-webkit-scrollbar": {
-                  display: "none", 
-                },
-              }}
-            >
-              <Stack sx={{ width: "100%" }} spacing={4}>
-                <Stepper
-                  alternativeLabel
-                  activeStep={UserData?.careerPathProgress?.sections[sectionIndex]?.lessons[lessonIndex]?.topics.length-1} 
-                  connector={<ColorlibConnector />}>
-                  {lesson.topics?.map((topic, index) => (
-                    <Step key={topic._id} onClick={() => handleQuizCraetion(sectionIndex,lessonIndex,index,topic._id)}>
-                      <StepLabel StepIconComponent={ColorlibStepIcon}>
-                        <Typography variant="body" sx={{ fontWeight: "bold" }}>
-                          {topic.name}
-                        </Typography>
-                      </StepLabel>
-                    </Step>
-                  ))}
-                </Stepper>
-              </Stack>
-            </Box>
+                      // Calculate the correct icon number
+                      let iconNumber;
+                      if (rowIndex % 2 === 0) {
+                        // Even row
+                        iconNumber = globalStepIndex + 1; // Normal order
+                      } else {
+                        // Odd row
+                        iconNumber = (rowIndex + 1) * stepsPerRow - stepIndex; // Reverse order
+                      }
+
+                      return (
+                        <Step
+                          key={step.label}
+                          completed={completedSteps.has(globalStepIndex)}
+                        >
+                          <StepLabel
+                            StepIconComponent={(props) => (
+                              <StepIcon
+                                {...props}
+                                completed={completedSteps.has(globalStepIndex)}
+                                icon={iconNumber} // Use the calculated icon number
+                              />
+                            )}
+                            onClick={() => handleStepClick(globalStepIndex)} // Use the correct step index
+                          >
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontWeight: "bold",
+                                color: "#02216F",
+                              }}
+                            >
+                              {step.label}
+                            </Typography>
+                          </StepLabel>
+                        </Step>
+                      );
+                    })}
+                  </Stepper>
+                </Grid>
+              ))}
+            </Grid>
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              position: "absolute",
-              flexDirection: "column",
-              bottom: 0,
-              left: 0,
-              right: 0,
-            }}>
-            <Typography
-              variant="body"
-              sx={{
-                fontWeight: "bold",
-                color: "WHITE",
-                px: "20px",
-                py: "6px",
-                bgcolor: "#1A49BA",
-                borderRadius: "20px 0px 0px 0px",
-                alignSelf: "flex-end",
-              }}
-            >
-              {UserData?.careerPathProgress?.sections[sectionIndex].lessons[lessonIndex].topics.length +"/"+lesson.totalTopic}
-            </Typography>
-            <LinearProgress
-              variant="determinate"
-              value={(UserData?.careerPathProgress?.sections[sectionIndex].lessons[lessonIndex].topics.length / lesson.totalTopic) * 100}
-              sx={{
-                height: "10px",
-                bgcolor: "#FFDA55",
-                "& .MuiLinearProgress-bar": {
-                  backgroundColor: "#1A49BA",
-                  borderRadius: "20px",
-                },
-              }}
-            />
-          </Box>
-        </Box>
-      ))}
-    </>
+        );
+      })}
+    </Box>
   );
 }
-
-export default LevelDetails;
-

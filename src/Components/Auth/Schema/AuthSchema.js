@@ -1,12 +1,8 @@
 import * as yup from "yup";
-import { useCheckEmailExistsMutation } from "../../../Redux/API/Auth.Api";
 
 export const SignUpvalidSchema = [
   yup.object().shape({
-    userName: yup
-      .string()
-      .required("UserName is required")
-      .max(8, "UserName must be at least 8 characters long"),
+    userName: yup.string().required("UserName is required").max(8, "UserName must be at least 8 characters long"),
     name: yup.string().required(),
     age: yup
       .string()
@@ -16,23 +12,7 @@ export const SignUpvalidSchema = [
     grade: yup.string().required(),
   }),
   yup.object().shape({
-    email: yup
-      .string()
-      .email("Invalid email format")
-      .required("Email is required")
-      .test("check-email", "Email already exists", async (value) => {
-        if (!value) return true; // Skip the check for empty values
-        try {
-          const response = await fetch(`http://localhost:3000/auth/checkEmailExists?email=${value}`, {
-            method: "POST",
-          });
-          // const response = await useCheckEmailExistsMutation({email:value}).unwrap();
-          return (response.status==200?false:true); // Adjust based on your backend response
-        } catch (error) {
-          console.error("Error checking email:", error);
-          return false;
-        }
-      }),
+    email: yup.string().email().required(),
     OTP: yup
       .string()
       .required("OTP is required")
@@ -42,7 +22,6 @@ export const SignUpvalidSchema = [
     //   .required("Contact Number is required")
     //   .matches(/^\d{10}$/, "Contact Number must be exactly 10 digits"),
   }),
-
   yup.object().shape({
     // profileImage: yup.string().required("File is required"),
     password: yup
@@ -62,7 +41,12 @@ export const SignUpvalidSchema = [
   }),
 ];
 
+
+
 export const SignInvalidSchema = yup.object().shape({
   email: yup.string().email().required(),
-  password: yup.string().required("Password is required"),
-});
+  password: yup
+  .string()
+  .required("Password is required"),
+  })
+  

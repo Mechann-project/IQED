@@ -15,18 +15,17 @@ const RootLayout = () => {
     const backgroundMap = {
       "/": YellowBackgroundSVG,
       "/auth": BlueBackgroundSVG,
+      "/signup": BlueBackgroundSVG,
+      "/general-quiz-test": YellowBackgroundSVG,
+      "/gq-success": YellowBackgroundSVG,
+      "/gq-get-result": YellowBackgroundSVG,
+      "/gq-get-result-vai-wa": YellowBackgroundSVG,
+      "/commenquiztest": YellowBackgroundSVG,
       "/match": YellowBackgroundSVG,
-      "/iqquiz/result": YellowBackgroundSVG,
+      "/result": YellowBackgroundSVG,
     };
     console.log(location.pathname.toLowerCase());
-
-    const path = location.pathname.toLowerCase();
-    if (path.endsWith("/result")) {
-      return YellowBackgroundSVG;  
-    }
-
-    
-    return backgroundMap[path] || WhiteBackgroundSVG;
+    return backgroundMap[location.pathname.toLowerCase()] || WhiteBackgroundSVG;
   }, [location.pathname]);
 
   return (

@@ -1,8 +1,7 @@
 import { Avatar, Box, Card, LinearProgress, Typography } from "@mui/material";
 import React from "react";
 
-const QuestCard = ({ icon, title,current, progress, goal, reward, About,active=true }) => {
-  console.log(current,goal)
+const QuestCard = ({ icon, title, progress, goal, reward, About }) => {
   return (
     <Card
       variant="outlined"
@@ -15,7 +14,6 @@ const QuestCard = ({ icon, title,current, progress, goal, reward, About,active=t
         borderRadius: "10px",
         border: "2px solid",
         borderColor: "#02216F",
-        filter: active ? "none" : "grayscale(100%)",
       }}
     >
       <Avatar sx={{ backgroundColor: "#FF7324" }}>{icon}</Avatar>
@@ -27,12 +25,9 @@ const QuestCard = ({ icon, title,current, progress, goal, reward, About,active=t
             justifyContent: "space-between",
           }}
         >
-
           <Typography variant="body1" fontWeight="900">
             {title}
           </Typography>
-       
-
           <Typography variant="body1" fontWeight="900" color="Black">
             +{reward}
           </Typography>
@@ -48,7 +43,7 @@ const QuestCard = ({ icon, title,current, progress, goal, reward, About,active=t
         >
           <LinearProgress
             variant="determinate"
-            value={(current / goal) * 100}
+            value={(progress / goal) * 100}
             sx={{
               height: 10,
               borderRadius: 10,
@@ -61,10 +56,10 @@ const QuestCard = ({ icon, title,current, progress, goal, reward, About,active=t
             }}
           />
           <Typography variant="body2" color="textSecondary">
-            {current}/{goal}
+            {progress}/{goal}
           </Typography>
         </Box>
-        <Typography variant="" fontSize={12} fontWeight="400" color="Black">
+        <Typography variant="caption" fontWeight="400" color="Black">
           {About}
         </Typography>
       </Box>

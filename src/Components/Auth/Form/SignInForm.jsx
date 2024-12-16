@@ -4,26 +4,27 @@ import { Button, Box, Input, Typography } from "@mui/material";
 import { Formik, Form, FormikProvider } from "formik";
 import { SignInvalidSchema } from "../Schema/AuthSchema";
 import { FormTextField, InputDialogBox } from "../../../Common";
+import { useSignInMutation } from "../../../Redux/RTK/AuthAPI/AuthAPI";
 import toast from "react-hot-toast";
-import { useLoginMutation } from "../../../Redux/API/Auth.Api";
-import Cookies from "js-cookie";
-import { useGetUserQuery } from "../../../Redux/API/User.Api";
 
 const SignInForm = ({ PageSwitch }) => {
   const [open, setOpen] = useState(false);
-  const [UserLogin] = useLoginMutation();
+  const [UserLogin] = useSignInMutation();
   const navigate = useNavigate();
-  const {isLoading} = useGetUserQuery()
+
   const handleFormSubmit = async (values, { setSubmitting }) => {
     console.log(values);
     try {
-      await toast.promise(
+      const response = await toast.promise(
         UserLogin({ email: values.email, password: values.password }), // Remove .unwrap()
         {
           loading: "Logging in...",
           success: (res) => {
-            if (res.data != null  && !isLoading) {
-              navigate("/Explore"); 
+            if (res.data != null ) {
+              console.log(res.data);
+              sessionStorage.setItem("UserId",res.data._id)
+              sessionStorage.setItem("UserName",res.data.UserName);
+              navigate("/Explore");
               return <b>Login successful!</b>;
             } else {
               throw new Error("Unexpected response status");
@@ -35,7 +36,6 @@ const SignInForm = ({ PageSwitch }) => {
           },
         }
       );
-      
     } catch (error) {
       console.error("Error in login process:", error); // Additional error handling
     }

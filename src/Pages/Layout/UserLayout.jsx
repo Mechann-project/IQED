@@ -23,17 +23,16 @@ const UserLayout = () => {
       gap={2}
     >
       <Box>
-        <MainNavBar/>
+        <MainNavBar />
       </Box>
       <Box
         sx={{
           display: "flex",
           width: isSm ? null : "100%",
           height: "100%",
-          marginTop: isSm ? "50px" : "10px",
+          marginTop: isSm ? "50px" : null,
           mb: isSm ? "30px" : null,
-          padding: "0 10px",
-        
+          padding: "0 20px",
           overflow: "scroll",
           "::-webkit-scrollbar": {
             display: "none",

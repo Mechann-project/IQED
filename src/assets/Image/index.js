@@ -8,25 +8,7 @@ import BearIMG from "./Animal/Bear.png";
 import RabbitIMG from "./Animal/Rabbit.png";
 import ImgQuestionIMG from "./Test/ImgQuestion.png";
 import one from "./Others/1.png";
-import two from "./Others/2.png";
-import three from "./Others/3.png";
+import two from "./Others/2.png"
+import three from "./Others/3.png"
 import LetsGo from "./Others/letsGo.png";
-import TShirtPNG from "./Others/t-shirt.png";
-import TShirtImg from "./Others/t-shirt.jpg";
-export {
-  IQEDLogo,
-  IQEDIcon,
-  IQGemIcon,
-  IQCoinIcon,
-  IQRankIcon,
-  MathBannerIMG,
-  RabbitIMG,
-  BearIMG,
-  ImgQuestionIMG,
-  one,
-  two,
-  three,
-  LetsGo,
-  TShirtImg,
-  TShirtPNG,
-};
+export {IQEDLogo,IQEDIcon,IQGemIcon,IQCoinIcon,IQRankIcon,MathBannerIMG,RabbitIMG,BearIMG,ImgQuestionIMG,one,two,three,LetsGo};

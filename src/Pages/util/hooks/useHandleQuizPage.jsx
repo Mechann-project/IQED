@@ -2,6 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
+
+import { useUpdateUserStatsMutation } from "../../../Redux/RTK/AuthAPI/AuthAPI";
+import {
+  useGetQuizSessionByIdQuery,
+  useUpdateQuizSessionMutation,
+} from "../../../Redux/RTK/QuizAPI/QuizAPI";
 import {
   nextQuestion,
   prevQuestion,
@@ -9,21 +15,15 @@ import {
   submitQuiz,
 } from "../../../Redux/Slice/QuizSlice/QuizSlice";
 import { UpdateUser } from "../../../Redux/Slice/UserSlice/UserSlice";
-import {
-  useGetQuizSessionQuery,
-  useUpdateQuizSessionMutation,
-} from "../../../Redux/API/Quiz.Api";
-import { useAddXPMutation, useGetUserQuery } from "../../../Redux/API/User.Api";
 
-const useHandleQuizPage = () => {
+const useHandleQuizPage = (sessionId) => {
   const {
     data: sessionData,
     error: sessionError,
     isLoading: sessionLoading,
-  } = useGetQuizSessionQuery();
-  const [updateQuizSession, { data }] = useUpdateQuizSessionMutation();
-  const [updateUserXP] = useAddXPMutation();
-  const { data: userData } = useGetUserQuery();
+  } = useGetQuizSessionByIdQuery(sessionId);
+  const [updateQuizSession] = useUpdateQuizSessionMutation();
+  const [updateUserStats, { data }] = useUpdateUserStatsMutation();
 
   const UserData = useSelector((state) => state.UserState);
   const dispatch = useDispatch();
@@ -32,13 +32,22 @@ const useHandleQuizPage = () => {
   const [isQuestionList, setisQuestionList] = useState(false);
   const [ResultDialog, setResultDialog] = useState(false);
   const timerRef = useRef();
-  const [Totalxp, setTotalxp] = useState(0);
+
+
   useEffect(() => {
     if (sessionError) {
       toast.error("Session Expired");
       navigate("/missions");
     }
   }, [sessionError, navigate]);
+  
+  useEffect(() => {
+    if( sessionData && (quizState?.questionsList.length == Object.keys(quizState.answeredQuestions).length)){
+      toast.success("All Quiz Completed")
+      setisQuestionList(true)
+    }
+  }, [quizState.answeredQuestions]);
+
 
   const handleOnPrevious = () => {
     dispatch(prevQuestion());
@@ -56,44 +65,63 @@ const useHandleQuizPage = () => {
     } else {
       toast.error("Session Expire");
     }
-    navigate("/missions");
+    if(!sessionStorage.getItem["UserId"]){
+      navigate("/missions");
+
+    }else{
+      navigate("/");
+    }
   };
 
   const handleSubmit = async () => {
+    if(Object.keys(quizState.answeredQuestions).length<10){
+      toast.error("Try to answer at least 10 IQ questions.")
+      return false
+    }
+
     timerRef.current.pauseTimer();
     const currentTime = timerRef.current.getCurrentTime();
-    dispatch(setTimer(currentTime));
 
-    
-    try {
-      updateQuizSession({
-        answeredQuestions: quizState.answeredQuestions,
-        timeTaken:currentTime
-      }).unwrap().then(() => {
-        let xp = 0
-        xp += quizState.score *2 
-        xp +=  Math.floor((25 - (quizState.timeTaken/60)) * 1)
-        setTotalxp(xp);
-        dispatch(submitQuiz());
-        setResultDialog(true);
-        updateUserXP({ xp: xp }).then(() => {
-          dispatch(UpdateUser(userData));
-        });
-        toast.success("session Complated");
+    dispatch(submitQuiz());
+    if (!sessionStorage.getItem("UserId")) {
+      navigate("/result", { replace: true });
+     
+    } else {
+      setResultDialog(true);
+
+      dispatch(setTimer(currentTime));
+      updateUserStats({
+        userId: sessionData?.host,
+        streakIncrement: 0,
+        xpToAdd:
+          (quizState?.questionsList.length * 60 - quizState.time) * 1 +
+          quizState.score * 2,
+        rankToUpdate: Math.floor(UserData.XP / 10000),
+        iQGemsToAdd: 1,
       });
+      dispatch(UpdateUser(data.user));
+    }
+    try {
+      await updateQuizSession({
+        sessionId,
+        hostId: sessionData?.host, // Use the host ID from session data
+        score: quizState.score,
+        answeredQuestions: quizState.answeredQuestions,
+        status: "completed",
+      }).unwrap();
+      toast.success("session Complated");
     } catch (error) {
       console.error("Failed to update quiz session:", error);
       toast.error("sorry session not save");
     }
-    // document.exitFullscreen();
+    document.exitFullscreen();
   };
 
   const progressValue =
-    (quizState?.answeredQuestions.length / quizState?.questionsList.length) *
+    ((quizState?.currentQuestionIndex + 1) / quizState?.questionsList.length) *
     100;
 
   return {
-    Totalxp,
     quizState,
     sessionError,
     sessionLoading,
@@ -106,7 +134,7 @@ const useHandleQuizPage = () => {
     handleOnNext,
     handleOnPrevious,
     setisQuestionList,
-    setResultDialog,
+    setResultDialog
   };
 };
 

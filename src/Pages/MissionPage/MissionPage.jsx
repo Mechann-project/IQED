@@ -2,112 +2,125 @@ import React, { useEffect, useState } from "react";
 import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
 import Levelcard from "./Levelcard";
 import LevelDetails from "./LevelDetails";
-import BreadcrumbsNav from "./BreadcrumbsNav";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useGetAllSectionQuery } from "../../Redux/API/Career.Api";
-import trophy from "./trophy.png"
-import { useSelector } from "react-redux";
-import { useGetUserQuery } from "../../Redux/API/User.Api";
-import { LoadingScreen } from "../../Components";
+import BreadcrumbsNav  from "./BreadcrumbsNav";
+import  trophy from "./trophy.png";
+import {useLocation, useNavigate }from "react-router-dom";
+import { useCreateQuizSessionMutation } from "../../Redux/RTK/QuizAPI/QuizAPI";
+import { DaTa } from "./LevelDatas";
+import { useGetUserByIdQuery } from "../../Redux/RTK/AuthAPI/AuthAPI";
+// Mock data for levels
+const levels = [
+  { level: 1, total: DaTa[0].categories.length, progress: 1, image: trophy,active:true },
+  { level: 2, total: DaTa[1].categories.length, progress: 0, image: trophy,active:false },
+  { level: 3, total: DaTa[2].categories.length, progress: 0, image: trophy,active:false },
+  { level: 4, total: DaTa[3].categories.length, progress: 0, image: trophy,active:false },
+  { level: 5, total: DaTa[4].categories.length, progress: 0, image: trophy,active:false },
+];
+
 const MissionPage = () => {
-  const { data: SectionList, isLoading } = useGetAllSectionQuery();
-  const {data:userdata, isLoading:UserLoad} = useGetUserQuery()
+
+  
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
-  const navigate = useNavigate();
-  const UserData = useSelector((state) => state.UserState);
-  const [selectedSection, setSelectedSection] = useState(null);
-  console.log(UserData.careerPathProgress)
-  // Update selected section based on URL parameter
+  const navigate = useNavigate(); // Use useNavigate instead of useHistory
+  const { state } = location;
+  const inLevel = state ? state.inLevel : undefined;
+  const currentLevel = inLevel ? inLevel.level : undefined;
+  const [selectedLevel, setSelectedLevel] = useState(currentLevel);
+  
+  // Update selected level based on URL parameter
   useEffect(() => {
-    const sectionFromUrl = new URLSearchParams(location.search).get("section");
-    if (sectionFromUrl && SectionList) {
-      
-      setSelectedSection(SectionList[sectionFromUrl] || null); // Reset to null if section not found
+    
+    const levelFromUrl = new URLSearchParams(location.search).get("level");
+
+    if (levelFromUrl) {
+      const level = levels.find((l) => l.level === parseInt(levelFromUrl, 10));
+      if (level) {
+        setSelectedLevel(level);
+      } else {
+        setSelectedLevel(null); // Reset if level not found
+      }
     } else {
-      setSelectedSection(null); // Reset to null if no section in URL
+      setSelectedLevel(null); // Reset to null if no level in URL
     }
-  }, [location, SectionList]);
+  }, [location]); // Now listening to the entire location object
 
   // Breadcrumb paths
-  const breadcrumbPath = selectedSection
+  const breadcrumbPath = selectedLevel
     ? [
-        { label: "Missions", to: null, onClick: () => handleReturnToSections() },
-        { label: `${selectedSection.name}`, to: null },
+        { label: "Levels", to: null, onClick: () => handleReturnToLevels() }, // Clickable to return to level cards
+        { label: `Level - ${selectedLevel.level}`, to: null },
       ]
-    : [{ label: "Missions", to: null }];
+    : [{ label: "Levels", to: null }];
 
-  // Handler to select a section
-  const handleSelectSection = (index) => {
-    navigate(`/missions?section=${index}`); // Update URL with selected section
+  // Handler to select a level
+  const handleSelectLevel = (level) => {
+    setSelectedLevel(level);
+    navigate(`/missions?level=${level.level}`); // Update URL with selected level
   };
 
-  // Handler to return to sections
-  const handleReturnToSections = () => {
-    setSelectedSection(null);
-    navigate("/missions"); // Navigate back to sections
+  // Handler to return to levels
+  const handleReturnToLevels = () => {
+    setSelectedLevel(null);
+    navigate("/missions"); // Navigate back to levels
   };
-
-  if (isLoading) {
-    return <LoadingScreen/>; // Add a loading indicator
-  }
-
-
 
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        display: "flex",
-        flexDirection: "column",
-        boxSizing: "border-box",
-        ml: isSm ? "10px" : "20px",
-        mr: isSm ? null : "20px",
-        mt: isSm ? "10px" : "20px",
-        mb: isSm ? "50px" : "20px",
-        pr: isSm ? "10px" : null,
-        gap: "20px",
-        overflow: "hidden",
-      }}
-    >
-      {/* Breadcrumb */}
-      <BreadcrumbsNav paths={breadcrumbPath} />
+    <>
       <Box
         sx={{
-          p: "10px",
+          flexGrow: 1,
           display: "flex",
           flexDirection: "column",
-          flexGrow: 1,
+          boxSizing: "border-box",
+          ml: isSm ? "10px" : "20px",
+          mr: isSm ? null : "20px",
+          mt: isSm ? "10px" : "20px",
+          mb: isSm ? "50px" : "20px",
+          pr: isSm ? "10px" : null,
           gap: "20px",
-          overflowY: "auto",
-          "&::-webkit-scrollbar": {
-            display: "none",
-          },
-          scrollbarWidth: "none",
+          overflow: "hidden",
         }}
       >
-        {!selectedSection && !UserLoad ? (
-          SectionList.map((section,index) => (
-            <Grid item xs={12} lg={12} key={section._id}>
-              <Levelcard
-                level={{
-                  level: section.index,
-                  total: section.totalLessons,
-                  progress:(UserData?.careerPathProgress?.sections[index]?.lessons?.length), // Update based on your logic
-                  image: trophy, // Placeholder for an image // Add logic for active/inactive sections
-                  description: section.description,
-                }}
-                active={ (UserData?.careerPathProgress?.sections[index] !=undefined)}
-                onSelect={() => handleSelectSection(index)}
-              />
-            </Grid>
-          ))
-        ) : (
-          <LevelDetails />
-        )}
+        {/* Breadcrumb */}
+        <BreadcrumbsNav paths={breadcrumbPath} />
+        <Box
+          sx={{
+            p: isSm ? "10px" : null,
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+            gap: "20px",
+            overflowY: "auto",
+            "&::-webkit-scrollbar": {
+              display: "none",
+            },
+            scrollbarWidth: "none",
+          }}
+        >
+          <Grid container spacing={2}>
+            {!selectedLevel ? (
+              levels.map((levelData, index) => (
+                <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
+                  <Levelcard
+                    level={levelData.level}
+                    progress={levelData.progress}
+                    total={levelData.total}
+                    image={levelData.image}
+                    onSelect={() => handleSelectLevel(levelData)}
+                    active={levelData.active}
+                  />
+                </Grid>
+              ))
+            ) : (
+              <LevelDetails LevelData={selectedLevel.level} />
+            )}
+          </Grid>
+        </Box>
       </Box>
-    </Box>
+      
+    </>
   );
 };
 
