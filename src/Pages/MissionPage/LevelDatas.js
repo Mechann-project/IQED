@@ -217,390 +217,390 @@ export const DaTa = [
         },
       ],
     },
-    {
-      title: "Level 3",
-      categories: [
-        {
-          title: "Basics",
-          steps: [
-            { label: "Perfect numbers" },
-            { label: "Powers" },
-            { label: "Factors" },
-            { label: "Square numbers" },
-            { label: "Cube number" },
-          ],
-        },
-        {
-          title: "Speed maths",
-          steps: [
-            { label: "Multiplication tricks pair numbers" },
-            { label: "Line methods" },
-            { label: "Pair number multiplication" },
-            { label: "Middle number zero" },
-            { label: "Square" },
-            { label: "Square tricks start 5" },
-            { label: "Square tricks 1 to 100" },
-            { label: "Square b/w 90 and 100" },
-            { label: "Square Number starts with 1" },
-            { label: "Decimal multiplication" },
-            { label: "Decimal division" },
-            { label: "Division 99 th proper" },
-            { label: "Division 99 th improper base below" },
-            { label: "Division 99 th improper above" },
-            { label: "Division 5 th number" },
-            { label: "Division single digit" },
-            { label: "Division 11 th number" },
-            { label: "Fraction multiplication" },
-          ],
-        },
-        {
-          title: "Data analysis",
-          steps: [
-            { label: "Cumulative frequency" },
-            { label: "Bar graph" },
-            { label: "Curve" },
-            { label: "Ogive" },
-          ],
-        },
-        {
-          title: "Measurements",
-          steps: [
-            { label: "Capacity" },
-            { label: "Mass" },
-          ],
-        },
-        {
-          title: "NCERT tricks",
-          steps: [
-            { label: "Averages" },
-            { label: "Simple equations" },
-            { label: "Compound interest" },
-            { label: "Simple interest" },
-            { label: "Triangles" },
-            { label: "Types of triangles" },
-            { label: "Pythagoras theorem" },
-            { label: "Supplementary and complementary angles" },
-            { label: "Linear pair" },
-            { label: "Intersect lines" },
-            { label: "Congruence triangles" },
-            { label: "Algebra" },
-            { label: "Exponents" },
-            { label: "Symmetry" },
-          ],
-        },
-        {
-          title: "Verbal Reasoning",
-          steps: [
-            { label: "Inference" },
-            { label: "Antonym" },
-            { label: "Synonym" },
-          ],
-        },
-        {
-          title: "Non verbal reasoning",
-          steps: [
-            { label: "Series completion" },
-            { label: "Pattern observation" },
-            { label: "Odd one out" },
-          ],
-        },
-        {
-          title: "Memory tricks",
-          steps: [
-            { label: "Association" },
-            { label: "Visualization" },
-            { label: "Chunking" },
-          ],
-        },
-        {
-          title: "Symbols",
-          steps: [
-            { label: "Algebraic symbols" },
-          ],
-        },
-        {
-          title: "Vedic mathematics",
-          steps: [
-            { label: "Vyastistha" },
-            { label: "Dhanurvidya" },
-            { label: "Dhanuvidya" },
-            { label: "Dhanuvidya-1" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Level 4",
-      categories: [
-        {
-          title: "Basics",
-          steps: [
-            { label: "Surds" },
-            { label: "Irrational numbers" },
-            { label: "Real numbers" },
-            { label: "Rational numbers" },
-            { label: "Complex numbers" },
-          ],
-        },
-        {
-          title: "Speed maths",
-          steps: [
-            { label: "Two-digit and three-digit division" },
-            { label: "Fractions in line method" },
-            { label: "Percentages" },
-            { label: "Percentage increase/decrease" },
-            { label: "Sales and discounts" },
-            { label: "Profit and loss" },
-            { label: "Ratio and proportion" },
-            { label: "Time, speed and distance" },
-            { label: "Work and time" },
-            { label: "Age problems" },
-          ],
-        },
-        {
-          title: "Data analysis",
-          steps: [
-            { label: "Probability" },
-            { label: "Statistics" },
-            { label: "Qualitative data" },
-            { label: "Quantitative data" },
-          ],
-        },
-        {
-          title: "Measurements",
-          steps: [
-            { label: "Distance" },
-            { label: "Speed" },
-            { label: "Area under curve" },
-          ],
-        },
-        {
-          title: "NCERT tricks",
-          steps: [
-            { label: "Graphs" },
-            { label: "Histograms" },
-            { label: "Pie charts" },
-            { label: "Time series" },
-            { label: "Scatter plots" },
-            { label: "Interpretation of graphs" },
-            { label: "Analyzing data sets" },
-          ],
-        },
-        {
-          title: "Verbal Reasoning",
-          steps: [
-            { label: "Reading comprehension" },
-            { label: "Critical reasoning" },
-            { label: "Argument analysis" },
-          ],
-        },
-        {
-          title: "Non verbal reasoning",
-          steps: [
-            { label: "Cube counting" },
-            { label: "Hidden figures" },
-            { label: "Figure matrices" },
-          ],
-        },
-        {
-          title: "Memory tricks",
-          steps: [
-            { label: "Story method" },
-            { label: "Mind mapping" },
-            { label: "Keyword method" },
-          ],
-        },
-        {
-          title: "Symbols",
-          steps: [
-            { label: "Logical symbols" },
-          ],
-        },
-        {
-          title: "Vedic mathematics",
-          steps: [
-            { label: "Sankhya" },
-            { label: "Upapada" },
-            { label: "Ankavat" },
-            { label: "Uttara" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Level 5",
-      categories: [
-        {
-          title: "Basics",
-          steps: [
-            { label: "Sets" },
-            { label: "Relations" },
-            { label: "Functions" },
-            { label: "Graph theory" },
-            { label: "Matrices" },
-          ],
-        },
-        {
-          title: "Speed maths",
-          steps: [
-            { label: "Advanced multiplication methods" },
-            { label: "Matrix multiplication" },
-            { label: "Higher order fractions" },
-            { label: "Compound ratios" },
-            { label: "Complex percentage problems" },
-            { label: "Probability calculations" },
-          ],
-        },
-        {
-          title: "Data analysis",
-          steps: [
-            { label: "Inferential statistics" },
-            { label: "Descriptive statistics" },
-            { label: "Statistical inference" },
-            { label: "Sample surveys" },
-          ],
-        },
-        {
-          title: "Measurements",
-          steps: [
-            { label: "Rate of change" },
-            { label: "Mean value theorem" },
-          ],
-        },
-        {
-          title: "NCERT tricks",
-          steps: [
-            { label: "Polynomial functions" },
-            { label: "Exponential growth" },
-            { label: "Logarithmic scales" },
-            { label: "Parametric equations" },
-          ],
-        },
-        {
-          title: "Verbal Reasoning",
-          steps: [
-            { label: "Advanced inference" },
-            { label: "Argument structure" },
-            { label: "Fallacies" },
-          ],
-        },
-        {
-          title: "Non verbal reasoning",
-          steps: [
-            { label: "Advanced pattern recognition" },
-            { label: "3D visualization" },
-            { label: "Spatial reasoning" },
-          ],
-        },
-        {
-          title: "Memory tricks",
-          steps: [
-            { label: "Advanced mnemonic techniques" },
-            { label: "Fibonacci method" },
-          ],
-        },
-        {
-          title: "Symbols",
-          steps: [
-            { label: "Calculus symbols" },
-          ],
-        },
-        {
-          title: "Vedic mathematics",
-          steps: [
-            { label: "Madhava" },
-            { label: "Bhaskara" },
-            { label: "Raghu" },
-            { label: "Krittika" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Level 6",
-      categories: [
-        {
-          title: "Basics",
-          steps: [
-            { label: "Abstract algebra" },
-            { label: "Number theory" },
-            { label: "Topology" },
-            { label: "Graph theory fundamentals" },
-            { label: "Linear algebra" },
-          ],
-        },
-        {
-          title: "Speed maths",
-          steps: [
-            { label: "Matrix transformations" },
-            { label: "Advanced statistics" },
-            { label: "Multi-variable calculus" },
-            { label: "Non-linear equations" },
-            { label: "Complex functions" },
-          ],
-        },
-        {
-          title: "Data analysis",
-          steps: [
-            { label: "Big data techniques" },
-            { label: "Data mining" },
-            { label: "Machine learning basics" },
-            { label: "Data visualization" },
-          ],
-        },
-        {
-          title: "Measurements",
-          steps: [
-            { label: "Optimization techniques" },
-            { label: "Mathematical modeling" },
-          ],
-        },
-        {
-          title: "NCERT tricks",
-          steps: [
-            { label: "Complex analysis" },
-            { label: "Advanced calculus" },
-            { label: "Differential equations" },
-          ],
-        },
-        {
-          title: "Verbal Reasoning",
-          steps: [
-            { label: "Critical reading" },
-            { label: "Argument analysis" },
-          ],
-        },
-        {
-          title: "Non verbal reasoning",
-          steps: [
-            { label: "Advanced logical reasoning" },
-            { label: "Abstract reasoning tests" },
-          ],
-        },
-        {
-          title: "Memory tricks",
-          steps: [
-            { label: "Method of loci" },
-            { label: "Advanced story method" },
-          ],
-        },
-        {
-          title: "Symbols",
-          steps: [
-            { label: "Mathematical symbols" },
-          ],
-        },
-        {
-          title: "Vedic mathematics",
-          steps: [
-            { label: "Kuttaka" },
-            { label: "Nikhilam" },
-            { label: "Ankavadi" },
-            { label: "Prakriya" },
-          ],
-        },
-      ],
-    },
+    // {
+    //   title: "Level 3",
+    //   categories: [
+    //     {
+    //       title: "Basics",
+    //       steps: [
+    //         { label: "Perfect numbers" },
+    //         { label: "Powers" },
+    //         { label: "Factors" },
+    //         { label: "Square numbers" },
+    //         { label: "Cube number" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Speed maths",
+    //       steps: [
+    //         { label: "Multiplication tricks pair numbers" },
+    //         { label: "Line methods" },
+    //         { label: "Pair number multiplication" },
+    //         { label: "Middle number zero" },
+    //         { label: "Square" },
+    //         { label: "Square tricks start 5" },
+    //         { label: "Square tricks 1 to 100" },
+    //         { label: "Square b/w 90 and 100" },
+    //         { label: "Square Number starts with 1" },
+    //         { label: "Decimal multiplication" },
+    //         { label: "Decimal division" },
+    //         { label: "Division 99 th proper" },
+    //         { label: "Division 99 th improper base below" },
+    //         { label: "Division 99 th improper above" },
+    //         { label: "Division 5 th number" },
+    //         { label: "Division single digit" },
+    //         { label: "Division 11 th number" },
+    //         { label: "Fraction multiplication" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Data analysis",
+    //       steps: [
+    //         { label: "Cumulative frequency" },
+    //         { label: "Bar graph" },
+    //         { label: "Curve" },
+    //         { label: "Ogive" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Measurements",
+    //       steps: [
+    //         { label: "Capacity" },
+    //         { label: "Mass" },
+    //       ],
+    //     },
+    //     {
+    //       title: "NCERT tricks",
+    //       steps: [
+    //         { label: "Averages" },
+    //         { label: "Simple equations" },
+    //         { label: "Compound interest" },
+    //         { label: "Simple interest" },
+    //         { label: "Triangles" },
+    //         { label: "Types of triangles" },
+    //         { label: "Pythagoras theorem" },
+    //         { label: "Supplementary and complementary angles" },
+    //         { label: "Linear pair" },
+    //         { label: "Intersect lines" },
+    //         { label: "Congruence triangles" },
+    //         { label: "Algebra" },
+    //         { label: "Exponents" },
+    //         { label: "Symmetry" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Verbal Reasoning",
+    //       steps: [
+    //         { label: "Inference" },
+    //         { label: "Antonym" },
+    //         { label: "Synonym" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Non verbal reasoning",
+    //       steps: [
+    //         { label: "Series completion" },
+    //         { label: "Pattern observation" },
+    //         { label: "Odd one out" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Memory tricks",
+    //       steps: [
+    //         { label: "Association" },
+    //         { label: "Visualization" },
+    //         { label: "Chunking" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Symbols",
+    //       steps: [
+    //         { label: "Algebraic symbols" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Vedic mathematics",
+    //       steps: [
+    //         { label: "Vyastistha" },
+    //         { label: "Dhanurvidya" },
+    //         { label: "Dhanuvidya" },
+    //         { label: "Dhanuvidya-1" },
+    //       ],
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "Level 4",
+    //   categories: [
+    //     {
+    //       title: "Basics",
+    //       steps: [
+    //         { label: "Surds" },
+    //         { label: "Irrational numbers" },
+    //         { label: "Real numbers" },
+    //         { label: "Rational numbers" },
+    //         { label: "Complex numbers" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Speed maths",
+    //       steps: [
+    //         { label: "Two-digit and three-digit division" },
+    //         { label: "Fractions in line method" },
+    //         { label: "Percentages" },
+    //         { label: "Percentage increase/decrease" },
+    //         { label: "Sales and discounts" },
+    //         { label: "Profit and loss" },
+    //         { label: "Ratio and proportion" },
+    //         { label: "Time, speed and distance" },
+    //         { label: "Work and time" },
+    //         { label: "Age problems" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Data analysis",
+    //       steps: [
+    //         { label: "Probability" },
+    //         { label: "Statistics" },
+    //         { label: "Qualitative data" },
+    //         { label: "Quantitative data" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Measurements",
+    //       steps: [
+    //         { label: "Distance" },
+    //         { label: "Speed" },
+    //         { label: "Area under curve" },
+    //       ],
+    //     },
+    //     {
+    //       title: "NCERT tricks",
+    //       steps: [
+    //         { label: "Graphs" },
+    //         { label: "Histograms" },
+    //         { label: "Pie charts" },
+    //         { label: "Time series" },
+    //         { label: "Scatter plots" },
+    //         { label: "Interpretation of graphs" },
+    //         { label: "Analyzing data sets" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Verbal Reasoning",
+    //       steps: [
+    //         { label: "Reading comprehension" },
+    //         { label: "Critical reasoning" },
+    //         { label: "Argument analysis" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Non verbal reasoning",
+    //       steps: [
+    //         { label: "Cube counting" },
+    //         { label: "Hidden figures" },
+    //         { label: "Figure matrices" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Memory tricks",
+    //       steps: [
+    //         { label: "Story method" },
+    //         { label: "Mind mapping" },
+    //         { label: "Keyword method" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Symbols",
+    //       steps: [
+    //         { label: "Logical symbols" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Vedic mathematics",
+    //       steps: [
+    //         { label: "Sankhya" },
+    //         { label: "Upapada" },
+    //         { label: "Ankavat" },
+    //         { label: "Uttara" },
+    //       ],
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "Level 5",
+    //   categories: [
+    //     {
+    //       title: "Basics",
+    //       steps: [
+    //         { label: "Sets" },
+    //         { label: "Relations" },
+    //         { label: "Functions" },
+    //         { label: "Graph theory" },
+    //         { label: "Matrices" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Speed maths",
+    //       steps: [
+    //         { label: "Advanced multiplication methods" },
+    //         { label: "Matrix multiplication" },
+    //         { label: "Higher order fractions" },
+    //         { label: "Compound ratios" },
+    //         { label: "Complex percentage problems" },
+    //         { label: "Probability calculations" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Data analysis",
+    //       steps: [
+    //         { label: "Inferential statistics" },
+    //         { label: "Descriptive statistics" },
+    //         { label: "Statistical inference" },
+    //         { label: "Sample surveys" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Measurements",
+    //       steps: [
+    //         { label: "Rate of change" },
+    //         { label: "Mean value theorem" },
+    //       ],
+    //     },
+    //     {
+    //       title: "NCERT tricks",
+    //       steps: [
+    //         { label: "Polynomial functions" },
+    //         { label: "Exponential growth" },
+    //         { label: "Logarithmic scales" },
+    //         { label: "Parametric equations" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Verbal Reasoning",
+    //       steps: [
+    //         { label: "Advanced inference" },
+    //         { label: "Argument structure" },
+    //         { label: "Fallacies" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Non verbal reasoning",
+    //       steps: [
+    //         { label: "Advanced pattern recognition" },
+    //         { label: "3D visualization" },
+    //         { label: "Spatial reasoning" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Memory tricks",
+    //       steps: [
+    //         { label: "Advanced mnemonic techniques" },
+    //         { label: "Fibonacci method" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Symbols",
+    //       steps: [
+    //         { label: "Calculus symbols" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Vedic mathematics",
+    //       steps: [
+    //         { label: "Madhava" },
+    //         { label: "Bhaskara" },
+    //         { label: "Raghu" },
+    //         { label: "Krittika" },
+    //       ],
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "Level 6",
+    //   categories: [
+    //     {
+    //       title: "Basics",
+    //       steps: [
+    //         { label: "Abstract algebra" },
+    //         { label: "Number theory" },
+    //         { label: "Topology" },
+    //         { label: "Graph theory fundamentals" },
+    //         { label: "Linear algebra" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Speed maths",
+    //       steps: [
+    //         { label: "Matrix transformations" },
+    //         { label: "Advanced statistics" },
+    //         { label: "Multi-variable calculus" },
+    //         { label: "Non-linear equations" },
+    //         { label: "Complex functions" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Data analysis",
+    //       steps: [
+    //         { label: "Big data techniques" },
+    //         { label: "Data mining" },
+    //         { label: "Machine learning basics" },
+    //         { label: "Data visualization" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Measurements",
+    //       steps: [
+    //         { label: "Optimization techniques" },
+    //         { label: "Mathematical modeling" },
+    //       ],
+    //     },
+    //     {
+    //       title: "NCERT tricks",
+    //       steps: [
+    //         { label: "Complex analysis" },
+    //         { label: "Advanced calculus" },
+    //         { label: "Differential equations" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Verbal Reasoning",
+    //       steps: [
+    //         { label: "Critical reading" },
+    //         { label: "Argument analysis" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Non verbal reasoning",
+    //       steps: [
+    //         { label: "Advanced logical reasoning" },
+    //         { label: "Abstract reasoning tests" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Memory tricks",
+    //       steps: [
+    //         { label: "Method of loci" },
+    //         { label: "Advanced story method" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Symbols",
+    //       steps: [
+    //         { label: "Mathematical symbols" },
+    //       ],
+    //     },
+    //     {
+    //       title: "Vedic mathematics",
+    //       steps: [
+    //         { label: "Kuttaka" },
+    //         { label: "Nikhilam" },
+    //         { label: "Ankavadi" },
+    //         { label: "Prakriya" },
+    //       ],
+    //     },
+    //   ],
+    // },
   ];
   
 

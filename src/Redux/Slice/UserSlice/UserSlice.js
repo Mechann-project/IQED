@@ -1,47 +1,52 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { AuthApi } from "../../RTK/AuthAPI/AuthAPI";
+import { UserApi } from "../../API/User.Api";
+
+const initialState = {
+  name: '',
+  profileImage: '',
+  userName: '',
+  age: null,
+  schoolName: '',
+  grade: '',
+  mobileNumber: '',
+  loading: false,
+  error: null,
+  earnings:{},
+  valueBaseQuest:[],
+  careerPathProgress:{},
+  AchivedQuest:[]
+};
+
 
 const UserSlice = createSlice({
   name: 'UserState',
-  initialState: {
-    _id: null,
-    profileImage: "",
-    UserName: "",
-    Name: "",
-    Email: "",
-    Age: "",
-    Password: "",
-    School_Name: "",
-    Grade: "",
-    Mobile_Number: "",
-    Streak: 0,
-    IQGems: 0,
-    Rank: 0,
-    XP: 0,
-  },
+  initialState,
   reducers: {
     UpdateUser: (state, action) => {
       Object.assign(state, action.payload);
     },
+    ResetUser: (state, action) => {
+      Object.assign(state, initialState);
+    },
   },
   extraReducers: (builder) => {
-    // Automatically update slice when getUserById query is fulfilled
     builder.addMatcher(
-      AuthApi.endpoints.getUserById.matchFulfilled,
+      UserApi.endpoints.GetUser.matchFulfilled,
       (state, action) => {
-        Object.assign(state, action.payload);
+        console.log("Data is Update in dispatcher")
+        Object.assign(state, action.payload.data);
+        state.loading = false;
       }
     );
-
-    // Automatically update slice when signIn mutation is fulfilled
     builder.addMatcher(
-      AuthApi.endpoints.signIn.matchFulfilled,
+      UserApi.endpoints.GetUser.matchPending,
       (state, action) => {
-        Object.assign(state, action.payload);
+        console.log("Loading...")
+        state.loading = true;
       }
     );
   },
 });
 
-export const { UpdateUser } = UserSlice.actions;
+export const { UpdateUser ,ResetUser} = UserSlice.actions;
 export default UserSlice;

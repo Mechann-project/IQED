@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setQuestionIndex } from "../../Redux/Slice/QuizSlice/QuizSlice";
 
 export default function QuestionDrawerList({
+  sessionState,
   open,
   handleClose,
   quizData = [],
@@ -31,7 +32,7 @@ export default function QuestionDrawerList({
     if (index === currentQuestionIndex) return "1px solid #FFDA55";
     return "";
   };
-  const QuizState = useSelector((state) => state.QuizState);
+
 
  
 
@@ -45,9 +46,8 @@ export default function QuestionDrawerList({
         role="presentation"
         onClick={handleClose}
       >
-        <Box sx={{ p: 2, display:'flex',justifyContent:'space-between',alignItems:'center' }}>
-          <Typography fontWeight={800}>IQ TEST</Typography>
-          <Button onClick={handleClose}>close</Button>
+        <Box sx={{ p: 2, fontWeight: "bold" }}>
+          <Typography>dsff</Typography>
         </Box>
         <Divider />
         <Box
@@ -63,7 +63,7 @@ export default function QuestionDrawerList({
               <ListItem
                 key={index}
                 sx={{
-                  bgcolor:QuizState.answeredQuestions[quiz._id]?"#BFFFE2":"#c5c5c5",
+                  bgcolor:sessionState.answeredQuestions[index]?"#BFFFE2":"#c5c5c5",
                   border: getBorderColor(index),
                   borderRadius: "10px",
                   mt: 1,
@@ -91,11 +91,12 @@ export default function QuestionDrawerList({
             ))}
             
           </List>
-          <Box
+        </Box>
+        <Box
           sx={{
             display: "flex",
             flexDirection: "column",
-            p:1,
+            p: 2,
           }}
           gap={2}
         >
@@ -107,17 +108,15 @@ export default function QuestionDrawerList({
           >
             Submit
           </Button>
-          {/* <Button
+          <Button
             variant="outlined"
             color="error"
             onClick={handleQuit}
             sx={{ width: "100%" }}
           >
             Leave
-          </Button> */}
+          </Button>
         </Box>
-        </Box>
-
       </Box>
     ),
     [

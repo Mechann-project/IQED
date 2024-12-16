@@ -7,7 +7,7 @@ import {
   BlueBackgroundSVG,
 } from "../../assets/SVG";
 import { Toaster } from "react-hot-toast";
-import { SocketProvider } from "../../Socket/SocketContext";
+// import { SocketProvider } from "../../Socket/SocketContext";
 
 const RootLayout = () => {
   const location = useLocation();
@@ -15,17 +15,21 @@ const RootLayout = () => {
     const backgroundMap = {
       "/": YellowBackgroundSVG,
       "/auth": BlueBackgroundSVG,
-      "/signup": BlueBackgroundSVG,
-      "/general-quiz-test": YellowBackgroundSVG,
-      "/gq-success": YellowBackgroundSVG,
-      "/gq-get-result": YellowBackgroundSVG,
-      "/gq-get-result-vai-wa": YellowBackgroundSVG,
-      "/commenquiztest": YellowBackgroundSVG,
       "/match": YellowBackgroundSVG,
-      "/result": YellowBackgroundSVG,
+      "/iqquiz/result": YellowBackgroundSVG,
     };
     console.log(location.pathname.toLowerCase());
-    return backgroundMap[location.pathname.toLowerCase()] || WhiteBackgroundSVG;
+
+    const path = location.pathname.toLowerCase();
+    if (path.startsWith("/iqquiz")) {
+      return YellowBackgroundSVG;  
+    }
+    if (path.endsWith("/result")) {
+      return YellowBackgroundSVG;  
+    }
+
+    
+    return backgroundMap[path] || WhiteBackgroundSVG;
   }, [location.pathname]);
 
   return (
@@ -34,9 +38,10 @@ const RootLayout = () => {
       className="Root-BackGround"
       
     >
-      <SocketProvider>
-        <Outlet />
-      </SocketProvider>
+       <Outlet />
+      {/* <SocketProvider>
+       
+      </SocketProvider> */}
       <Toaster position="top-center" reverseOrder={false} />
     </DynamicBackground>
   );

@@ -4,20 +4,16 @@ import { Button, Box, Input, Typography } from "@mui/material";
 import { Formik, Form, FormikProvider } from "formik";
 import { SignUpvalidSchema } from "../Schema/AuthSchema";
 import { FormTextField } from "../../../Common";
-import {
-  useSendEmailOTPMutation,
-  useSignUpMutation,
-  useVerifyEmailOTPMutation,
-} from "../../../Redux/RTK/AuthAPI/AuthAPI";
+import {useRegisterMutation,useCheckEmailExistsMutation,useSendEmailOTPMutation,useVerifyEmailMutation} from "../../../Redux/API/Auth.Api";
 import toast from "react-hot-toast";
+
 
 const steps = ["Profile", "Contact Info", "Password"];
 
 const SignUpForm = ({ PageSwitch }) => {
   const [sendEmailOTP, { isLoading: isSendingOTP }] = useSendEmailOTPMutation();
-  const [verifyEmailOTP, { isLoading: isVerifyEmailOTP }] =
-    useVerifyEmailOTPMutation();
-  const [AddUser] = useSignUpMutation();
+  const [verifyEmailOTP, { isLoading: isVerifyEmailOTP }] =useVerifyEmailMutation();
+  const [AddUser] = useRegisterMutation();
   const [activeStep, setActiveStep] = useState(0);
   const [otpSent, setOtpSent] = useState(false);
   const [isotpError, setisOtpError] = useState(false);
@@ -32,8 +28,8 @@ const SignUpForm = ({ PageSwitch }) => {
   const handleVerifyEmailOTP = async (values) => {
     try {
       const response = await verifyEmailOTP({
-        Email: values.email,
-        OTP: values.OTP,
+        email: values.email,
+        otp: values.OTP,
       }).unwrap();
 
       return response;
@@ -98,14 +94,14 @@ const SignUpForm = ({ PageSwitch }) => {
     }
   };
 
-  const sendOtp = async (Email) => {
-    if (!Email) {
+  const sendOtp = async (email) => {
+    if (!email) {
       alert("Please enter a valid email address first.");
       return;
     }
-    console.log(Email);
+    console.log(email);
     try {
-      toast.promise(sendEmailOTP({ Email }).unwrap(), {
+      toast.promise(sendEmailOTP({ email }).unwrap(), {
         loading: "Send...",
         success: <b>OTP has been sent to your email.</b>,
         error: <b>Could not Send Try again.</b>,

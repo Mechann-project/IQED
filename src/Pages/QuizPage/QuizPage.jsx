@@ -1,24 +1,31 @@
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-// mui
-import { Box, Button } from "@mui/material";
+// MUI
+import { Backdrop, Box, Button, CircularProgress } from "@mui/material";
 import { KeyboardDoubleArrowRight } from "@mui/icons-material";
+
+// Components and Hooks
 import { ResultDialogBox, Timer } from "../../Common";
-
-// hook
 import { useHandleQuizPage } from "../util";
-
 import {
   LoadingScreen,
   QuestionBox,
   QuestionDrawerList,
+  Quizloader,
   QuizProgressBar,
+  VSCard,
 } from "../../Components";
-import { useEffect } from "react";
+import { useGetQuizSessionQuery } from "../../Redux/API/Quiz.Api";
+import { useDispatch } from "react-redux";
+import { setTotalxp } from "../../Redux/Slice/QuizSlice/QuizSlice";
 
 const QuizPage = () => {
-  const { sessionId } = useParams();
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [fadeIn, setFadeIn] = useState(false);
+  const { data, error, isLoading } = useGetQuizSessionQuery();
   const {
+    Totalxp,
     quizState,
     sessionLoading,
     ResultDialog,
@@ -31,22 +38,57 @@ const QuizPage = () => {
     handleOnNext,
     handleQuit,
     handleSubmit,
-  } = useHandleQuizPage(sessionId);
+  } = useHandleQuizPage();
+  const dispatch= useDispatch();
+  const enterFullscreen = () => {
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen();
+    }
+  };
 
-  if (sessionLoading) {
-    return <LoadingScreen />;
+  useEffect(() => {
+    enterFullscreen();
+  }, []);
+
+  useEffect(() => {
+    if (!initialLoading) {
+      setFadeIn(true);
+    }
+  }, [initialLoading]);
+
+  if (initialLoading) {
+    return (
+      <Backdrop
+        sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
+        open={true}
+      >
+        <Quizloader onComplete={() => setInitialLoading(false)} />
+      </Backdrop>
+    );
   }
 
-
-
   return (
-    <Box sx={{ height: "100%" }}>
+    <Box
+      sx={{
+        height: "100%",
+        opacity: fadeIn ? 1 : 0,
+        transition: "opacity 1s ease",
+      }}
+    >
       <Timer
         ref={timerRef}
         initialTime={quizState?.questionsList.length * 60}
         start={!sessionLoading}
       />
       <QuestionDrawerList
+        sessionState={quizState}
         open={isQuestionList}
         handleClose={() => setisQuestionList(false)}
         quizData={quizState?.questionsList}
@@ -57,7 +99,7 @@ const QuizPage = () => {
         sx={{
           position: "fixed",
           left: "-2px",
-          top: { lg: "40%", md: "35%", xs: "5%" },
+          top: { lg: "40%", xs: "3%", sm: "3%" },
           height: "50px",
           backgroundColor: "#ffffff30",
           color: "white",
@@ -80,9 +122,11 @@ const QuizPage = () => {
         onNext={handleOnNext}
       />
       <ResultDialogBox
+        SessionState={quizState}
         open={ResultDialog}
         handleReview={() => setResultDialog(false)}
         handleDone={() => handleQuit(true)}
+        Totalxp ={Totalxp}
       />
     </Box>
   );

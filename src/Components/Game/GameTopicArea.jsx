@@ -18,8 +18,12 @@ import PeopleIcon from "@mui/icons-material/People";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CardActionArea from "@mui/material/CardActionArea";
-import { useNavigate } from "react-router-dom"; 
-import { AI_Icon,MathBannerIMG } from "../../assets";
+import { useNavigate } from "react-router-dom";
+import { AI_Icon, MathBannerIMG } from "../../assets";
+import { useSocket } from "../../Socket/SocketContext";
+import { useDispatch, useSelector } from "react-redux";
+import { ResetGame, setPlayers, setRoomId } from "../../Redux/Slice/GameSlice/GameSlice";
+import { resetQuiz } from "../../Redux/Slice/GameSlice/GameSessionSlice";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Grow ref={ref} {...props} />;
@@ -28,10 +32,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const GameTopicArea = () => {
   const navigate = useNavigate(); // Initialize useNavigate
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
   const [selectedCard, setSelectedCard] = useState(null);
   const [searchInput, setSearchInput] = useState("");
+  const socket = useSocket();
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const UserData = useSelector((state) => state.UserState);
+
   const cardData = [
     { id: 1, title: "Types of Numbers", image: MathBannerIMG, questions: 10 },
     { id: 2, title: "Prime Numbers", image: MathBannerIMG, questions: 15 },
@@ -65,17 +73,26 @@ const GameTopicArea = () => {
   const filteredCards = cardData.filter((card) =>
     card.title.toLowerCase().includes(searchInput.toLowerCase())
   );
-
+  function createRoom(playerData) {
+    dispatch(ResetGame());
+    dispatch(resetQuiz());
+    socket.emit("create-room",({ playerData }), (response) => {
+      if (response.roomId) {
+        dispatch(setPlayers(response.playerList))
+        console.log("Room created with ID:", response);
+        sessionStorage.setItem("RoomID", response.roomId);
+        dispatch(setRoomId(response.roomId))
+        navigate(`/match/${response.roomId}`);
+      } else {
+        console.error("Failed to create room.");
+      }
+    });
+  }
   const handleChallengeFriend = () => {
-    // if (selectedCard) {
-    //   socket.emit('createRoom', sessionStorage.getItem("UserId"), (response) => {
-    //     console.log(response); 
-    //     sessionStorage.setItem("MatchData", JSON.stringify(response));
-    //     navigate('/match');
-    //   });
-    // }
-    navigate('/match');
-    handleClose();
+    if (selectedCard) {
+      createRoom(UserData.name);
+      handleClose();
+    }
   };
 
   return (
@@ -95,10 +112,10 @@ const GameTopicArea = () => {
     >
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
         <Typography
@@ -112,7 +129,7 @@ const GameTopicArea = () => {
             px: "10px",
             py: "5px",
             borderRadius: "5px",
-            fontSize: isSm?"14px":"18px",
+            fontSize: isSm ? "14px" : "18px",
           }}
         >
           <img
@@ -141,7 +158,7 @@ const GameTopicArea = () => {
               flex: 1,
               border: "none",
               outline: "none",
-              fontSize: isSm?"10px":"14px",
+              fontSize: isSm ? "10px" : "14px",
               color: "black",
             }}
           />

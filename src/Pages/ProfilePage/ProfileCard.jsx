@@ -10,9 +10,9 @@ import {
 } from "@mui/material";
 import { useTheme, useMediaQuery } from "@mui/material";
 
-import SettingsIcon from '@mui/icons-material/Settings';
+import SettingsIcon from "@mui/icons-material/Settings";
 import { useSelector } from "react-redux";
-import { IQCoinIcon,FireIconSVG,IQRankIcon} from "../../assets";
+import { IQCoinIcon, FireIconSVG, IQRankIcon, IQGemIcon } from "../../assets";
 
 const StatBox = ({ icon, value, label }) => (
   <Box
@@ -53,19 +53,18 @@ const StatBox = ({ icon, value, label }) => (
   </Box>
 );
 
-const ProfileCard = ({onSettingsClick}) => {
-
+const ProfileCard = ({ onSettingsClick }) => {
   const UserData = useSelector((state) => state.UserState);
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const [Profile,setProfile] = useState("");
+  const [Profile, setProfile] = useState("");
   useEffect(() => {
-    if (UserData?.ProfileImage?.base64) {
-        setProfile(UserData.ProfileImage.base64);
+    if (UserData?.profileImage) {
+      setProfile(UserData.profileImage);
     } else {
-        setProfile(''); // Fallback if no image is available
+      setProfile("https://avatarfiles.alphacoders.com/374/374848.png");
     }
-}, [UserData]);
+  }, [UserData]);
   return (
     <Box
       sx={{
@@ -92,7 +91,6 @@ const ProfileCard = ({onSettingsClick}) => {
               gap: 1,
               boxSizing: "border-box",
               px: "50px",
-            
             }}
           >
             <Box
@@ -103,16 +101,16 @@ const ProfileCard = ({onSettingsClick}) => {
               }}
             >
               <Avatar
-                src={Profile|| ""}
+                src={Profile}
                 sx={{
                   width: 100,
                   height: 100,
                   border: "2px solid #ffffff",
-                  bgcolor:'white'
+                  bgcolor: "white",
                 }}
               />
               <IconButton
-              onClick={onSettingsClick}
+                onClick={onSettingsClick}
                 sx={{
                   position: "absolute",
                   bottom: 0,
@@ -128,6 +126,16 @@ const ProfileCard = ({onSettingsClick}) => {
             <Typography
               variant="h5"
               sx={{
+                color: "#FFDA55",
+                fontWeight: 600,
+                whiteSpace: "nowrap",
+              }}
+            >
+              {UserData.userName}
+            </Typography>
+            {/* <Typography
+              variant="h6"
+              sx={{
                 fontWeight: 600,
                 display: "flex",
                 alignItems: "center",
@@ -136,23 +144,11 @@ const ProfileCard = ({onSettingsClick}) => {
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",
+
               }}
             >
-              {UserData.Name?UserData.Name:"Puvi"}
-            
-              
-            </Typography>
-            
-            <Typography
-              variant="h5"
-              sx={{
-                color: "#FFDA55",
-                fontWeight: 900,
-                whiteSpace: "nowrap",
-              }}
-            >
-              {UserData.XP} XP
-            </Typography>
+              {UserData.name ? UserData.name : "---"}
+            </Typography> */}
           </Box>
         </Grid>
       </Grid>
@@ -167,7 +163,6 @@ const ProfileCard = ({onSettingsClick}) => {
               gap: 2,
             }}
           >
-           
             {/* Divider on the left side */}
             <Divider
               orientation="vertical"
@@ -190,7 +185,9 @@ const ProfileCard = ({onSettingsClick}) => {
                 <Typography variant="body1" fontWeight="900">
                   Level - 1
                 </Typography>
-                <Typography variant="body2">10000XP</Typography>
+                <Typography variant="body2">
+                  {UserData.earnings.xp}xp | 10k
+                </Typography>
               </Box>
               <Box
                 sx={{
@@ -203,7 +200,7 @@ const ProfileCard = ({onSettingsClick}) => {
               >
                 <LinearProgress
                   variant="determinate"
-                  value={(UserData.XP/10000) * 100}
+                  value={(UserData.earnings.xp / 10000) * 100}
                   sx={{
                     height: 10,
                     borderRadius: 10,
@@ -224,13 +221,21 @@ const ProfileCard = ({onSettingsClick}) => {
       {/* Stats Section */}
       <Grid container spacing={2} sx={{ flexGrow: 1, height: "100%" }}>
         <Grid item xs={4}>
-          <StatBox icon={IQCoinIcon} value={UserData.IQGems} label="Total IQ Coins" />
+          <StatBox
+            icon={IQGemIcon}
+            value={UserData.earnings.xp}
+            label="Total IQ Coins"
+          />
         </Grid>
         <Grid item xs={4}>
-          <StatBox icon={FireIconSVG} value={UserData.Streak} label="Total Strike" />
+          <StatBox
+            icon={FireIconSVG}
+            value={UserData.earnings.streak?.count}
+            label="Total Strike"
+          />
         </Grid>
         <Grid item xs={4}>
-          <StatBox icon={IQRankIcon} value={UserData.Rank} label="Rank" />
+          <StatBox icon={IQRankIcon} value={UserData.earnings.rank} label="Rank" />
         </Grid>
       </Grid>
     </Box>

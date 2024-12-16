@@ -1,16 +1,21 @@
 import React from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useGetUserByIdQuery } from "../../Redux/RTK/AuthAPI/AuthAPI";
+import Cookies from "js-cookie";
+import { useGetUserQuery } from "../../Redux/API/User.Api";
+import { useSelector } from "react-redux";
+
+
 
 const AuthLayout = () => {
   const location = useLocation();
-  const UserId = sessionStorage.getItem("UserId");
-
-  // Check if the current path starts with `/quiz`
+  const UserData = useSelector((state) => state.UserState);
+  const sessionid = Cookies.get('connect.sid'); // Get all cookies as an object
+  console.log(sessionid);
+  const {data:userdata} = useGetUserQuery()
   const isQuizPath = location.pathname.startsWith("/quiz");
-
+  console.log(UserData);
   // Allow access to quiz paths or require authentication for other paths
-  return isQuizPath || UserId ? (
+  return isQuizPath || sessionid ? (
     <Outlet />
   ) : (
     <Navigate to="/" state={{ from: location }} replace />

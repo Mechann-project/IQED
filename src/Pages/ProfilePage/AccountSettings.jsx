@@ -27,7 +27,8 @@ import { useNavigate } from "react-router-dom";
 import { UpdateUser } from "../../Redux/Slice/UserSlice/UserSlice";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useUpdateUserProfileMutation } from "../../Redux/RTK/AuthAPI/AuthAPI";
+import { useUpdateUserMutation } from "../../Redux/API/User.Api";
+// import { useUpdateUserProfileMutation } from "../../Redux/RTK/AuthAPI/AuthAPI";
 const AccountSettings = ({ onClose }) => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
@@ -38,11 +39,10 @@ const AccountSettings = ({ onClose }) => {
   const userId = sessionStorage.getItem("UserId");
   console.log("User ID:", userId);
   const [profileFields, setProfileFields] = useState([
-    { label: "Name", value: UserData.Name || "Gowthamraj" },
-    { label: "School Name", value: UserData.School_Name || "TNGR" },
-    { label: "Grade", value: UserData.Grade || "10th" },
+    { label: "Name", value: UserData.name || "Gowthamraj" },
+    { label: "School Name", value: UserData.schoolName || "TNGR" },
+    { label: "Grade", value: UserData.grade || "10th" },
   ]);
-console.log("UserData",UserData);
   const [profileImagePreview, setProfileImagePreview] = useState(
     UserData.profileImage || "/default-avatar.jpg"
   );
@@ -69,7 +69,7 @@ console.log("UserData",UserData);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [updateUserProfile, { isLoading, isSuccess, isError, error }] =
-    useUpdateUserProfileMutation();
+    useUpdateUserMutation();
 
   const toggleShowOldPassword = () => setShowOldPassword((prev) => !prev);
   const toggleShowNewPassword = () => setShowNewPassword((prev) => !prev);
@@ -154,7 +154,7 @@ console.log("UserData",UserData);
   const handleCancel = () => {
     setIsEditing(false);
     setIsChanged(false);
-    setProfileImagePreview(UserData.ProfileImage.base64 || "/default-avatar.jpg");
+    setProfileImagePreview(UserData.profileImage || "/default-avatar.jpg");
     setProfileImageBase64("");
   };
 
@@ -361,14 +361,14 @@ console.log("UserData",UserData);
           <ListItem>
             <ListItemText
               primary="Username"
-              secondary={UserData.UserName ? UserData.UserName : "john9500"}
+              secondary={UserData.userName ? UserData.userName : "john9500"}
             />
           </ListItem>
           <ListItem>
             <Divider />
             <ListItemText
               primary="Email"
-              secondary={UserData.Email ? UserData.Email : "john9500@gmail.com"}
+              secondary={UserData.email ? UserData.email : "john9500@gmail.com"}
             />
           </ListItem>
           <Divider />

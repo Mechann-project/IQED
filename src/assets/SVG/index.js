@@ -4,7 +4,6 @@ import BlueBackgroundSVG from "./Background/BlueLineBG.svg";
 import BlurContainerSVG from "./Others/BlurContainer.svg";
 import YellowDesignSVG from "./Others/YellowDesign.svg";
 import FireIconSVG from "./Icons/FireIcon.svg";
-import G_Medal from "./Others/G_medal.svg";
 import S_Medal from "./Others/S_Medal.svg";
 import B_Medal from "./Others/B_Medal.svg";
 import Null_Medal from "./Others/Null_Medal.svg";
@@ -16,6 +15,9 @@ import SVGLoader from "./Others/SVGLoader.jsx";
 import VSIcon from "./Icons/VSIcon.png";
 import popGIF from "./Gif/pop.gif";
 import SuccessManSVG from "./Others/SuccessMan.svg";
+import ProductBG from "./Others/ProductBG.svg";
+import PNF_404 from "./Others/404.svg"
+// import G_Medal from './Others/G_Medal.svg'
 export {
   WhiteBackgroundSVG,
   YellowBackgroundSVG,
@@ -24,7 +26,7 @@ export {
   YellowDesignSVG,
   FireIconSVG,
   B_Medal,
-  G_Medal,
+  // G_Medal,
   S_Medal,
   Null_Medal,
   CUP,
@@ -34,5 +36,7 @@ export {
   VS,
   VSIcon,
   popGIF,
-  SuccessManSVG
+  SuccessManSVG,
+  ProductBG,
+  PNF_404,
 };

@@ -23,7 +23,7 @@ const ExploreHeader = () => {
           color:'#02216F'
         }}
       >
-        Hello! {UserData.UserName}
+        Hello! {UserData.userName}
       </Typography> 
     </Box>
   );
