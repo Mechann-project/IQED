@@ -1,0 +1,7 @@
+export { default as AuthLayout} from "./AuthLayout"
+export { default as IQQuizLayout} from "./IQQuizLayout"
+export { default as MatchLayout} from "./MatchLayout"
+export { default as QuizLayout} from "./QuizLayout"
+export { default as RootLayout} from "./RootLayout"
+export { default as StoreOrderLayout} from "./StoreOrderLayout"
+export { default as UserLayout} from "./UserLayout"

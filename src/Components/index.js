@@ -27,3 +27,7 @@ export { default as MPQuestionBox } from "./MpQuiz/MPQuestionBox.jsx";
 export { default as MPQuizProgressBar } from "./MPQuiz/MPQuizProgressBar.jsx";
 export { default as MPQuestionDrawerList } from "./MPQuiz/MPQuestionDrawerList.jsx";
 export {default as BellCurveChart} from "./Landing/BellCurveChart.jsx";
+
+export { default as YourOrders} from "./Store/YourOrders.jsx"
+export { default as OrderDetail} from "./Store/OrderDetail.jsx"
+

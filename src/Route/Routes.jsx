@@ -10,10 +10,23 @@ import {
   LandingPage,
   AuthPage,
   PageNotFound,
+  ExplorePage,
+  MissionPage,
+  GamePage,
+  ProfilePage,
+  LeaderboardPage,
+  FeedBackPage,
+  StorePage,
+  QuizPage,
+  MatchLobby,
+  MPQuizPage,
 } from "../Pages";
 import GQSuccessPage from "../Pages/IQQuizPage/GQResultPage";
 import IQQuizLayout from "../Pages/Layout/IQQuizLayout";
 import IQQuizPage from "../Pages/IQQuizPage/IQQuizPage";
+import { AuthLayout, MatchLayout, QuizLayout, StoreOrderLayout, UserLayout } from "../Pages/Layout";
+import { OrderDetail, Shipping, YourOrders } from "../Components";
+import { OnLoadLobby } from "../Pages/GamePage/MatchPage/MatchLobby";
 
 const basename = import.meta.env.BASE_URL;
 export const Routers = createBrowserRouter(
@@ -21,9 +34,9 @@ export const Routers = createBrowserRouter(
    
       <Route path="/" element={<RootLayout />}>
         <Route index element={<LandingPage />} />
-        {/* <Route path="auth" element={<AuthPage />} /> */}
+        <Route path="auth" element={<AuthPage />} />
 
-        {/* <Route element={<AuthLayout />}>
+        <Route element={<AuthLayout />}>
         <Route element={<UserLayout />}>
           <Route path="explore" element={<ExplorePage />} />
           <Route path="missions" element={<MissionPage />} />
@@ -49,9 +62,9 @@ export const Routers = createBrowserRouter(
       <Route path="match" element={<MatchLayout />}>
         <Route path=":GameCode" element={<Outlet />}>
           <Route index element={<MatchLobby />} loader={OnLoadLobby} />
-          <Route path=":GameSessionId" element={<MPQuizPage />} />3w
+          <Route path=":GameSessionId" element={<MPQuizPage />} />
         </Route>
-      </Route> */}
+      </Route>
         <Route path="IQquiz" element={<Outlet />}>
           <Route path=":sessionId" element={<IQQuizLayout />}>
             <Route index element={<IQQuizPage />} />

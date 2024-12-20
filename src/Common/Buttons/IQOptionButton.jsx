@@ -1,5 +1,5 @@
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { answerQuestion, nextQuestion } from "../../Redux/Slice/IQQuizSlice/IQQuizSlice";
 
@@ -10,28 +10,40 @@ const IQOptionButton = ({ quiz, type = "text", content, index }) => {
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const [isAnimating, setIsAnimating] = useState(false);
+
   // Determine the button background and text color based on the quiz state
-  const isAnswered = IQQuizState?.answeredQuestions[IQQuizState.currentQuestionIndex]?.answer == content;
+  const isAnswered =
+    IQQuizState?.answeredQuestions[IQQuizState.currentQuestionIndex]?.answer == content;
   const isCorrectAnswer = IQQuizState?.answeredQuestions[index]?.correct;
   const isLive = IQQuizState?.isLive;
-  const backgroundColor = isAnswered && !isLive && isCorrectAnswer
-    ? "#19ff95"
-    : isAnswered
-    ? "#ff6334"
-    : isCorrectAnswer && !isLive
-    ? "#81f319ba"
-    : "#02216F";
-  const color = isAnswered || (isCorrectAnswer && !isLive)
-    ? "#02216F"
-    : "#ffffff";
+  const backgroundColor =
+    isAnswered && !isLive && isCorrectAnswer
+      ? "#19ff95"
+      : isAnswered
+      ? "#ff6334"
+      : isCorrectAnswer && !isLive
+      ? "#81f319ba"
+      : "#02216F";
+  const color =
+    isAnswered || (isCorrectAnswer && !isLive) ? "#02216F" : "#ffffff";
 
   const handleClick = () => {
-    dispatch(answerQuestion({ questionId: quiz._id, answer: content, answerindex: index }));
+    if (!isAnimating) {
+      dispatch(
+        answerQuestion({
+          questionId: quiz._id,
+          answer: content,
+          answerindex: index,
+        })
+      );
 
-    // Wait for the animation to finish before dispatching the next question
-    setTimeout(() => {
-      dispatch(nextQuestion());
-    }, 900); // Delay matches the transition duration (in milliseconds)
+      setIsAnimating(true); // Start animation lock
+      setTimeout(() => {
+        dispatch(nextQuestion());
+        setIsAnimating(false); // Remove animation lock
+      }, 900); // Delay matches the transition duration (in milliseconds)
+    }
   };
 
   return (
@@ -41,7 +53,11 @@ const IQOptionButton = ({ quiz, type = "text", content, index }) => {
         height: { xs: "4rem", lg: "7rem", md: "6rem" },
         width: "100%",
         display: "flex",
-        backgroundColor: !isLive ? backgroundColor : isAnswered ? "#FFDA55" : "#02216F",
+        backgroundColor: !isLive
+          ? backgroundColor
+          : isAnswered
+          ? "#FFDA55"
+          : "#02216F",
         color,
         borderRadius: "10px",
         justifyContent: "center",
@@ -60,17 +76,22 @@ const IQOptionButton = ({ quiz, type = "text", content, index }) => {
           },
         },
       }}
-      disabled={!isLive}
+      disabled={!isLive || isAnimating} // Disable during animation
       onClick={handleClick}
     >
       {type === "text" ? (
-        <Typography fontWeight={700} fontSize={20}>{content}</Typography>
+        <Typography fontWeight={700} fontSize={20}>
+          {content}
+        </Typography>
       ) : (
         <img
           src={content}
-          width={isSm ? 60 : isMd ? 70 : 90}
-          height={isSm ? 60 : isMd ? 70 : 90}
+          width={isSm ? 50 : isMd ? 60 : 90}
+          height={isSm ? 50 : isMd ? 60 : 90}
           alt="Option"
+          style={{
+            borderRadius: "10px",
+          }}
         />
       )}
     </Box>

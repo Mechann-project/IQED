@@ -13,6 +13,7 @@ import three from "./Others/3.png";
 import LetsGo from "./Others/letsGo.png";
 import TShirtPNG from "./Others/t-shirt.png";
 import TShirtImg from "./Others/t-shirt.jpg";
+import white from "./Others/whiite.png";
 export {
   IQEDLogo,
   IQEDIcon,
@@ -28,5 +29,6 @@ export {
   three,
   LetsGo,
   TShirtImg,
+  white,
   TShirtPNG,
 };

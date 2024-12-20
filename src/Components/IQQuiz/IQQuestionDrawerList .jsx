@@ -23,11 +23,6 @@ export default function IQQuestionDrawerList({
   handleQuit,
   quizAllCompleted,
 }) {
-  const getBackgroundColor = (index) => {
-    if (answeredQuestions.includes(index)) return "#BFFFE2";
-    if (index === currentQuestionIndex) return "#FFEDAC";
-    return "#c5c5c5";
-  };
   const dispatch = useDispatch();
   const getBorderColor = (index) => {
     if (answeredQuestions.includes(index)) return "1px solid #1DC77B";
@@ -74,16 +69,24 @@ export default function IQQuestionDrawerList({
             <CloseIcon />
           </IconButton>
         </Box>
-        {quizAllCompleted &&(
-          <Box sx={{p:2}}>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            p: 2,
+          }}
+          gap={2}
+        >
           <Button
             type="submit"
             fullWidth
+            disabled={!quizAllCompleted}
             variant="contained"
             onClick={handleSubmit}
             sx={{
               fontWeight: "bold",
-              
+
               backgroundColor: "#1A49BA",
               color: "#ffffff",
               "&:hover": {
@@ -94,8 +97,49 @@ export default function IQQuestionDrawerList({
           >
             Submit
           </Button>
-          </Box>)}
-       
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            onClick={handleQuit}
+            sx={{
+              fontWeight: "bold",
+              // backgroundColor: "#1A49BA",
+              backgroundColor: "red",
+              color: "#ffffff",
+              "&:hover": {
+                backgroundColor: "Black",
+              },
+              boxShadow: "2px 3px #FFDA55",
+            }}
+          >
+            Leave
+          </Button>
+        </Box>
+
+        {/* {quizAllCompleted && (
+          <Box sx={{ p: 2 }}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              onClick={handleSubmit}
+              sx={{
+                fontWeight: "bold",
+
+                backgroundColor: "#1A49BA",
+                color: "#ffffff",
+                "&:hover": {
+                  backgroundColor: "Black",
+                },
+                boxShadow: "2px 3px #FFDA55",
+              }}
+            >
+              Submit
+            </Button>
+          </Box>
+        )} */}
+
         <Divider
           sx={{ borderBottomWidth: 3, borderColor: "black", mb: "3%" }}
         />
@@ -112,16 +156,26 @@ export default function IQQuestionDrawerList({
               <ListItem
                 key={index}
                 sx={{
-                  bgcolor: sessionState.answeredQuestions[index]
-                    ? "#BFFFE2"
-                    : "#c5c5c5",
+                  bgcolor:
+                    index === sessionState.currentQuestionIndex
+                      ? "#FFDA55" // Highlight the current question with yellow
+                      : sessionState.answeredQuestions[index]
+                      ? "#1DC77B50"
+                      : "#c5c5c5",
                   border: getBorderColor(index),
                   borderRadius: "10px",
                   mt: 1,
-                  "&:hover": {
-                    bgcolor:
-                      index === currentQuestionIndex ? "#FFEDAC" : "#e0e0e0",
-                    cursor: "pointer",
+                  "@media (hover: hover) and (pointer: fine)": {
+                    "&:hover": {
+                      bgcolor:
+                    index === sessionState.currentQuestionIndex
+                      ? "#FFDA5550" // Highlight the current question with yellow
+                      : sessionState.answeredQuestions[index]
+                      ? "#1DC77B5040"
+                      : "#c5c5c550",
+                      opacity:'90%',
+                      cursor: "pointer",
+                    },
                   },
                 }}
                 onClick={() => dispatch(setQuestionIndex(index))}
@@ -145,7 +199,7 @@ export default function IQQuestionDrawerList({
             sx={{ borderBottomWidth: 3, borderColor: "black", mt: "3%" }}
           />
 
-          <Box
+          {/* <Box
             sx={{
               display: "flex",
               flexDirection: "row",
@@ -171,8 +225,7 @@ export default function IQQuestionDrawerList({
             >
               Leave
             </Button>
-            
-          </Box>
+          </Box> */}
         </Box>
       </Box>
     ),

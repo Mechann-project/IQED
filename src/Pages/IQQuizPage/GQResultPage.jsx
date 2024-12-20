@@ -187,6 +187,8 @@ const GQSuccessPage = () => {
     // const pdfBytes = await pdfDoc.save();
     // const blob = new Blob([pdfBytes], { type: "application/pdf" });
     // console.log("chart is writed",blob);
+
+
     console.log(contact,name,IQQuizState.IQscore)
     toast.promise(
       UploadFileMutation({
@@ -394,9 +396,10 @@ const GQSuccessPage = () => {
                 fontSize: "16px",
                 fontWeight: "bold",
                 borderRadius: "20px",
+                mt:'3%',
               }}
             >
-              General Test Completed
+             IQ Test Completed
             </Typography>
 
             <Typography
@@ -405,25 +408,30 @@ const GQSuccessPage = () => {
                 pb: "30px",
                 width: { md: "60%" },
                 color: "#02216F",
-                fontSize: { xs: "24px", md: "36px" },
+                fontSize: { xs: "20px", md: "36px", lg:'36px', sm:"20px"  },
                 fontWeight: "bold",
+                // width: {
+                //   lg: "30%",
+                //   md: "40%",
+                //   sm: "70%",
+                //   xs: "60%",
+                // },
               }}
             >
-              Congratulations on successfully completing the test! You almost
-              hit our rank holder's record!
+              Congratulations on successfully completing the test! You may have created a record, check your results via EMAIL
             </Typography>
-            <Typography
+            {/* <Typography
               sx={{
                 textAlign: "center",
-                width: { md: "60%" },
+                width: { md: "60%",xs:"70%" },
                 color: "#02216F",
-                fontSize: "20px",
+                fontSize: {xs:"15px"},
                 fontWeight: "bold",
                 pb: "20px",
               }}
             >
               You can view your results via
-            </Typography>
+            </Typography> */}
 
             <Stack
               direction="row"

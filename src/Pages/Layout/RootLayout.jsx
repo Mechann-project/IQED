@@ -7,7 +7,7 @@ import {
   BlueBackgroundSVG,
 } from "../../assets/SVG";
 import { Toaster } from "react-hot-toast";
-// import { SocketProvider } from "../../Socket/SocketContext";
+import { SocketProvider } from "../../Socket/SocketContext";
 
 const RootLayout = () => {
   const location = useLocation();
@@ -38,11 +38,11 @@ const RootLayout = () => {
       className="Root-BackGround"
       
     >
+      <SocketProvider>
        <Outlet />
-      {/* <SocketProvider>
        
-      </SocketProvider> */}
-      <Toaster position="top-center" reverseOrder={false} />
+      </SocketProvider> 
+            <Toaster position="top-center" reverseOrder={false} />
     </DynamicBackground>
   );
 };

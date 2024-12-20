@@ -11,6 +11,7 @@ import CUP from "./Others/CUP.svg";
 import VS from "./Others/VS.svg";
 import AI_Icon from "./Icons/AI_Icon.png";
 import feedback from "./Icons/feedback.png";
+import warning from "./Icons/warning.png";
 import SVGLoader from "./Others/SVGLoader.jsx";
 import VSIcon from "./Icons/VSIcon.png";
 import popGIF from "./Gif/pop.gif";
@@ -39,4 +40,5 @@ export {
   SuccessManSVG,
   ProductBG,
   PNF_404,
+  warning,
 };
