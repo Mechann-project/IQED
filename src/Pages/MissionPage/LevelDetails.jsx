@@ -274,7 +274,7 @@ function LevelDetails() {
                   alternativeLabel
                   activeStep={UserData?.careerPathProgress?.sections[sectionIndex]?.lessons[lessonIndex]?.topics.length-1} 
                   connector={<ColorlibConnector />}>
-                  {lesson.topics?.map((topic, index) => (
+                  {lesson?.topics?.map((topic, index) => (
                     <Step key={topic._id} onClick={() => handleQuizCraetion(sectionIndex,lessonIndex,index,topic._id)}>
                       <StepLabel StepIconComponent={ColorlibStepIcon}>
                         <Typography variant="body" sx={{ fontWeight: "bold" }}>
@@ -308,11 +308,11 @@ function LevelDetails() {
                 alignSelf: "flex-end",
               }}
             >
-              {UserData?.careerPathProgress?.sections[sectionIndex].lessons[lessonIndex].topics.length +"/"+lesson.totalTopic}
+              {(UserData?.careerPathProgress?.sections[sectionIndex].lessons[lessonIndex]?.topics.length ? UserData?.careerPathProgress?.sections[sectionIndex].lessons[lessonIndex]?.topics.length : 0)  +"/"+lesson.totalTopic}
             </Typography>
             <LinearProgress
               variant="determinate"
-              value={(UserData?.careerPathProgress?.sections[sectionIndex].lessons[lessonIndex].topics.length / lesson.totalTopic) * 100}
+              value={((UserData?.careerPathProgress?.sections[sectionIndex].lessons[lessonIndex]?.topics.length ? UserData?.careerPathProgress?.sections[sectionIndex].lessons[lessonIndex]?.topics.length : 0) / lesson.totalTopic) * 100}
               sx={{
                 height: "10px",
                 bgcolor: "#FFDA55",
