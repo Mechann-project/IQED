@@ -10,17 +10,17 @@ import {
 } from "../../../Redux/Slice/QuizSlice/QuizSlice";
 import { UpdateUser } from "../../../Redux/Slice/UserSlice/UserSlice";
 import {
-  useGetQuizSessionQuery,
+  useGetQuizSessionMutation,
   useUpdateQuizSessionMutation,
 } from "../../../Redux/API/Quiz.Api";
 import { useAddXPMutation, useGetUserQuery } from "../../../Redux/API/User.Api";
 
 const useHandleQuizPage = () => {
-  const {
+  const [ getQuizSession, {
     data: sessionData,
     error: sessionError,
     isLoading: sessionLoading,
-  } = useGetQuizSessionQuery();
+  }] = useGetQuizSessionMutation();
   const [updateQuizSession, { data }] = useUpdateQuizSessionMutation();
   const [updateUserXP] = useAddXPMutation();
   const { data: userData } = useGetUserQuery();
@@ -31,6 +31,7 @@ const useHandleQuizPage = () => {
   const quizState = useSelector((state) => state.QuizState);
   const [isQuestionList, setisQuestionList] = useState(false);
   const [ResultDialog, setResultDialog] = useState(false);
+  const [quizAllCompleted, setQuizAllCompleted] = useState(false);
   const timerRef = useRef();
   const [Totalxp, setTotalxp] = useState(0);
   useEffect(() => {
@@ -39,6 +40,22 @@ const useHandleQuizPage = () => {
       navigate("/missions");
     }
   }, [sessionError, navigate]);
+  console.log("setQuizAllCompleted", quizAllCompleted)
+  console.log("quizState", quizState)
+
+  useEffect(() => {
+    if (
+      quizState._id && quizState.isLive &&
+      quizState?.questionsList.length ==
+        Object.keys(quizState.answeredQuestions).length
+    ) {
+      console.log("setQuizAllCompleted", quizAllCompleted)
+      toast.success("All Quiz Completed");
+      setQuizAllCompleted(true);
+      setisQuestionList(true);
+    }
+  }, [quizState.answeredQuestions]);
+  
 
   const handleOnPrevious = () => {
     dispatch(prevQuestion());
@@ -101,12 +118,14 @@ const useHandleQuizPage = () => {
     isQuestionList,
     ResultDialog,
     progressValue,
+    quizAllCompleted,
     handleSubmit,
     handleQuit,
     handleOnNext,
     handleOnPrevious,
     setisQuestionList,
     setResultDialog,
+    
   };
 };
 

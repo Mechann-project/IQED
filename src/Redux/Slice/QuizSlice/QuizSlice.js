@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { QuizApi } from "../../API/Quiz.Api"; // Import the API slice
 
 const initialState = {
+  _id:null,
   host: "",
   status: "",
   questionsList: [],
@@ -67,13 +68,16 @@ const QuizSlice = createSlice({
     builder.addMatcher(
       QuizApi.endpoints.getQuizSession.matchFulfilled,
       (state, action) => {
-        const { questionsList, answeredQuestions, status, score } =
-          action.payload;
-        state.questionsList = questionsList;
-        state.answeredQuestions = answeredQuestions;
-        state.score = score;
-        state.status = status;
-        state.isLive = status != "completed";
+        // const { questionsList, answeredQuestions, status, score } =
+        //   action.payload;
+        // state.questionsList = questionsList;
+        // state.answeredQuestions = answeredQuestions;
+        // state.score = score;
+        // state.status = status;
+        // state.isLive = status != "completed";
+        // state._id = state 
+        Object.assign(state,action.payload);
+        state.isLive = (action.payload.status != "completed");
       }
     );
     builder.addMatcher(

@@ -35,19 +35,23 @@ const useHandleIQQuizPage = () => {
       navigate("/");
     }
   }, [sessionError, navigate]);
-
+  console.log("setQuizAllCompleted", quizAllCompleted)
+  console.log("IQQuizState", IQQuizState)
   useEffect(() => {
     if (
       IQQuizState._id &&
       IQQuizState?.questionsList.length ==
         Object.keys(IQQuizState.answeredQuestions).length
     ) {
+      console.log("setQuizAllCompleted", quizAllCompleted)
       toast.success("All Quiz Completed");
       setQuizAllCompleted(true);
       setisQuestionList(true);
     }
   }, [IQQuizState.answeredQuestions]);
-  console.log("IQQuizState",IQQuizState);
+  
+  
+  
   console.log("sessionData",sessionData);
 
   const handleOnPrevious = () => {

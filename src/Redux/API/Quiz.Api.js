@@ -16,8 +16,14 @@ export const QuizApi = createApi({
         body: { sectionIndex ,lessonIndex ,topicIndex,topicId, questionCount},
       }),
     }),
-    getQuizSession: builder.query({
-      query: () => `/getSession`,
+    getQuizSession: builder.mutation({
+      query: () => ({
+        url: "/getSession",
+        method: "POST",
+        body: { 
+          sessionId:sessionStorage.getItem("QuizSessionID"),
+        },
+      }),
     }),
     updateQuizSession: builder.mutation({
       query: ({ answeredQuestions,timeTaken }) => ({
@@ -31,6 +37,6 @@ export const QuizApi = createApi({
 
 export const {
   useCreateQuizSessionMutation,
-  useGetQuizSessionQuery,
+  useGetQuizSessionMutation,
   useUpdateQuizSessionMutation,
 } = QuizApi;

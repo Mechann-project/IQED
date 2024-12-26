@@ -28,7 +28,7 @@ const IQQuizPage = () => {
   const [initialLoading, setInitialLoading] = useState(true);
   const [fadeIn, setFadeIn] = useState(false);
   const [getQuizSession] = useGetQuizSessionMutation();
-  const navigate = useNavigate();
+
 
   // State for tab-switching warning and modal
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
@@ -171,7 +171,6 @@ const IQQuizPage = () => {
         handleSubmit={handleSubmit}
       />
 
-      
       <Modal
         open={openModal}
         onClose={handleModalClose}

@@ -170,6 +170,7 @@ function LevelDetails() {
         {
           loading: "Creating Session...",
           success: (res) => {
+            sessionStorage.setItem("QuizSessionID",res.sessionId)
             navigate(`/quiz/${res.sessionId}`, { replace: true });
             return "Session Created Successfully!";
           },

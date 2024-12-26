@@ -27,6 +27,7 @@ import * as fontkit from "fontkit";
 
 import { useUploadFileMutation } from "../../Redux/API/IQ.Quiz.Api";
 import toast from "react-hot-toast";
+import { generatePdf } from "./PDFGenerator";
 
 const CssTextField = withStyles({
   root: {
@@ -67,15 +68,13 @@ const GQSuccessPage = () => {
   const [imageData, setImageData] = useState(null);
   const [UploadFileMutation] = useUploadFileMutation();
   const navigater = useNavigate();
- 
-  
+
   const handleChartRendered = (data) => {
-    setImageData(data); // Store the image data
+    setImageData(data);
     console.log("imageData:", imageData);
   };
-  console.log("QuizState.IQScore",IQQuizState.IQscore)
-  console.log("QuizState.score",IQQuizState.score)
-  
+  console.log("QuizState.IQScore", IQQuizState.IQscore);
+  console.log("QuizState.score", IQQuizState.score);
 
   const textFieldStyles = {
     borderRadius: 2,
@@ -97,116 +96,49 @@ const GQSuccessPage = () => {
 
   //  await generateChart();
   //     const chartImage = canvasRef.current.toDataURL("image/png");
-  const generatePdf = async (name, score) => {
-    if (!imageData) {
-      console.error("Image data is not available");
-      return;
+  const sendmail = async (name, score) => {
+    try {
+      const pdfBlob = await generatePdf(name, score, imageData);
+      if (pdfBlob) {
+        // console.log(contact, name, IQQuizState.IQscore);
+        // toast.promise(
+        //   UploadFileMutation({
+        //     file: imageData,
+        //     email: contact,
+        //     name: name,
+        //     sessionId: sessionStorage.getItem("IQSessionID"),
+        //   }),
+        //   {
+        //     loading: "Send...",
+        //     success: () => {
+        //       sessionStorage.removeItem("IQSessionID");
+        //       navigater("/");
+        //       return <b>Check Your Email..</b>;
+        //     },
+        //     error: <b>Could not Add Try again.</b>,
+        //   }
+        // );
+
+        const downloadLink = document.createElement("a");
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        downloadLink.href = pdfUrl;
+        downloadLink.download = `${name}_IQ_Report.pdf`;
+  
+        // Programmatically trigger the download
+        downloadLink.click();
+  
+        // Optionally, revoke the object URL after the download to free up memory
+        URL.revokeObjectURL(pdfUrl);
+  
+        console.log("PDF generated and saved successfully.");
+      } else {
+        console.error("Failed to generate the PDF.");
+      }
+    } catch (error) {
+      console.error("Error generating PDF:", error);
     }
 
-    // Check if imageData is a valid DataURL
-    // if (!imageData.startsWith("data:image/png;base64,")) {
-    //   console.error("Invalid image data format:", imageData);
-    //   return;
-    // }
-
-    // const fontBytes = await fetch(Poppins_Bold).then((res) =>
-    //   res.arrayBuffer()
-    // );
-    // const existingPdfBytes = await fetch(IQTestResultTem1).then((res) =>
-    //   res.arrayBuffer()
-    // );
-    // const pdfDoc = await PDFDocument.load(existingPdfBytes);
-    // pdfDoc.registerFontkit(fontkit);
-    // const customFont = await pdfDoc.embedFont(fontBytes);
-
-    // const page = pdfDoc.getPages()[0];
-    // const { width, height } = page.getSize();
-    // const fontSize = 24;
-    // const text = `Hello, ${name}!`;
-    // const textWidth = customFont.widthOfTextAtSize(text, fontSize);
-    // const x = (width - textWidth) / 2;
-    // const y = 510;
-    // page.drawText(text, {
-    //   x,
-    //   y,
-    //   size: fontSize,
-    //   color: rgb(1, 0.76, 0),
-    //   font: customFont,
-    // });
-
-    // const iqScoreText = `Your IQ Score is ${score}`;
-    // const iqScoreTextWidth = customFont.widthOfTextAtSize(iqScoreText, fontSize);
-    // const iqScoreTextX = (width - iqScoreTextWidth) / 2;
-    // const iqScoreTextY = y - fontSize - 10; // Adjust to position below the name
-    // page.drawText(iqScoreText, {
-    //   x: iqScoreTextX,
-    //   y: iqScoreTextY,
-    //   size: fontSize,
-    //   color: rgb(1, 1, 1),
-    //   font: customFont,
-    // });
-
-    // const chartImageBytes = await fetch(imageData).then((res) =>
-    //   res.arrayBuffer()
-    // );
-    // console.log("chartImageBytes:", chartImageBytes);
-
-    // // const chartImageBytes = await fetch(imageData).then((res) => res.blob());
-    // const chartImageData = await pdfDoc.embedPng(chartImageBytes);
-    // const chartWidth = 500;
-    // const chartHeight = 280;
-
-    // const chartX = (width - chartWidth) / 2;
-    // const chartY = ((height - chartHeight) / 2)-130;
-
-    // page.drawImage(chartImageData, {
-    //   x: chartX,
-    //   y: chartY,
-    //   width: chartWidth,
-    //   height: chartHeight,
-    // });
-
-    // ------------------------------------------------------
-
-    // const chartBlob = new Blob([chartImageBytes], { type: "image/png" });
-    // const chartUrl = URL.createObjectURL(chartBlob);
-
-    // // Create an anchor element to trigger download
-    // const downloadLink = document.createElement("a");
-    // downloadLink.href = chartUrl;
-    // downloadLink.download = "chart.png";
-
-    // // Programmatically trigger the download
-    // downloadLink.click();
-
-    // // Optionally, revoke the object URL after the download to free up memory
-    // URL.revokeObjectURL(chartUrl);
-
-    // --------------------------------------------------------
-
-    // const pdfBytes = await pdfDoc.save();
-    // const blob = new Blob([pdfBytes], { type: "application/pdf" });
-    // console.log("chart is writed",blob);
-
-
-    console.log(contact,name,IQQuizState.IQscore)
-    toast.promise(
-      UploadFileMutation({
-        file: imageData,
-        email: contact,
-        name: name,
-        sessionId:sessionStorage.getItem("IQSessionID"),
-      }),
-      {
-        loading: "Send...",
-        success: () => {
-          sessionStorage.removeItem("IQSessionID")
-          navigater("/");
-          return <b>Check Your Email..</b>;
-        },
-        error: <b>Could not Add Try again.</b>,
-      }
-    );
+    
   };
 
   const validateContact = (value) => {
@@ -230,8 +162,8 @@ const GQSuccessPage = () => {
       setError(true);
     } else {
       setError(false);
-    
-      generatePdf(name, IQQuizState.IQscore);
+
+      sendmail(name, IQQuizState.IQscore);
     }
   };
 
@@ -396,10 +328,10 @@ const GQSuccessPage = () => {
                 fontSize: "16px",
                 fontWeight: "bold",
                 borderRadius: "20px",
-                mt:'3%',
+                mt: "3%",
               }}
             >
-             IQ Test Completed
+              IQ Test Completed
             </Typography>
 
             <Typography
@@ -408,7 +340,7 @@ const GQSuccessPage = () => {
                 pb: "30px",
                 width: { md: "60%" },
                 color: "#02216F",
-                fontSize: { xs: "20px", md: "36px", lg:'36px', sm:"20px"  },
+                fontSize: { xs: "20px", md: "36px", lg: "36px", sm: "20px" },
                 fontWeight: "bold",
                 // width: {
                 //   lg: "30%",
@@ -418,7 +350,8 @@ const GQSuccessPage = () => {
                 // },
               }}
             >
-              Congratulations on successfully completing the test! You may have created a record, check your results via EMAIL
+              Congratulations on successfully completing the test! You may have
+              created a record, check your results via EMAIL
             </Typography>
             {/* <Typography
               sx={{
@@ -462,7 +395,7 @@ const GQSuccessPage = () => {
                   boxShadow: "2px 3px #fff",
                   borderRadius: { xs: "5px", md: "8px" },
                   textTransform: "none",
-                  width: {xs: "100%", lg: "30%"},
+                  width: { xs: "100%", lg: "30%" },
                   border: "1px solid #fff",
                   "&:hover": {
                     color: "#ffff",
@@ -500,12 +433,20 @@ const GQSuccessPage = () => {
                 WhatsApp
               </Button> */}
             </Stack>
-            
-              <BellCurveChart
-                userIQ={IQQuizState.IQscore}
-                onChartRendered={handleChartRendered}
-              />
-            
+
+            <BellCurveChart
+              userIQ={IQQuizState.IQscore}
+              onChartRendered={handleChartRendered}
+              sx={{
+                visibility: "hidden",
+                zIndex: -999,
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            />
+
             {/* <Typography
                 sx={{
                   textAlign: "center",

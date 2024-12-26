@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { Box, Paper, Stack } from "@mui/material";
 import CarouselBox from "./SubComponets/CarouselBox";
 import SignInBox from "./SubComponets/SignInBox";
@@ -7,9 +8,14 @@ import { Logo } from "../../Common";
 
 const AuthContainer = () => {
   const [isLoginPage, setisLoginPage] = useState(true);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handelPageSwitch = () => {
     setisLoginPage(!isLoginPage);
+  };
+
+  const handleLogoClick = () => {
+    navigate("/"); // Navigate to the desired path
   };
 
   return (
@@ -21,11 +27,11 @@ const AuthContainer = () => {
         width: { xs: "80vw", md: "70vw" },
         borderRadius: { xs: "8px", md: "16px" },
         p: 2,
-        position:'relative'
+        position: "relative",
       }}
     >
-      <Box sx={{position:'absolute'}}>
-        <Logo  />
+      <Box sx={{ position: "absolute", cursor: "pointer" }} onClick={handleLogoClick}>
+        <Logo />
       </Box>
       <Stack
         direction={{ xs: "column", md: "row" }}
@@ -34,7 +40,6 @@ const AuthContainer = () => {
           overflow: "hidden",
           backgroundSize: "cover",
           borderRadius: "8px",
-          //display: { xs: "none", md: "flex" },
           alignItems: "center",
           justifyContent: "center",
         }}
