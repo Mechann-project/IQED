@@ -34,6 +34,7 @@ const useHandleGamePage = ({ GameSessionId }) => {
   const navigate = useNavigate();
   const [isQuestionList, setisQuestionList] = useState(false);
   const [ResultDialog, setResultDialog] = useState(false);
+  const [quizAllCompleted, setQuizAllCompleted] = useState(false);
   const timerRef = useRef();
   const [Totalxp, setTotalxp] = useState(0);
   const socket = useSocket();
@@ -57,6 +58,23 @@ const useHandleGamePage = ({ GameSessionId }) => {
       navigate("/game");
     }
   }, [sessionError, navigate]);
+
+
+
+  console.log("setQuizAllCompleted", quizAllCompleted)
+  console.log("IQQuizState", GameSessionState)
+  useEffect(() => {
+    if (
+      GameSessionState.SocketId && GameSessionState.isLive &&
+      GameSessionState?.questionsList.length ==
+        Object.keys(GameSessionState.answeredQuestions).length
+    ) {
+      console.log("setQuizAllCompleted", quizAllCompleted)
+      toast.success("All Quiz Completed");
+      setQuizAllCompleted(true);
+      setisQuestionList(true);
+    }
+  }, [GameSessionState.answeredQuestions]);
 
   const handleOnPrevious = () => {
     dispatch(prevQuestion());
@@ -128,6 +146,7 @@ const useHandleGamePage = ({ GameSessionId }) => {
     isQuestionList,
     ResultDialog,
     progressValue,
+    quizAllCompleted,
     handleSubmit,
     handleQuit,
     handleOnNext,

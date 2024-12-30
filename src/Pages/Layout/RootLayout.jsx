@@ -21,7 +21,7 @@ const RootLayout = () => {
     console.log(location.pathname.toLowerCase());
 
     const path = location.pathname.toLowerCase();
-    if (path.startsWith("/iqquiz")) {
+    if (path.startsWith("/iqquiz") || path.startsWith("/quiz")|| path.startsWith("/match")) {
       return YellowBackgroundSVG;  
     }
     if (path.endsWith("/result")) {

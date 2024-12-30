@@ -28,7 +28,7 @@ export const generatePdf = async (name, score, imageData) => {
     const text = `Hello, ${name}!`;
     const textWidth = customFont.widthOfTextAtSize(text, fontSize);
     const x = (width - textWidth) / 2;
-    const y = 510;
+    const y = 550;
   
     page.drawText(text, {
       x,
@@ -58,7 +58,7 @@ export const generatePdf = async (name, score, imageData) => {
     const chartWidth = 500;
     const chartHeight = 280;
     const chartX = (width - chartWidth) / 2;
-    const chartY = (height - chartHeight) / 2 - 130;
+    const chartY = (height - chartHeight) / 2 - 90;
   
     page.drawImage(chartImageData, {
       x: chartX,
@@ -67,20 +67,7 @@ export const generatePdf = async (name, score, imageData) => {
       height: chartHeight,
     });
   
-    // // Add text at the bottom of the page
-    // const bottomText = "Thank you for taking the IQ test!";
-    // const bottomFontSize = 18;
-    // const bottomTextWidth = customFont.widthOfTextAtSize(bottomText, bottomFontSize);
-    // const bottomTextX = (width - bottomTextWidth) / 2;
-    // const bottomTextY = 40; // Set Y-position close to the bottom margin
-  
-    // page.drawText(bottomText, {
-    //   x: bottomTextX,
-    //   y: bottomTextY,
-    //   size: bottomFontSize,
-    //   color: rgb(1, 1, 1),
-    //   font: customFont,
-    // });
+    
   
     // Save the PDF document
     const pdfBytes = await pdfDoc.save();

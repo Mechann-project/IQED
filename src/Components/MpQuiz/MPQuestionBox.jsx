@@ -1,24 +1,52 @@
 import { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
-import { MPOptionButton, OptionButton } from "../../Common";
-import { RabbitIMG } from "../../assets/Image";
+import { Box, Modal, Typography } from "@mui/material";
+import { MPOptionButton } from "../../Common";
 
-const MPQuestionBox = ({ index, Question }) => {
-  const [fade, setFade] = useState(false);
+const QuestionBox = ({ index, Question }) => {
+  const [fade, setFade] = useState(false); 
+  const [currentQuestion, setCurrentQuestion] = useState(Question);
+  const [animationInProgress, setAnimationInProgress] = useState(false);
+  const [imageFade, setImageFade] = useState(false); 
+  const [open, setOpen] = useState(false);
+  const [visibleQuestion, setVisibleQuestion] = useState(Question);
+  const [visibleIndex, setvisibleIndex] = useState(index);
+  const [isFirstRender, setIsFirstRender] = useState(true); 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-  // Trigger transition when the question changes
   useEffect(() => {
-    setFade(false); // Reset to false before the next render
-    const timer = setTimeout(() => {
-      setFade(true); // Trigger the fade-in and scale transition after the question change
-    }, 800); // Delay for smooth transition
+    if (!animationInProgress) {
+      if (isFirstRender) {
+        setFade(true);
+        setImageFade(true);
+        setIsFirstRender(false); 
+      } else {
+        setAnimationInProgress(true);
+        setFade(false);
 
-    return () => clearTimeout(timer); // Clean up timeout on unmount or re-render
-  }, [index]); // Dependency on index ensures the effect runs when the question changes
+        const timer = setTimeout(() => {
+          setCurrentQuestion(Question); 
+          setImageFade(false); 
+          setTimeout(() => {
+            setVisibleQuestion(Question);
+            setvisibleIndex(index);
+            setImageFade(true); 
+            setFade(true); 
+            setAnimationInProgress(false); 
+          }, 500); 
+        }, 500); 
 
-  // Ensure Question and options exist before trying to render
-  if (!Question || !Question.options || Question.options.length === 0) {
-    return <Typography variant="h6" color="white">No options available for this question.</Typography>;
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [Question]);
+
+  if (!currentQuestion || !currentQuestion.options || currentQuestion.options.length === 0) {
+    return (
+      <Typography variant="h6" color="white">
+        No options available for this question.
+      </Typography>
+    );
   }
 
   return (
@@ -40,9 +68,9 @@ const MPQuestionBox = ({ index, Question }) => {
           justifyContent: "center",
           alignItems: "center",
           borderRadius: 2,
-          opacity: fade ? 1 : 0, 
-          transform: fade ? "scale(1)" : "scale(0.8)", 
-          transition: "opacity 0.5s ease, transform 0.5s ease", 
+          opacity: fade ? 1 : 0,
+          // transform: fade ? "scale(1)" : "scale(0.8)",
+          transition: "opacity 0.5s ease, transform 0.5s ease",
         }}
         gap={3}
       >
@@ -53,7 +81,7 @@ const MPQuestionBox = ({ index, Question }) => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            maxHeight: { xs: "40vh", md: "60vh" },
+            maxHeight: { xs: "40vh", md: "55vh" },
             minHeight: "20vh",
           }}
           gap={2}
@@ -67,18 +95,26 @@ const MPQuestionBox = ({ index, Question }) => {
               color: "white",
             }}
           >
-            Q{index + 1}) {Question.question}
+            Q{visibleIndex + 1}) {visibleQuestion.question}
           </Typography>
-          {Question.type === "text-image" && (
+
+          {currentQuestion.type === "text-image" && (
             <Box
               component="img"
-              src={RabbitIMG}
+              src={currentQuestion.questionImage}
               sx={{
-                width: "250px",
+                width: { lg: "250px", md: "200px", xs: "180px" },
                 height: "auto",
                 maxWidth: "100%",
+                mb: "4%",
+                borderRadius: "10px",
+                border: "4px solid #FFDA55",
+                boxShadow: "2px 3px #0b276b",
+                opacity: imageFade ? 1 : 0,
+                transition: "opacity 0.5s ease",
               }}
-              alt="Rabbit"
+              onClick={handleOpen}
+              alt="QuestionImage"
             />
           )}
         </Box>
@@ -94,19 +130,47 @@ const MPQuestionBox = ({ index, Question }) => {
             gap: { xs: 2, sm: 3, md: 4 },
           }}
         >
-          {Question.options.map((option, idx) => (
+          {currentQuestion.options.map((option, idx) => (
             <MPOptionButton
               key={idx}
               index={idx}
-              quiz={Question}
+              quiz={currentQuestion}
               type={option.type}
               content={option.content}
             />
           ))}
         </Box>
       </Box>
+
+      <Modal open={open} onClose={handleClose}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 2,
+            outline: "none",
+            borderRadius: "8px",
+            maxWidth: "90vw",
+            maxHeight: "90vh",
+          }}
+        >
+          <img
+            src={currentQuestion.questionImage}
+            alt={"img"}
+            style={{
+              width: "100%",
+              height: "auto",
+              borderRadius: "8px",
+            }}
+          />
+        </Box>
+      </Modal>
     </Box>
   );
 };
 
-export default MPQuestionBox;
+export default QuestionBox;

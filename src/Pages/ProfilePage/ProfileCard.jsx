@@ -24,6 +24,7 @@ const StatBox = ({ icon, value, label }) => (
       borderRadius: "10px",
       gap: 1,
       boxSizing: "border-box",
+      // m:'10px',
       p: "8px",
       bgcolor: "#fff",
       color: "#02216F",
@@ -153,7 +154,7 @@ const ProfileCard = ({ onSettingsClick }) => {
         </Grid>
       </Grid>
 
-      <Grid container alignItems="center" spacing={2} sx={{ flexGrow: 1 }}>
+      {/* <Grid container alignItems="center" spacing={2} sx={{ flexGrow: 1 }}>
         <Grid item xs={12}>
           <Box
             sx={{
@@ -163,7 +164,7 @@ const ProfileCard = ({ onSettingsClick }) => {
               gap: 2,
             }}
           >
-            {/* Divider on the left side */}
+           
             <Divider
               orientation="vertical"
               flexItem
@@ -216,15 +217,24 @@ const ProfileCard = ({ onSettingsClick }) => {
             </Box>
           </Box>
         </Grid>
-      </Grid>
+      </Grid> */}
 
       {/* Stats Section */}
-      <Grid container spacing={2} sx={{ flexGrow: 1, height: "100%" }}>
+      <Grid
+        container
+        spacing={3}
+        sx={{
+          flexGrow: 1,
+          height: "100%",
+          // p: "20px",
+          boxSizing: "border-box",
+        }}
+      >
         <Grid item xs={4}>
           <StatBox
-            icon={IQGemIcon}
+            icon={IQCoinIcon}
             value={UserData.earnings.xp}
-            label="Total IQ Coins"
+            label="XP+ Coins"
           />
         </Grid>
         <Grid item xs={4}>
@@ -235,7 +245,11 @@ const ProfileCard = ({ onSettingsClick }) => {
           />
         </Grid>
         <Grid item xs={4}>
-          <StatBox icon={IQRankIcon} value={UserData.earnings.rank} label="Rank" />
+          <StatBox
+            icon={IQRankIcon}
+            value={UserData.earnings.rank}
+            label="Rank"
+          />
         </Grid>
       </Grid>
     </Box>

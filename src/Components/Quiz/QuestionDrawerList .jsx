@@ -121,6 +121,7 @@ export default function QuestionDrawerList({
         <Divider
           sx={{ borderBottomWidth: 3, borderColor: "black", mb: "3%" }}
         />
+
         <Box
           sx={{
             bgcolor: "white",
@@ -177,33 +178,7 @@ export default function QuestionDrawerList({
             sx={{ borderBottomWidth: 3, borderColor: "black", mt: "3%" }}
           />
 
-          {/* <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              p: 2,
-            }}
-            gap={2}
-          >
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              onClick={handleQuit}
-              sx={{
-                fontWeight: "bold",
-                // backgroundColor: "#1A49BA",
-                backgroundColor: "red",
-                color: "#ffffff",
-                "&:hover": {
-                  backgroundColor: "Black",
-                },
-                boxShadow: "2px 3px #FFDA55",
-              }}
-            >
-              Leave
-            </Button>
-          </Box> */}
+          
         </Box>
       </Box>
     ),

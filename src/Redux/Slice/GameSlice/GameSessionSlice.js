@@ -3,6 +3,7 @@ import { GameApi } from "../../API/Game.Api";
 
 const initialState = {
   Players: [],
+  _id:null,
   SocketId: "",
   status: "",
   questionsList: [],
@@ -75,6 +76,7 @@ const gameSessionSlice = createSlice({
           (state, action) => {
             console.log("Get", action.payload);
             Object.assign(state, action.payload);
+            state.isLive = (action.payload.status != "completed");
           }
         )
         .addMatcher(

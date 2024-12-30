@@ -97,10 +97,7 @@ const GQSuccessPage = () => {
   //  await generateChart();
   //     const chartImage = canvasRef.current.toDataURL("image/png");
   const sendmail = async (name, score) => {
-    try {
-      const pdfBlob = await generatePdf(name, score, imageData);
-      if (pdfBlob) {
-        // console.log(contact, name, IQQuizState.IQscore);
+    // console.log(contact, name, IQQuizState.IQscore);
         // toast.promise(
         //   UploadFileMutation({
         //     file: imageData,
@@ -118,7 +115,10 @@ const GQSuccessPage = () => {
         //     error: <b>Could not Add Try again.</b>,
         //   }
         // );
+    try {
+      const pdfBlob = await generatePdf(name, score, imageData);
 
+      if (pdfBlob) {
         const downloadLink = document.createElement("a");
         const pdfUrl = URL.createObjectURL(pdfBlob);
         downloadLink.href = pdfUrl;
@@ -134,6 +134,20 @@ const GQSuccessPage = () => {
       } else {
         console.error("Failed to generate the PDF.");
       }
+
+      // if (imageData) {
+      //   const imageDownloadLink = document.createElement("a");
+      //   imageDownloadLink.href = imageData; // Assuming `imageData` is a base64 data URL
+      //   imageDownloadLink.download = `${name}_Chart_Image.png`;
+  
+      //   // Trigger PNG download
+      //   imageDownloadLink.click();
+      //   console.log("Image downloaded successfully.");
+      // } else {
+      //   console.error("No image data available for download.");
+      // }
+
+
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
@@ -436,6 +450,7 @@ const GQSuccessPage = () => {
 
             <BellCurveChart
               userIQ={IQQuizState.IQscore}
+              // userIQ={83.13}
               onChartRendered={handleChartRendered}
               sx={{
                 visibility: "hidden",

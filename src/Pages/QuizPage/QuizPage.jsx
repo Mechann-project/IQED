@@ -176,6 +176,7 @@ const QuizPage = () => {
       >
         <KeyboardDoubleArrowRight />
       </Button>
+      
       <QuestionBox
         index={quizState?.currentQuestionIndex}
         Question={quizState?.questionsList[quizState?.currentQuestionIndex]}

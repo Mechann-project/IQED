@@ -25,7 +25,7 @@ import {
 } from "@mui/material";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import { useSelector } from "react-redux";
-import { CUP,  IQCoinIcon, MathBannerIMG, S_Medal } from "../../assets";
+import { CUP, IQCoinIcon, MathBannerIMG, S_Medal } from "../../assets";
 import CloseIcon from "@mui/icons-material/Close";
 import PeopleIcon from "@mui/icons-material/People";
 import { MPRewardCard, VSCard } from "../Cards";
@@ -45,7 +45,7 @@ const MPResultDialogBox = ({
   const [OppPlayer, setOppPlayer] = useState(null);
   const [ResultMessage, setResultMessage] = useState(null);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (GameSessionState?.status === "completed") {
       if (GameSessionState?.Winner !== null) {
         if (GameData.index === GameSessionState?.Winner) {
@@ -62,18 +62,20 @@ const MPResultDialogBox = ({
   console.log(OppPlayer);
   const leaderboardData = [
     {
-      name: GameData?.Players[0]?.Name,
-      score: SessionState.score,
-      time: SessionState.timeTaken,
-      status: ResultMessage === "You Win" ? "Winner" : "Runner",
+      name: GameData?.Players?.[0]?.Name || "Unknown",
+      score: SessionState.score || 0,
+      time: SessionState.timeTaken || 0,
+      status: ResultMessage === "Winner" ? "Winner" : "Runner",
     },
-    {
-      name: GameData?.Players[1]?.Name,
-      score: OppPlayer.score || "0",
-      time: OppPlayer.timeTaken || "00:00",
-      status: ResultMessage === "You Win" ? "Winner":"Runner"
-    },
-  ];
+    OppPlayer
+      ? {
+          name: OppPlayer?.Name || "Unknown",
+          score: OppPlayer?.score || 0,
+          time: OppPlayer?.timeTaken || "00:00",
+          status: ResultMessage === "Winner" ? "Runner" : "Winner",
+        }
+      : null,
+  ].filter(Boolean); 
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -120,7 +122,7 @@ const MPResultDialogBox = ({
 
   const LeaderboardRow = ({ player }) => {
     let medalSrc = S_Medal;
-    // if (ResultMessage === "You Win") medalSrc = G_Medal; 
+    // if (ResultMessage === "You Win") medalSrc = G_Medal;
 
     return (
       <Box
@@ -224,7 +226,7 @@ const MPResultDialogBox = ({
           "& .MuiDialog-paper": {
             // backgroundColor: "transparent",
             boxShadow: "none",
-            
+
             // border:'1px solid black'
           },
         }}

@@ -35,6 +35,9 @@ const useHandleIQQuizPage = () => {
       navigate("/");
     }
   }, [sessionError, navigate]);
+
+
+  
   console.log("setQuizAllCompleted", quizAllCompleted)
   console.log("IQQuizState", IQQuizState)
   useEffect(() => {

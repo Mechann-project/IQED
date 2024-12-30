@@ -35,17 +35,17 @@ const IQQuizPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
 
-  useEffect(() => {
-    const unloadCallback = (event) => {
-      event.preventDefault();
-      event.returnValue = "";
-      return "";
-    };
+  // useEffect(() => {
+  //   const unloadCallback = (event) => {
+  //     event.preventDefault();
+  //     event.returnValue = "";
+  //     return "";
+  //   };
 
-    window.addEventListener("beforeunload", unloadCallback);
+  //   window.addEventListener("beforeunload", unloadCallback);
 
-    return () => window.removeEventListener("beforeunload", unloadCallback);
-  }, []);
+  //   return () => window.removeEventListener("beforeunload", unloadCallback);
+  // }, []);
 
   const {
     IQQuizState,
@@ -65,6 +65,12 @@ const IQQuizPage = () => {
     const elem = document.documentElement;
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen();
     }
   };
 

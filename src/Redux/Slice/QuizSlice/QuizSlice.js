@@ -14,6 +14,7 @@ const initialState = {
   isLive: true,
   timeTaken: 0,
   Totalxp: 0,
+  
 };
 
 const QuizSlice = createSlice({

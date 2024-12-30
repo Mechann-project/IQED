@@ -55,8 +55,8 @@ const TotalQuests = () => {
         }}
       >
         <Tab label="Quests" />
-        <Tab label="Achievement" />
         <Tab label="Friends Quests" />
+        <Tab label="Achievements" />
       </Tabs>
 
       {/* Content for Daily Quests */}
@@ -93,8 +93,8 @@ const TotalQuests = () => {
         </Box>
       )}
 
-      {/* Content for Friends Quests */}
-      {selectedTab === 1 && (
+    
+      {selectedTab === 2 && (
         <Box>
           <Grid container spacing={2} padding={"20px"}>
             {UserData?.AchivedQuest?.map((quest, index) => (
@@ -113,8 +113,8 @@ const TotalQuests = () => {
         </Box>
       )}
 
-      {/* Content for Achievement */}
-      {selectedTab === 2 && (
+    
+      {selectedTab === 1 && (
         <Box>
           <Grid container spacing={2} padding={"20px"}>
             <Grid item xs={12} sm={6}>

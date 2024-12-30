@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { answerQuestion, nextQuestion } from "../../Redux/Slice/GameSlice/GameSessionSlice";
 
-const IQOptionButton = ({ quiz, type = "text", content, index }) => {
+const MPOptionButton = ({ quiz, type = "text", content, index }) => {
    const GameSessionState = useSelector((state) => state.GameSessionState);
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -97,4 +97,4 @@ const IQOptionButton = ({ quiz, type = "text", content, index }) => {
   );
 };
 
-export default IQOptionButton;
+export default MPOptionButton;
