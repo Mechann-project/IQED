@@ -89,7 +89,7 @@ const useHandleQuizPage = () => {
       }).unwrap().then(() => {
         let xp = 0
         let offset=0
-        offset=  Math.floor(((quizState.timeTaken/(20*60))*100)/50)
+        offset=  Math.floor(((quizState.timeTaken/(20*60))*100))
         xp += quizState.score *offset
         setTotalxp(xp);
         dispatch(submitQuiz());
