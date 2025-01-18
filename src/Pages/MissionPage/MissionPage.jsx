@@ -11,7 +11,7 @@ import { useGetUserQuery } from "../../Redux/API/User.Api";
 import { LoadingScreen } from "../../Components";
 const MissionPage = () => {
   const { data: Course, isLoading } = useGetCoursesQuery();
-  const {data:userdata, isLoading:UserLoad} = useGetUserQuery()
+  const { data: userdata, isLoading: UserLoad } = useGetUserQuery()
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
@@ -23,20 +23,20 @@ const MissionPage = () => {
   useEffect(() => {
     const sectionFromUrl = new URLSearchParams(location.search).get("section");
     if (sectionFromUrl && Course) {
-      
+
       setSelectedSection(Course.units[0] || null); // Reset to null if section not found
     } else {
       setSelectedSection(null); // Reset to null if no section in URL
     }
   }, [location, Course]);
   console.log(Course?.units[0]?.lessons[0]?.topics[0]);
-  
+
   // Breadcrumb paths
   const breadcrumbPath = selectedSection
     ? [
-        { label: "Missions", to: null, onClick: () => handleReturnToSections() },
-        { label: `${selectedSection.name}`, to: null },
-      ]
+      { label: "Missions", to: null, onClick: () => handleReturnToSections() },
+      { label: `${selectedSection.name}`, to: null },
+    ]
     : [{ label: "Missions", to: null }];
 
   // Handler to select a section
@@ -51,7 +51,7 @@ const MissionPage = () => {
   };
 
   if (isLoading) {
-    return <LoadingScreen/>; // Add a loading indicator
+    return <LoadingScreen />; // Add a loading indicator
   }
 
 
@@ -89,23 +89,25 @@ const MissionPage = () => {
         }}
       >
         {!selectedSection && !UserLoad ? (
-          Course?.units.map((lesson,index) => (
+          Course?.units.map((lesson, index) => (
             <Grid item xs={12} lg={12} key={lesson._id}>
               <Levelcard
                 level={{
                   level: index,
                   total: lesson?.lessons?.length,
-                  progress:(UserData.CourseProgress?.currentLesson/lesson?.lessons?.length)/100, // Update based on your logic
+                  progress: (UserData.CourseProgress?.currentLesson / lesson?.lessons?.length) / 100, // Update based on your logic
                   image: trophy, // Placeholder for an image // Add logic for active/inactive sections
                   description: lesson?.name,
                 }}
-                active={index<=UserData.CourseProgress.currentUnit}
+                active={index <= UserData.CourseProgress.currentUnit}
                 onSelect={() => handleSelectSection(index)}
               />
             </Grid>
           ))
         ) : (
-          <LevelDetails />
+          <Grid item xs={12} lg={12} >
+            <LevelDetails />
+          </Grid>
         )}
       </Box>
     </Box>

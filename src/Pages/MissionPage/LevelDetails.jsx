@@ -217,6 +217,7 @@ function LevelDetails() {
               gap: "20px",
               position: "relative",
               overflow: "hidden",
+              
             }}
           >
             <Box
