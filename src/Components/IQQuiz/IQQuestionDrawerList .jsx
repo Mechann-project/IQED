@@ -29,7 +29,7 @@ export default function IQQuestionDrawerList({
     if (index === currentQuestionIndex) return "1px solid #FFDA55";
     return "";
   };
-  console.log("sessionState", sessionState);
+
   const DrawerList = useMemo(
     () => (
       <Box
@@ -117,7 +117,28 @@ export default function IQQuestionDrawerList({
           </Button>
         </Box>
 
-       
+        {/* {quizAllCompleted && (
+          <Box sx={{ p: 2 }}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              onClick={handleSubmit}
+              sx={{
+                fontWeight: "bold",
+
+                backgroundColor: "#1A49BA",
+                color: "#ffffff",
+                "&:hover": {
+                  backgroundColor: "Black",
+                },
+                boxShadow: "2px 3px #FFDA55",
+              }}
+            >
+              Submit
+            </Button>
+          </Box>
+        )} */}
 
         <Divider
           sx={{ borderBottomWidth: 3, borderColor: "black", mb: "3%" }}

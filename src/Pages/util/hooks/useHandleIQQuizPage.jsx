@@ -36,25 +36,18 @@ const useHandleIQQuizPage = () => {
     }
   }, [sessionError, navigate]);
 
-
-  
-  console.log("setQuizAllCompleted", quizAllCompleted)
-  console.log("IQQuizState", IQQuizState)
   useEffect(() => {
     if (
       IQQuizState._id &&
       IQQuizState?.questionsList.length ==
         Object.keys(IQQuizState.answeredQuestions).length
     ) {
-      console.log("setQuizAllCompleted", quizAllCompleted)
       toast.success("All Quiz Completed");
       setQuizAllCompleted(true);
       setisQuestionList(true);
     }
   }, [IQQuizState.answeredQuestions]);
-  
-  
-  
+  console.log("IQQuizState",IQQuizState);
   console.log("sessionData",sessionData);
 
   const handleOnPrevious = () => {
@@ -73,8 +66,9 @@ const useHandleIQQuizPage = () => {
     } else {
       toast.error("Session Expire");
       sessionStorage.removeItem("IQSessionID")
+      sessionStorage.removeItem("IQUser")
     }
-    navigate("/");
+    navigate("/",{ replace: true });
   };
 
   const handleSubmit = async () => {
@@ -91,12 +85,12 @@ const useHandleIQQuizPage = () => {
         .then(() => {
           dispatch(submitQuiz());
           setResultDialog(true);
-          toast.success("session Complated");
+          toast.success("Session Completed");
           navigate(`/IQquiz/${IQQuizState._id}/result`, { replace: true });
         });
     } catch (error) {
       console.error("Failed to update quiz session:", error);
-      toast.error("sorry session not save");
+      toast.error("Sorry session not save");
     }
     // document.exitFullscreen();
   };

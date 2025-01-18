@@ -4,7 +4,6 @@ import {
   Outlet,
   Route,
 } from "react-router-dom";
-
 import RootLayout from "../Pages/Layout/RootLayout";
 import {
   LandingPage,
@@ -31,12 +30,10 @@ import { OnLoadLobby } from "../Pages/GamePage/MatchPage/MatchLobby";
 const basename = import.meta.env.BASE_URL;
 export const Routers = createBrowserRouter(
   createRoutesFromElements(
-   
-      <Route path="/" element={<RootLayout />}>
-        <Route index element={<LandingPage />} />
-        <Route path="auth" element={<AuthPage />} />
-
-        <Route element={<AuthLayout />}>
+    <Route path="/" element={<RootLayout />}>
+      <Route index element={<LandingPage />} />
+      <Route path="auth" element={<AuthPage />} />
+      <Route element={<AuthLayout />}>
         <Route element={<UserLayout />}>
           <Route path="explore" element={<ExplorePage />} />
           <Route path="missions" element={<MissionPage />} />
@@ -65,17 +62,17 @@ export const Routers = createBrowserRouter(
           <Route path=":GameSessionId" element={<MPQuizPage />} />
         </Route>
       </Route>
-        <Route path="IQquiz" element={<Outlet />}>
-          <Route path=":sessionId" element={<IQQuizLayout />}>
-            <Route index element={<IQQuizPage />} />
-            <Route path="result" element={<GQSuccessPage />} />
-          </Route>
+      <Route path="IQquiz" element={<Outlet />}>
+        <Route path=":sessionId" element={<IQQuizLayout />}>
+          <Route index element={<IQQuizPage />} />
+          <Route path="result" element={<GQSuccessPage />} />
         </Route>
-        <Route path="*" element={<PageNotFound/>} />
       </Route>
-  
+      <Route path="*" element={<PageNotFound />} />
+    </Route>
+
   )
   // ,
   // { basename }
- 
-) ;
+
+);

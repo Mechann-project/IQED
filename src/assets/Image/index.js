@@ -14,8 +14,10 @@ import LetsGo from "./Others/letsGo.png";
 import TShirtPNG from "./Others/t-shirt.png";
 import TShirtImg from "./Others/t-shirt.jpg";
 import white from "./Others/whiite.png";
+import launch from "./Others/Launch.gif";
 export {
   IQEDLogo,
+  launch,
   IQEDIcon,
   IQGemIcon,
   IQCoinIcon,

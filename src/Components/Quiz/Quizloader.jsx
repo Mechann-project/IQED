@@ -8,6 +8,8 @@ const MPQuizloader = ({ onComplete }) => {
   const countdownRef = useRef(null);
   const audioRef = useRef(null);
   const countdownImages = [three, two, one, LetsGo];
+
+
   const playSound = (num) => {
  
     // if (num > 0) {
@@ -21,6 +23,8 @@ const MPQuizloader = ({ onComplete }) => {
       audiosound.play();
     }
   };
+
+  
   useEffect(() => {
     
 
