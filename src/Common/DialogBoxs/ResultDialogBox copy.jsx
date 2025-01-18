@@ -32,46 +32,19 @@ const ResultDialogBox = ({
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${String(minutes).padStart(2, '0')} : ${String(remainingSeconds).padStart(2, '00')}`;
+    return `${String(minutes).padStart(2, '0')} : ${String(remainingSeconds).padStart(2, '0')}`;
   }
 
-  // Time-based coin logic
-  const totalTimeInMinutes  = SessionState.questionCount * 60; // 3 minutes = 180 seconds (Total time for the test)
-  const timeTakenInMinutes = SessionState.timeTaken / 60; // User's time taken to complete the test in minutes
 
-  // Remaining time in minutes, rounded down
-  const remainingTimeInMinutes = timeTakenInMinutes;
-  console.log("remainingTimeInMinutes",remainingTimeInMinutes)
-  const roundedRemainingTime = Math.floor(remainingTimeInMinutes);
-
-  // Coins per correct answer
-  const coinsPerCorrectAnswer = 2;
-  const correctAnswers = SessionState.score;
-
-  // Total coins from correct answers
-  const baseCoinsForCorrectAnswers = correctAnswers * coinsPerCorrectAnswer;
-
-  // Total coins earned including the rounded remaining time
-  const totalCoins = baseCoinsForCorrectAnswers + roundedRemainingTime;
-
-  // Card data
   const cardData = [
     {
       title: "Time Taken",
-      leftText: formatTime( totalTimeInMinutes - timeTakenInMinutes*60),
-      coinValue: `+${roundedRemainingTime} min`,
+      leftText: formatTime(SessionState.questionCount*60 -SessionState.timeTaken),
+      coinValue: "x"+(100-Math.floor(((SessionState.timeTaken/(20*60))*100))),
     },
-    {
-      title: "Answered",
-      leftText: SessionState.score,
-      coinValue: `${SessionState.score} x ${coinsPerCorrectAnswer}`,
-    },
-    {
-      title: "Total Coins Earned",
-      coinValue: totalCoins,
-    },
+    { title: "Answered", leftText: SessionState.score, coinValue: SessionState.score +" x "+(100-Math.floor(((SessionState.timeTaken/(20*60))*100))) },
+    { title: "Total Coins Earned", coinValue: SessionState.score * (100-Math.floor(((SessionState.timeTaken/(20*60))*100))) },
   ];
-
   return (
     <Dialog
       open={open}

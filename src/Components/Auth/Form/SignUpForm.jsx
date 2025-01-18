@@ -1,10 +1,10 @@
 import { useCallback, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button, Box, Input, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Button, Box, Input, Typography, Link } from "@mui/material";
 import { Formik, Form, FormikProvider } from "formik";
 import { SignUpvalidSchema } from "../Schema/AuthSchema";
 import { FormTextField } from "../../../Common";
-import {useRegisterMutation,useCheckEmailExistsMutation,useSendEmailOTPMutation,useVerifyEmailMutation} from "../../../Redux/API/Auth.Api";
+import { useRegisterMutation, useCheckEmailExistsMutation, useSendEmailOTPMutation, useVerifyEmailMutation } from "../../../Redux/API/Auth.Api";
 import toast from "react-hot-toast";
 
 
@@ -12,7 +12,7 @@ const steps = ["Profile", "Contact Info", "Password"];
 
 const SignUpForm = ({ PageSwitch }) => {
   const [sendEmailOTP, { isLoading: isSendingOTP }] = useSendEmailOTPMutation();
-  const [verifyEmailOTP, { isLoading: isVerifyEmailOTP }] =useVerifyEmailMutation();
+  const [verifyEmailOTP, { isLoading: isVerifyEmailOTP }] = useVerifyEmailMutation();
   const [AddUser] = useRegisterMutation();
   const [activeStep, setActiveStep] = useState(0);
   const [otpSent, setOtpSent] = useState(false);
@@ -53,7 +53,7 @@ const SignUpForm = ({ PageSwitch }) => {
         }
       } else {
         if (activeStep === steps.length - 1) {
-          alert(JSON.stringify(values, null, 2));
+          // alert(JSON.stringify(values, null, 2));
           toast.promise(AddUser(values).unwrap(), {
             loading: "Send...",
             success: () => {
@@ -160,7 +160,17 @@ const SignUpForm = ({ PageSwitch }) => {
                     <Button
                       type="button"
                       variant="contained"
-                      color="primary"
+                      sx={{
+                        fontWeight: 'bold',
+                        backgroundColor: '#1A49BA',
+                        color: '#ffffff',
+                        mt:'10px',
+                        '&:hover': {
+                          backgroundColor: 'Black',
+                          
+                        },
+                        boxShadow: '2px 3px #FFDA55',
+                      }}
                       onClick={() => sendOtp(formik.values.email)}
                     >
                       {isSendingOTP ? "SENDING..." : "SEND"}
@@ -216,16 +226,31 @@ const SignUpForm = ({ PageSwitch }) => {
                       component="p"
                       sx={{ fontSize: "12px", fontWeight: "bold" }}
                     >
-                      By clicking 'Next,' you agree to our
-                      <Link> Terms and Conditions.</Link>
+                      By clicking 'Next,' you agree to our 
+                      <Link component="button" onClick="#" sx={{ marginLeft: "4px"}}> Terms and Conditions.</Link>
                     </Typography>
                   </Box>
-
+                <Box sx={{
+                  display:'flex',
+                  flexGrow:1,
+                  flexDirection:'row-reverse',
+                  gap:'20px'
+                }}>
                   {activeStep === steps.length - 1 ? (
                     <Button
                       type="submit"
                       variant="contained"
-                      color="primary"
+                      fullWidth
+                      sx={{
+                        fontWeight: 'bold',
+                        backgroundColor: '#1A49BA',
+                        color: '#ffffff',
+                        '&:hover': {
+                          backgroundColor: 'Black',
+                          
+                        },
+                        boxShadow: '2px 3px #FFDA55',
+                      }}
                       disabled={formik.isSubmitting}
                       onClick={formik.handleSubmit}
                     >
@@ -235,24 +260,47 @@ const SignUpForm = ({ PageSwitch }) => {
                     <Button
                       type="button"
                       variant="contained"
-                      color="primary"
+                      fullWidth
+                      sx={{
+                        fontWeight: 'bold',
+                        backgroundColor: '#1A49BA',
+                        color: '#ffffff',
+                        '&:hover': {
+                          backgroundColor: 'Black',
+                          
+                        },
+                        boxShadow: '2px 3px #FFDA55',
+                      }}
                       onClick={formik.handleSubmit}
                     >
                       Next
                     </Button>
                   )}
+                  {activeStep === 0 ?
+                    null : <Button
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      variant="contained"
+                      fullWidth
+                      sx={{
+                        fontWeight: 'bold',
+                        backgroundColor: '#1A49BA',
+                        color: '#ffffff',
+                        '&:hover': {
+                          backgroundColor: 'Black',
+                          
+                        },
+                        boxShadow: '2px 3px #FFDA55',
+                      }}
+                    >
+                      Back
+                    </Button>}
 
-                  <Button
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    variant="contained"
-                  >
-                    Back
-                  </Button>
+                    </Box>
                   <Typography sx={{ textAlign: "center", fontSize: "12px" }}>
                     I have an account?{" "}
                     <span>
-                      <Link onClick={PageSwitch}>SignIn</Link>
+                      <Link component="button" sx={{ fontSize: "12px", textDecoration: 'none' }} onClick={PageSwitch}>SignIn</Link>
                     </span>
                   </Typography>
                 </Box>

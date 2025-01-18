@@ -6,7 +6,7 @@ export const SignUpvalidSchema = [
     userName: yup
       .string()
       .required("UserName is required")
-      .max(8, "UserName must be at least 8 characters long"),
+      .min(8, "UserName must be at least 8 characters long"),
     name: yup.string().required(),
     age: yup
       .string()

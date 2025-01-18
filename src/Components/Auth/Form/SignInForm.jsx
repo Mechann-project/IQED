@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button, Box, Input, Typography } from "@mui/material";
+import {useNavigate } from "react-router-dom";
+import { Button, Box, Input, Typography, Link } from "@mui/material";
 import { Formik, Form, FormikProvider } from "formik";
 import { SignInvalidSchema } from "../Schema/AuthSchema";
 import { FormTextField, InputDialogBox } from "../../../Common";
@@ -93,7 +93,7 @@ const SignInForm = ({ PageSwitch }) => {
                       justifyContent: "flex-end",
                     }}
                   >
-                    <Link onClick={() => setOpen(true)}>
+                    <Link component="button" onClick={() => setOpen(true)} sx={{fontSize: "12px",textDecoration: 'none' }}>
                       Forgot your password?
                     </Link>
                   </Box>
@@ -101,6 +101,17 @@ const SignInForm = ({ PageSwitch }) => {
                     type="submit"
                     variant="contained"
                     color="primary"
+                    sx={{
+                      fontWeight: 'bold',
+                      backgroundColor: '#1A49BA',
+                      color: '#ffffff',
+                      '&:hover': {
+                        backgroundColor: 'Black',
+                        transition: 'transform 0.3s ease-in-out',
+                        transform: 'translateY(-5px)',
+                      },
+                      boxShadow: '2px 3px #FFDA55',
+                    }}
                     disabled={formik.isSubmitting}
                     onClick={formik.handleSubmit}
                   >
@@ -109,7 +120,7 @@ const SignInForm = ({ PageSwitch }) => {
                   <Typography sx={{ textAlign: "center", fontSize: "12px" }}>
                     Don't have an account?{" "}
                     <span>
-                      <Link onClick={PageSwitch}>SignUp</Link>
+                      <Link component="button" sx={{fontSize: "12px",textDecoration: 'none' }} onClick={PageSwitch}>SignUp</Link>
                     </span>
                   </Typography>
                 </Box>

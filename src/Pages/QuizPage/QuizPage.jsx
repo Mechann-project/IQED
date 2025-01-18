@@ -96,6 +96,9 @@ const QuizPage = () => {
 
   useEffect(() => {
     const handleVisibilityChange = () => {
+      if (ResultDialog) {
+        return;
+      }
       if (document.hidden) {
         if (tabSwitchCount === 0) {
           setWarningMessage(
@@ -118,7 +121,7 @@ const QuizPage = () => {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [tabSwitchCount]);
+  }, [tabSwitchCount,ResultDialog]);
 
   const handleModalClose = () => {
     if (tabSwitchCount === 1) {
