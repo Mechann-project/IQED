@@ -37,13 +37,13 @@ const ResultDialogBox = ({
 
 
   const cardData = [
-    { title: "Answered", leftText: SessionState.score, coinValue: SessionState.score * (100-Math.floor(((session.timeTaken/(20*60))*100))) },
     {
       title: "Time Taken",
       leftText: formatTime(SessionState.timeTaken),
-      coinValue: "x"+(100-Math.floor(((session.timeTaken/(20*60))*100))),
+      coinValue: "x"+(100-Math.floor(((SessionState.timeTaken/(20*60))*100))),
     },
-    { title: "Total Coins Earned", coinValue: SessionState.score * (100-Math.floor(((session.timeTaken/(20*60))*100))) },
+    { title: "Answered", leftText: SessionState.score, coinValue: SessionState.score +" x "+(100-Math.floor(((SessionState.timeTaken/(20*60))*100))) },
+    { title: "Total Coins Earned", coinValue: SessionState.score * (100-Math.floor(((SessionState.timeTaken/(20*60))*100))) },
   ];
   return (
     <Dialog

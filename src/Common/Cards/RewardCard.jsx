@@ -98,7 +98,7 @@ const RewardCard = ({ title, leftText, coinValue }) => {
               fontSize: isSm ? "16px" : null,
             }}
           >
-            +{coinValue}
+            {coinValue}
           </Typography>
         </Box>
       </Box>
