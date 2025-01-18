@@ -25,6 +25,7 @@ import { resetQuiz } from "../../Redux/Slice/QuizSlice/QuizSlice";
 import toast from "react-hot-toast";
 import { LoadingScreen } from "../../Components";
 import { useGetCoursesQuery } from "../../Redux/API/Career.Api";
+import LockIcon from '@mui/icons-material/Lock';
 
 function QontoStepIcon(props) {
   const { active, completed, className } = props;
@@ -195,7 +196,7 @@ function LevelDetails() {
       toast.error("sorry session not save");
     }
   };
- 
+
   // Generate dynamic steps based on fetched lessons and topics
   return (
     <>
@@ -217,7 +218,7 @@ function LevelDetails() {
               gap: "20px",
               position: "relative",
               overflow: "hidden",
-              
+              filter: lessonIndex <= UserData?.CourseProgress?.currentLesson ? "none" : "grayscale(100%)",
             }}
           >
             <Box
@@ -286,33 +287,50 @@ function LevelDetails() {
                   <Stepper
                     alternativeLabel
                     activeStep={
-                      lessonIndex==UserData?.CourseProgress?.currentLesson? UserData?.CourseProgress?.currentTopic:null 
+                      (lessonIndex < UserData?.CourseProgress?.currentLesson)
+                        ? Course.units[UserData?.CourseProgress?.currentUnit].lessons[UserData?.CourseProgress?.currentLesson].topics.length - 1 : (lessonIndex == UserData?.CourseProgress?.currentLesson) ? UserData?.CourseProgress?.currentTopic : null
                     }
                     connector={<ColorlibConnector />}
                   >
                     {lesson?.topics?.map((topic, index) => (
                       <Step
                         key={topic._id}
-                        onClick={() =>
-                          handleQuizCraetion(
-                            sectionIndex,
-                            lessonIndex,
-                            index,
-                            topic._id
-                          )
+
+                        onClick={() => {
+                          if (index <= UserData?.CourseProgress?.currentTopic && lessonIndex == UserData?.CourseProgress?.currentLesson) {
+                            handleQuizCraetion(
+                              sectionIndex,
+                              lessonIndex,
+                              index,
+                              topic._id
+                            )
+                          }
+                          else {
+                            toast.error(
+                              <Box style={{ display: 'flex', alignItems: 'center' }}>
+                                <LockIcon style={{ marginRight: '8px', color: 'inherit' }} />
+                                Topic Locked
+                              </Box>,
+                              {
+                                icon: false,
+                              }
+                            );
+                          }
+                        }
+
                         }
                       >
                         <StepLabel StepIconComponent={ColorlibStepIcon}>
 
                           <Typography
-                            variant="body1" 
+                            variant="body1"
                             sx={{
                               fontWeight: "bold",
                               textAlign: "center",
-                              color: "#333", 
-                              fontSize: "14px", 
-                              mx:'10px',
-                              px:'10px'
+                              color: "#333",
+                              fontSize: "14px",
+                              mx: '10px',
+                              px: '10px'
                             }}
                           >
                             {topic.name}
@@ -338,25 +356,38 @@ function LevelDetails() {
                 variant="body"
                 sx={{
                   fontWeight: "bold",
-                  color: "WHITE",
+                  color: "white",
                   px: "20px",
                   py: "6px",
                   bgcolor: "#1A49BA",
-                  borderRadius: "20px 0px 0px 0px",
+                  borderRadius: "20px 0 0 0",
                   alignSelf: "flex-end",
                 }}
               >
-                {(UserData?.CourseProgress?.currentTopic+1)+
-                  "/" +
-                  lesson?.topics.length}
+                {(() => {
+                  const totalTopics = lesson?.topics.length || 0;
+                  const currentTopics =
+                    lessonIndex < UserData?.CourseProgress?.currentLesson
+                      ? Course.units[sectionIndex]?.lessons[lessonIndex]?.topics.length || 0
+                      : lessonIndex === UserData?.CourseProgress?.currentLesson
+                        ? UserData?.CourseProgress?.currentTopic || 0
+                        : 0;
+                  return `${currentTopics}/${totalTopics}`;
+                })()}
               </Typography>
+
               <LinearProgress
                 variant="determinate"
-                value={
-                  (UserData?.CourseProgress.currentTopic/
-                    lesson?.topics?.length) *
-                  100
-                }
+                value={(() => {
+                  const totalTopics = Course.units[sectionIndex]?.lessons[lessonIndex]?.topics.length || 1; // Avoid division by 0
+                  const completedTopics =
+                    lessonIndex < UserData?.CourseProgress?.currentLesson
+                      ? totalTopics
+                      : lessonIndex === UserData?.CourseProgress?.currentLesson
+                        ? UserData?.CourseProgress?.currentTopic || 0
+                        : 0;
+                  return (completedTopics / totalTopics) * 100;
+                })()}
                 sx={{
                   height: "10px",
                   bgcolor: "#FFDA55",
@@ -366,6 +397,7 @@ function LevelDetails() {
                   },
                 }}
               />
+
             </Box>
           </Box>
         ))}

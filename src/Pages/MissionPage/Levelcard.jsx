@@ -143,7 +143,6 @@ const LevelCard = ({
         sx={{
           display: "flex",
           position: "absolute",
-
           flexDirection: "column",
           bottom: 0,
           left: 0,

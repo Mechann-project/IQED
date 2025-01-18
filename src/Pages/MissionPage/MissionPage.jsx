@@ -99,7 +99,7 @@ const MissionPage = () => {
                   image: trophy, // Placeholder for an image // Add logic for active/inactive sections
                   description: lesson?.name,
                 }}
-                active={index <= UserData.CourseProgress.currentUnit}
+                active={index <= UserData?.CourseProgress?.currentUnit}
                 onSelect={() => handleSelectSection(index)}
               />
             </Grid>
