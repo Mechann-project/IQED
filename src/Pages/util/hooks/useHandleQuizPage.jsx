@@ -88,8 +88,9 @@ const useHandleQuizPage = () => {
         timeTaken:currentTime
       }).unwrap().then(() => {
         let xp = 0
-        xp += quizState.score *2 
-        xp +=  Math.floor((25 - (quizState.timeTaken/60)) * 1)
+        let offset=0
+        offset=  Math.floor(((quizState.timeTaken/(20*60))*100)/50)
+        xp += quizState.score *offset
         setTotalxp(xp);
         dispatch(submitQuiz());
         setResultDialog(true);
