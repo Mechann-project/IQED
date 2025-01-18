@@ -37,11 +37,11 @@ const ResultDialogBox = ({
 
 
   const cardData = [
-    { title: "Answered", leftText: SessionState.score, coinValue: SessionState.score * Math.floor(((quizState.timeTaken/(20*60))*100)/50) },
+    { title: "Answered", leftText: SessionState.score, coinValue: SessionState.score * Math.floor(((SessionState.timeTaken/(20*60))*100)/50) },
     {
       title: "Time Taken",
       leftText: formatTime(SessionState.timeTaken),
-      coinValue: Math.floor(((quizState.timeTaken/(20*60))*100)/50)+"x",
+      coinValue: Math.floor(((SessionState.timeTaken/(20*60))*100)/50)+"x",
     },
     { title: "Total Coins Earned", coinValue: Totalxp },
   ];
