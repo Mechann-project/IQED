@@ -40,7 +40,6 @@ const RootLayout = () => {
     >
       <SocketProvider>
        <Outlet />
-       
       </SocketProvider> 
             <Toaster position="top-center" reverseOrder={false} />
     </DynamicBackground>

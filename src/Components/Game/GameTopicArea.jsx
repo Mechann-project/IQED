@@ -24,6 +24,7 @@ import { useSocket } from "../../Socket/SocketContext";
 import { useDispatch, useSelector } from "react-redux";
 import { ResetGame, setPlayers, setRoomId } from "../../Redux/Slice/GameSlice/GameSlice";
 import { resetQuiz } from "../../Redux/Slice/GameSlice/GameSessionSlice";
+import { useGetCoursesQuery } from "../../Redux/API/Career.Api";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Grow ref={ref} {...props} />;
@@ -39,20 +40,10 @@ const GameTopicArea = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const UserData = useSelector((state) => state.UserState);
+  const { data: Course, isLoading } = useGetCoursesQuery();
 
-  const cardData = [
-    { id: 1, title: "Types of Numbers", image: MathBannerIMG, questions: 10 },
-    { id: 2, title: "Prime Numbers", image: MathBannerIMG, questions: 15 },
-    { id: 3, title: "Tally System", image: MathBannerIMG, questions: 8 },
-    { id: 4, title: "Co-prime", image: MathBannerIMG, questions: 5 },
-    { id: 5, title: "Fractions", image: MathBannerIMG, questions: 12 },
-    { id: 6, title: "Decimals", image: MathBannerIMG, questions: 7 },
-    { id: 7, title: "Percentages", image: MathBannerIMG, questions: 9 },
-    { id: 8, title: "Ratios", image: MathBannerIMG, questions: 11 },
-    { id: 9, title: "Integers", image: MathBannerIMG, questions: 6 },
-    { id: 10, title: "Exponents", image: MathBannerIMG, questions: 14 },
-    { id: 11, title: "Square Roots", image: MathBannerIMG, questions: 13 },
-  ];
+  const cardData = Course.units[0].lessons[0].topics
+  console.log("cardData",cardData)
 
   const handleCardClick = (card) => {
     setSelectedCard(card);
@@ -71,7 +62,7 @@ const GameTopicArea = () => {
   };
 
   const filteredCards = cardData.filter((card) =>
-    card.title.toLowerCase().includes(searchInput.toLowerCase())
+    card.name.toLowerCase().includes(searchInput.toLowerCase())
   );
   function createRoom(playerData) {
     dispatch(ResetGame());
@@ -183,8 +174,8 @@ const GameTopicArea = () => {
                 <CardMedia
                   component="img"
                   height="150"
-                  image={card.image}
-                  alt={card.title}
+                  image={MathBannerIMG}
+                  alt={"image"}
                 />
                 <CardContent>
                   <Box
@@ -205,7 +196,7 @@ const GameTopicArea = () => {
                         overflow: "hidden",
                       }}
                     >
-                      {card.title}
+                      {card.name}
                     </Typography>
                   </Box>
                 </CardContent>
@@ -233,8 +224,8 @@ const GameTopicArea = () => {
             <CardMedia
               component="img"
               height="180"
-              image={selectedCard?.image}
-              alt={selectedCard?.title}
+              image={MathBannerIMG}
+              alt={selectedCard?.name}
               sx={{
                 borderRadius: "6px",
               }}
@@ -260,11 +251,11 @@ const GameTopicArea = () => {
                     component="div"
                     sx={{ fontWeight: "bold" }}
                   >
-                    {selectedCard?.title}
+                    {selectedCard?.name}
                   </Typography>
 
                   <Typography gutterBottom variant="body" component="div">
-                    Total Questions: {selectedCard?.questions}
+                    Total Questions: 20
                   </Typography>
                   <Divider
                     sx={{
