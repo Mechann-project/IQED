@@ -1,60 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, lazy, Suspense } from "react";
 import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
-import Levelcard from "./Levelcard";
-import LevelDetails from "./LevelDetails";
+import LevelCard from "./LevelCard";
 import BreadcrumbsNav from "./BreadcrumbsNav";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetCoursesQuery } from "../../Redux/API/Career.Api";
-import trophy from "./trophy.png"
 import { useSelector } from "react-redux";
 import { useGetUserQuery } from "../../Redux/API/User.Api";
 import { LoadingScreen } from "../../Components";
+import trophy from "./trophy.png";
+
+const LevelDetails = lazy(() => import("./LevelDetails"));
+
 const MissionPage = () => {
-  const { data: Course, isLoading } = useGetCoursesQuery();
-  const {data:userdata, isLoading:UserLoad} = useGetUserQuery()
+  const { data: Course, isLoading: coursesLoading } = useGetCoursesQuery();
+  const { data: userData, isLoading: userLoading } = useGetUserQuery();
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
   const navigate = useNavigate();
-  const UserData = useSelector((state) => state.UserState);
+  const userProgress = useSelector((state) => state.UserState?.CourseProgress);
+
   const [selectedSection, setSelectedSection] = useState(null);
-  console.log(UserData.CourseProgress)
-  // Update selected section based on URL parameter
+
   useEffect(() => {
     const sectionFromUrl = new URLSearchParams(location.search).get("section");
-    if (sectionFromUrl && Course) {
-      
-      setSelectedSection(Course.units[0] || null); // Reset to null if section not found
+    const sectionIndex = parseInt(sectionFromUrl, 10);
+
+    if (!isNaN(sectionIndex) && Course?.units[sectionIndex]) {
+      setSelectedSection(Course.units[sectionIndex]);
     } else {
-      setSelectedSection(null); // Reset to null if no section in URL
+      setSelectedSection(null);
     }
   }, [location, Course]);
-  console.log(Course?.units[0]?.lessons[0]?.topics[0]);
-  
-  // Breadcrumb paths
-  const breadcrumbPath = selectedSection
-    ? [
-        { label: "Missions", to: null, onClick: () => handleReturnToSections() },
-        { label: `${selectedSection.name}`, to: null },
-      ]
-    : [{ label: "Missions", to: null }];
 
-  // Handler to select a section
-  const handleSelectSection = (index) => {
-    navigate(`/missions?section=${index}`); // Update URL with selected section
-  };
-
-  // Handler to return to sections
   const handleReturnToSections = () => {
     setSelectedSection(null);
-    navigate("/missions"); // Navigate back to sections
+    navigate("/missions");
   };
 
-  if (isLoading) {
-    return <LoadingScreen/>; // Add a loading indicator
+  const breadcrumbPath = useMemo(() => {
+    if (selectedSection) {
+      return [
+        { label: "Missions", to: null, onClick: handleReturnToSections },
+        { label: `${selectedSection.name}`, to: null },
+      ];
+    }
+    return [{ label: "Missions", to: null }];
+  }, [selectedSection]);
+
+  const handleSelectSection = (index) => {
+    navigate(`/missions?section=${index}`);
+  };
+
+
+
+  if (coursesLoading || userLoading) {
+    return <LoadingScreen />;
   }
-
-
 
   return (
     <Box
@@ -72,7 +74,6 @@ const MissionPage = () => {
         overflow: "hidden",
       }}
     >
-      {/* Breadcrumb */}
       <BreadcrumbsNav paths={breadcrumbPath} />
       <Box
         sx={{
@@ -88,24 +89,29 @@ const MissionPage = () => {
           scrollbarWidth: "none",
         }}
       >
-        {!selectedSection && !UserLoad ? (
-          Course?.units.map((lesson,index) => (
-            <Grid item xs={12} lg={12} key={lesson._id}>
-              <Levelcard
+        {!selectedSection ? (
+          Course?.units.map((unit, index) => (
+            <Grid item xs={12} lg={12} key={unit._id}>
+              <LevelCard
                 level={{
-                  level: index,
-                  total: lesson?.lessons?.length,
-                  progress:(UserData.CourseProgress?.currentLesson/lesson?.lessons?.length)/100, // Update based on your logic
-                  image: trophy, // Placeholder for an image // Add logic for active/inactive sections
-                  description: lesson?.name,
+                  level: index + 1,
+                  total: unit?.lessons?.length || 0,
+                  progress: userProgress?.currentLesson || 0, // Use current lesson directly
+                  image: trophy,
+                  name: unit?.name,
+                  description: unit?.description,
                 }}
-                active={index<=UserData.CourseProgress.currentUnit}
+                active={index <= userProgress?.currentUnit}
                 onSelect={() => handleSelectSection(index)}
               />
             </Grid>
           ))
         ) : (
-          <LevelDetails />
+          <Suspense fallback={<LoadingScreen />}>
+            <Grid item xs={12} lg={12}>
+              <LevelDetails section={selectedSection} />
+            </Grid>
+          </Suspense>
         )}
       </Box>
     </Box>
