@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Box,
   Card,
@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ResetGame, setPlayers, setRoomId } from "../../Redux/Slice/GameSlice/GameSlice";
 import { resetQuiz } from "../../Redux/Slice/GameSlice/GameSessionSlice";
 import { useGetCoursesQuery } from "../../Redux/API/Career.Api";
+import LoadingScreen from "../Loading/LoadingScreen";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Grow ref={ref} {...props} />;
@@ -40,10 +41,12 @@ const GameTopicArea = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const UserData = useSelector((state) => state.UserState);
-  const { data: Course, isLoading } = useGetCoursesQuery();
+  const { data: Course, isLoading, isError } = useGetCoursesQuery();
 
-  const cardData = Course.units[0].lessons[0].topics
-  console.log("cardData",cardData)
+  const cardData = useMemo(() => {
+    if (!Course || !Course.units) return [];
+    return Course.units[0]?.lessons[0]?.topics || [];
+  }, [Course]);
 
   const handleCardClick = (card) => {
     setSelectedCard(card);
@@ -61,30 +64,47 @@ const GameTopicArea = () => {
     setSearchInput(event.target.value);
   };
 
-  const filteredCards = cardData.filter((card) =>
-    card.name.toLowerCase().includes(searchInput.toLowerCase())
-  );
+  const filteredCards = useMemo(() => 
+    cardData.filter((card) =>
+      card.name.toLowerCase().includes(searchInput.toLowerCase())
+    ), [cardData, searchInput]);
+
   function createRoom(playerData) {
     dispatch(ResetGame());
     dispatch(resetQuiz());
-    socket.emit("create-room",({ playerData }), (response) => {
+    socket.emit("create-room", ({ playerData }), (response) => {
       if (response.roomId) {
-        dispatch(setPlayers(response.playerList))
+        dispatch(setPlayers(response.playerList));
         console.log("Room created with ID:", response);
         sessionStorage.setItem("RoomID", response.roomId);
-        dispatch(setRoomId(response.roomId))
+        dispatch(setRoomId(response.roomId));
         navigate(`/match/${response.roomId}`);
       } else {
         console.error("Failed to create room.");
       }
     });
   }
+
   const handleChallengeFriend = () => {
     if (selectedCard) {
       createRoom(UserData.name);
       handleClose();
     }
   };
+
+  if (isLoading) {
+    return (
+      <LoadingScreen/>
+    );
+  }
+
+  // if (isError || !Course) {
+  //   return (
+  //     <Box>
+  //       <Typography>Error loading courses. Please try again later.</Typography>
+  //     </Box>
+  //   );
+  // }
 
   return (
     <Box
@@ -293,3 +313,6 @@ const GameTopicArea = () => {
 };
 
 export default GameTopicArea;
+
+
+

@@ -76,8 +76,11 @@ const UserCard = () => {
                   fontWeight: "700",
                 }}
               >
-                {UserData?.userName}
+                {UserData?.name
+                  ?.slice(0, 5) // Extract the first 5 characters
+                  ?.replace(/\b\w/g, (char) => char.toUpperCase()) + "..."}
               </Typography>
+
             </Box>
             <IconButton onClick={handleClick}>
               <Avatar

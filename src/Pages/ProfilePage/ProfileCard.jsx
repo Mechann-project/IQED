@@ -132,7 +132,17 @@ const ProfileCard = ({ onSettingsClick }) => {
                 whiteSpace: "nowrap",
               }}
             >
-              {UserData.userName}
+              {UserData.name.replace(/\b\w/g, (char) => char.toUpperCase())}
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                color: "gray",
+                fontWeight: 600,
+                whiteSpace: "nowrap",
+              }}
+            >
+              {UserData.userName.replace(/\b\w/g, (char) => char.toUpperCase())}
             </Typography>
             {/* <Typography
               variant="h6"

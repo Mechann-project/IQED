@@ -1,6 +1,7 @@
-import { Box } from '@mui/material'
-import React from 'react'
-import { ExploreHeader, QuestContainer } from '../../Components'
+import { Box, Grid } from '@mui/material'
+import React, { useEffect, useState, useMemo, lazy, Suspense } from "react";
+import { ExploreHeader, LoadingScreen, QuestContainer, Recent } from '../../Components'
+
 
 const ExplorePage = () => {
   return (
@@ -10,6 +11,7 @@ const ExplorePage = () => {
     }}
     >
         <ExploreHeader/>
+        <Recent/>
         <QuestContainer/>
     </Box>
   )

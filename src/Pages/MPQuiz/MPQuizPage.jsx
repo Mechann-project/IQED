@@ -83,31 +83,31 @@ const MPQuizPage = () => {
   }, [initialLoading]);
   console.log(GameSessionState);
 
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        if (tabSwitchCount === 0) {
-          setWarningMessage(
-            "Please stay on this tab to complete the quiz. If you move to another tab again, your quiz will end, and your data will not be saved."
-          );
-          setTabSwitchCount((prev) => prev + 1);
-          setOpenModal(true);
-        } else {
-          setWarningMessage(
-            "Tab switching is not allowed. Your quiz is over, and your data is not saved."
-          );
-          setTabSwitchCount((prev) => prev + 1);
-          setOpenModal(true);
-        }
-      }
-    };
+  // useEffect(() => {
+  //   const handleVisibilityChange = () => {
+  //     if (document.hidden) {
+  //       if (tabSwitchCount === 0) {
+  //         setWarningMessage(
+  //           "Please stay on this tab to complete the quiz. If you move to another tab again, your quiz will end, and your data will not be saved."
+  //         );
+  //         setTabSwitchCount((prev) => prev + 1);
+  //         setOpenModal(true);
+  //       } else {
+  //         setWarningMessage(
+  //           "Tab switching is not allowed. Your quiz is over, and your data is not saved."
+  //         );
+  //         setTabSwitchCount((prev) => prev + 1);
+  //         setOpenModal(true);
+  //       }
+  //     }
+  //   };
 
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+  //   document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [tabSwitchCount]);
+  //   return () => {
+  //     document.removeEventListener("visibilitychange", handleVisibilityChange);
+  //   };
+  // }, [tabSwitchCount]);
 
   const handleModalClose = () => {
     if (tabSwitchCount === 1) {

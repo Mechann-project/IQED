@@ -20,6 +20,14 @@ const MenuBox = ({ open, anchorEl, handleClose }) => {
     toast.success("Logout..");
     handleClose();
   };
+  const handleAccount = () => {
+    navigate("/profile");
+    handleClose();
+  };
+  const handleSettings  = () => {
+    navigate("/auth");  
+    handleClose();
+  };
 
   return (
     <Menu
@@ -59,16 +67,16 @@ const MenuBox = ({ open, anchorEl, handleClose }) => {
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
-      <MenuItem onClick={handleClose}>
+      <MenuItem onClick={handleAccount}>
         <Person sx={{ pr: "5px", color: "red" }} /> Account
       </MenuItem>
       <Divider />
-      <MenuItem onClick={handleClose}>
+      {/* <MenuItem onClick={handleSettings}>
         <ListItemIcon>
           <Settings fontSize="small" />
         </ListItemIcon>
         Settings
-      </MenuItem>
+      </MenuItem> */}
       <MenuItem onClick={handleLogOut}>
         <ListItemIcon>
           <Logout fontSize="small" />

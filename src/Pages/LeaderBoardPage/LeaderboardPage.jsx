@@ -82,7 +82,7 @@ const LeaderboardHeader = () => (
       sx={{
         flexGrow: 1,
         display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)",
+        gridTemplateColumns: "repeat(3, 1fr)",
         bgcolor: "#1A49BA",
         color: "#fff",
         fontWeight: "bold",
@@ -96,7 +96,7 @@ const LeaderboardHeader = () => (
         { label: "Rank", icon: "" },
         { label: "Name" },
         { label: "XP", icon: "" },
-        { label: "Level", icon: "" },
+        // { label: "Level", icon: "" },
       ].map((item, index) => (
         <Box
           key={index}
@@ -166,7 +166,7 @@ const LeaderboardRow = ({ player, index }) => {
         sx={{
           flexGrow: 1,
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
+          gridTemplateColumns: "repeat(3, 1fr)",
           bgcolor: "white",
           border: "2px solid",
           borderColor: "#02216F",
@@ -184,7 +184,7 @@ const LeaderboardRow = ({ player, index }) => {
           },
           { label: player.name },
           { label: player.earnings.xp },
-          { label: player.CurrentLevel },
+          // { label: player.CurrentLevel },
         ].map((item, index) => (
           <Box
             key={index}

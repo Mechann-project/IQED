@@ -15,7 +15,13 @@ import TShirtPNG from "./Others/t-shirt.png";
 import TShirtImg from "./Others/t-shirt.jpg";
 import white from "./Others/whiite.png";
 import launch from "./Others/Launch.gif";
+import NeetImage from "./Others/NeetImage.jpeg"
+import jee from "./Others/Jee.jpeg"
+import GATE from "./Others/GATE.jpeg"
 export {
+  NeetImage,
+  jee,
+  GATE,
   IQEDLogo,
   launch,
   IQEDIcon,

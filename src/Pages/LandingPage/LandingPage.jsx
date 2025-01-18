@@ -7,7 +7,7 @@ const LandingPage = () => {
   return (
     <>
       <LandingHeader />
-      <LandingContainer/>
+      <LandingContainer1/>
     </>
   );
 };

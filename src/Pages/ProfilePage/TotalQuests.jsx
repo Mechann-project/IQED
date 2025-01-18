@@ -120,13 +120,14 @@ const TotalQuests = () => {
             <Grid item xs={12} sm={6}>
               <QuestCard
                 icon={<Group />}
-                title="Sage"
-                progress={2}
+                title="Challenge 10 Friends in MP"
+                // progress={3}
+                current={2}
                 goal={10}
-                reward={100}
+                reward={300}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
               <QuestCard
                 icon={<PersonAdd />}
                 title="Complete in time"
@@ -134,7 +135,7 @@ const TotalQuests = () => {
                 goal={3}
                 reward={300}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
       )}

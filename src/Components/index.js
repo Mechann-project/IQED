@@ -6,6 +6,8 @@ export { default as SideBar } from "./SideBar/SideBar.jsx";
 export { default as ExploreHeader } from "./Explore/ExploreHeader.jsx";
 export { default as QuestContainer } from "./Explore/QuestContainer.jsx";
 export { default as DandFQuests } from "./Quest/DandFQuests.jsx";
+export {default as Recent} from "./Explore/Recent.jsx"
+
 
 export { default as LoadingScreen } from "./Loading/LoadingScreen.jsx";
 export {default as GameTopicArea} from "./Game/GameTopicArea.jsx";
