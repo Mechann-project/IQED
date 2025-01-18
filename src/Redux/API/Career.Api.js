@@ -5,10 +5,10 @@ export const CareerApi = createApi({
   // baseQuery: fetchBaseQuery({ baseUrl: "https://iqed-backend1-five.vercel.app/career" }), // Adjust your base URL
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/career" }), // Adjust your base URL
   endpoints: (builder) => ({
-    getAllSection: builder.query({
-      query: () => `/sections/getall`,
+    getCourses: builder.query({
+      query: () => `/courses/678b1c5ac9520c2779482c64`,
     }),
   }),
 });
 
-export const { useGetAllSectionQuery } = CareerApi;
+export const { useGetCoursesQuery } = CareerApi;

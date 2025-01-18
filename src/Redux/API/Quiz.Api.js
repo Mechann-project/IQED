@@ -29,7 +29,7 @@ export const QuizApi = createApi({
       query: ({ answeredQuestions,timeTaken }) => ({
         url: `/updateAnswers`,
         method: "PUT",
-        body: { answeredQuestions,timeTaken },
+        body: {sessionId:sessionStorage.getItem("QuizSessionID"), answeredQuestions,timeTaken },
       }),
     }),
   }),

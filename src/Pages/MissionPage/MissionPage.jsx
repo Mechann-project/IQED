@@ -4,13 +4,13 @@ import Levelcard from "./Levelcard";
 import LevelDetails from "./LevelDetails";
 import BreadcrumbsNav from "./BreadcrumbsNav";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useGetAllSectionQuery } from "../../Redux/API/Career.Api";
+import { useGetCoursesQuery } from "../../Redux/API/Career.Api";
 import trophy from "./trophy.png"
 import { useSelector } from "react-redux";
 import { useGetUserQuery } from "../../Redux/API/User.Api";
 import { LoadingScreen } from "../../Components";
 const MissionPage = () => {
-  const { data: SectionList, isLoading } = useGetAllSectionQuery();
+  const { data: Course, isLoading } = useGetCoursesQuery();
   const {data:userdata, isLoading:UserLoad} = useGetUserQuery()
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
@@ -18,18 +18,19 @@ const MissionPage = () => {
   const navigate = useNavigate();
   const UserData = useSelector((state) => state.UserState);
   const [selectedSection, setSelectedSection] = useState(null);
-  console.log(UserData.careerPathProgress)
+  console.log(UserData.CourseProgress)
   // Update selected section based on URL parameter
   useEffect(() => {
     const sectionFromUrl = new URLSearchParams(location.search).get("section");
-    if (sectionFromUrl && SectionList) {
+    if (sectionFromUrl && Course) {
       
-      setSelectedSection(SectionList[sectionFromUrl] || null); // Reset to null if section not found
+      setSelectedSection(Course.units[0] || null); // Reset to null if section not found
     } else {
       setSelectedSection(null); // Reset to null if no section in URL
     }
-  }, [location, SectionList]);
-
+  }, [location, Course]);
+  console.log(Course?.units[0]?.lessons[0]?.topics[0]);
+  
   // Breadcrumb paths
   const breadcrumbPath = selectedSection
     ? [
@@ -88,17 +89,17 @@ const MissionPage = () => {
         }}
       >
         {!selectedSection && !UserLoad ? (
-          SectionList.map((section,index) => (
-            <Grid item xs={12} lg={12} key={section._id}>
+          Course?.units.map((lesson,index) => (
+            <Grid item xs={12} lg={12} key={lesson._id}>
               <Levelcard
                 level={{
-                  level: section.index,
-                  total: section.totalLessons,
-                  progress:(UserData?.careerPathProgress?.sections[index]?.lessons?.length), // Update based on your logic
+                  level: index,
+                  total: lesson?.lessons?.length,
+                  progress:(UserData.CourseProgress?.currentLesson/lesson?.lessons?.length)/100, // Update based on your logic
                   image: trophy, // Placeholder for an image // Add logic for active/inactive sections
-                  description: section.description,
+                  description: lesson?.name,
                 }}
-                active={ (UserData?.careerPathProgress?.sections[index] !=undefined)}
+                active={index<=UserData.CourseProgress.currentUnit}
                 onSelect={() => handleSelectSection(index)}
               />
             </Grid>

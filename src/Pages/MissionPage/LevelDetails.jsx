@@ -15,7 +15,7 @@ import {
   Step,
   StepLabel,
 } from "@mui/material";
-import { useGetAllSectionQuery } from "../../Redux/API/Career.Api";
+// import { useGetAllSectionQuery } from "../../Redux/API/Career.Api";
 import PropTypes from "prop-types";
 import { Check } from "@mui/icons-material"; // Assuming you're using Check from MUI
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -24,6 +24,7 @@ import { useCreateQuizSessionMutation } from "../../Redux/API/Quiz.Api";
 import { resetQuiz } from "../../Redux/Slice/QuizSlice/QuizSlice";
 import toast from "react-hot-toast";
 import { LoadingScreen } from "../../Components";
+import { useGetCoursesQuery } from "../../Redux/API/Career.Api";
 
 function QontoStepIcon(props) {
   const { active, completed, className } = props;
@@ -130,7 +131,8 @@ ColorlibStepIcon.propTypes = {
 };
 
 function LevelDetails() {
-  const { data: SectionList, isError, isLoading } = useGetAllSectionQuery();
+  // const { data: SectionList, isError, isLoading } = useGetAllSectionQuery();
+  const { data: Course, isLoading } = useGetCoursesQuery();
   const theme = useTheme();
   const UserData = useSelector((state) => state.UserState);
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
@@ -143,7 +145,7 @@ function LevelDetails() {
   const navigate = useNavigate();
   // Fetch lessons and topics data
 
-  console.log("section data:", SectionList);
+  // console.log("section data:", SectionList);
   const handleWheel = (e) => {
     if (scrollContainerRef.current) {
       e.preventDefault();
@@ -151,11 +153,11 @@ function LevelDetails() {
     }
   };
 
-  if (isLoading) {
+  if (false) {
     return <LoadingScreen />;
   }
 
-  if (isError) {
+  if (false) {
     return <Typography>Error fetching lessons</Typography>;
   }
   const handleQuizCraetion = (
@@ -193,11 +195,12 @@ function LevelDetails() {
       toast.error("sorry session not save");
     }
   };
+ 
   // Generate dynamic steps based on fetched lessons and topics
   return (
     <>
-      {SectionList &&
-        SectionList[sectionIndex]?.lesson?.map((lesson, lessonIndex) => (
+      {Course &&
+        Course?.units[sectionIndex]?.lessons?.map((lesson, lessonIndex) => (
           <Box
             sx={{
               display: "flex",
@@ -282,8 +285,7 @@ function LevelDetails() {
                   <Stepper
                     alternativeLabel
                     activeStep={
-                      UserData?.careerPathProgress?.sections[sectionIndex]
-                        ?.lessons[lessonIndex]?.topics.length - 1
+                      UserData?.CourseProgress?.currentTopic
                     }
                     connector={<ColorlibConnector />}
                   >
@@ -300,6 +302,7 @@ function LevelDetails() {
                         }
                       >
                         <StepLabel StepIconComponent={ColorlibStepIcon}>
+
                           <Typography
                             variant="body1" 
                             sx={{
@@ -342,24 +345,15 @@ function LevelDetails() {
                   alignSelf: "flex-end",
                 }}
               >
-                {(UserData?.careerPathProgress?.sections[sectionIndex].lessons[
-                  lessonIndex
-                ]?.topics.length
-                  ? UserData?.careerPathProgress?.sections[sectionIndex]
-                      .lessons[lessonIndex]?.topics.length
-                  : 0) +
+                {(UserData?.CourseProgress?.currentTopic+1)+
                   "/" +
-                  lesson.totalTopic}
+                  lesson?.topics.length}
               </Typography>
               <LinearProgress
                 variant="determinate"
                 value={
-                  ((UserData?.careerPathProgress?.sections[sectionIndex]
-                    .lessons[lessonIndex]?.topics.length
-                    ? UserData?.careerPathProgress?.sections[sectionIndex]
-                        .lessons[lessonIndex]?.topics.length
-                    : 0) /
-                    lesson.totalTopic) *
+                  (UserData?.CourseProgress.currentTopic/
+                    lesson?.topics?.length) *
                   100
                 }
                 sx={{
