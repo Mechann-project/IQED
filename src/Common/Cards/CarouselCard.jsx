@@ -5,7 +5,7 @@ const CarouselCard = ({ children ,heightcus="60vh"}) => {
   return (
     <Box
       sx={{
-        backgroundImage: `url(${BlurContainerSVG})`,
+       backgroundColor:'#B7E9F630',
         backgroundSize: "cover",
         width: "100%",
         height: heightcus,

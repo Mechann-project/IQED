@@ -13,7 +13,8 @@ const IQOptionButton = ({ quiz, type = "text", content, index }) => {
   const [isAnimating, setIsAnimating] = useState(false);
 
   // Determine the button background and text color based on the quiz state
-  const isAnswered = IQQuizState?.answeredQuestions[IQQuizState.currentQuestionIndex]?.answer == content;
+  const isAnswered =
+    IQQuizState?.answeredQuestions[IQQuizState.currentQuestionIndex]?.answer == content;
   const isCorrectAnswer = IQQuizState?.answeredQuestions[index]?.correct;
   const isLive = IQQuizState?.isLive;
   const backgroundColor =

@@ -22,12 +22,14 @@ export { default as QuestionDrawerList } from "./Quiz/QuestionDrawerList .jsx";
 export { default as IQQuestionBox } from "./IQQuiz/IQQuestionBox.jsx";
 export { default as IQQuizProgressBar } from "./IQQuiz/IQQuizProgressBar.jsx";
 export { default as IQQuestionDrawerList } from "./IQQuiz/IQQuestionDrawerList .jsx";
-
-export { default as MPQuestionBox } from "./MpQuiz/MPQuestionBox.jsx";
-export { default as MPQuizProgressBar } from "./MPQuiz/MPQuizProgressBar.jsx";
-export { default as MPQuestionDrawerList } from "./MPQuiz/MPQuestionDrawerList.jsx";
 export {default as BellCurveChart} from "./Landing/BellCurveChart.jsx";
 
-export { default as YourOrders} from "./Store/YourOrders.jsx"
-export { default as OrderDetail} from "./Store/OrderDetail.jsx"
 
+export { default as MPQuestionBox } from "./MpQuiz/MPQuestionBox.jsx";
+export { default as MPQuizProgressBar } from "./MpQuiz/mpQuizProgressBar.jsx";
+export { default as MPQuestionDrawerList } from "./MPQuiz/MPQuestionDrawerList.jsx";
+
+
+
+export { default as OrderDetail} from "./Store/OrderDetail.jsx"
+export { default as YourOrders} from "./Store/YourOrders.jsx"

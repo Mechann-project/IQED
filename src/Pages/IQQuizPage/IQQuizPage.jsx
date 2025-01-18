@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { replace, useNavigate } from "react-router-dom";
 
 // MUI
 import {
@@ -25,27 +25,51 @@ import {
 import { feedback, warning } from "../../assets";
 
 const IQQuizPage = () => {
+  const [animationInProgress, setAnimationInProgress] = useState(false);
+
+
+  const navigate = useNavigate();
+  useEffect(()=>{
+    if(!sessionStorage.getItem("IQSessionID")){
+      navigate("/",{ replace: true })
+    }
+  })
   const [initialLoading, setInitialLoading] = useState(true);
   const [fadeIn, setFadeIn] = useState(false);
   const [getQuizSession] = useGetQuizSessionMutation();
-
+ 
 
   // State for tab-switching warning and modal
   const [tabSwitchCount, setTabSwitchCount] = useState(0);
   const [openModal, setOpenModal] = useState(false);
+  const [openRefreshModal, setOpenRefreshModal] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
 
-  // useEffect(() => {
-  //   const unloadCallback = (event) => {
-  //     event.preventDefault();
-  //     event.returnValue = "";
-  //     return "";
-  //   };
+  
 
-  //   window.addEventListener("beforeunload", unloadCallback);
 
-  //   return () => window.removeEventListener("beforeunload", unloadCallback);
-  // }, []);
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+     
+      event.preventDefault();
+      event.returnValue = ""; 
+
+      sessionStorage.clear();
+
+     
+      alert("Your session has been cleared!");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+
+  
+
 
   const {
     IQQuizState,
@@ -65,12 +89,6 @@ const IQQuizPage = () => {
     const elem = document.documentElement;
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
     }
   };
 
@@ -85,31 +103,31 @@ const IQQuizPage = () => {
     }
   }, [initialLoading]);
 
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        if (tabSwitchCount === 0) {
-          setWarningMessage(
-            "Please stay on this tab to complete the quiz. If you move to another tab again, your quiz will end, and your data will not be saved."
-          );
-          setTabSwitchCount((prev) => prev + 1);
-          setOpenModal(true);
-        } else {
-          setWarningMessage(
-            "Tab switching is not allowed. Your quiz is over, and your data is not saved."
-          );
-          setTabSwitchCount((prev) => prev + 1);
-          setOpenModal(true);
-        }
-      }
-    };
+  // useEffect(() => {
+  //   const handleVisibilityChange = () => {
+  //     if (document.hidden) {
+  //       if (tabSwitchCount === 0) {
+  //         setWarningMessage(
+  //           "Please stay on this tab to complete the quiz. If you move to another tab again, your quiz will end, and your data will not be saved."
+  //         );
+  //         setTabSwitchCount((prev) => prev + 1);
+  //         setOpenModal(true);
+  //       } else {
+  //         setWarningMessage(
+  //           "Tab switching is not allowed. Your quiz is over, and your data is not saved."
+  //         );
+  //         setTabSwitchCount((prev) => prev + 1);
+  //         setOpenModal(true);
+  //       }
+  //     }
+  //   };
 
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+  //   document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [tabSwitchCount]);
+  //   return () => {
+  //     document.removeEventListener("visibilitychange", handleVisibilityChange);
+  //   };
+  // }, [tabSwitchCount]);
 
   const handleModalClose = () => {
     if (tabSwitchCount === 1) {
@@ -117,6 +135,15 @@ const IQQuizPage = () => {
     } else {
       handleQuit();
     }
+  };
+
+  const handleRefreshModalClose = () => {
+    setOpenRefreshModal(false);
+  };
+
+  const handleRefreshConfirm = () => {
+    sessionStorage.clear();
+    navigate("/",{ replace: true });
   };
 
   if (initialLoading) {
@@ -138,7 +165,11 @@ const IQQuizPage = () => {
         transition: "opacity 1s ease",
       }}
     >
-      <Timer ref={timerRef} initialTime={25 * 60} start={!sessionLoading} />
+      <Timer ref={timerRef} initialTime={25 * 60} start={!sessionLoading} 
+      
+      handleQuit={() => handleQuit()}
+      handlesubmit={() => handleSubmit()}
+      />
       <IQQuestionDrawerList
         sessionState={IQQuizState}
         open={isQuestionList}
@@ -166,7 +197,11 @@ const IQQuizPage = () => {
 
       <IQQuestionBox
         index={IQQuizState?.currentQuestionIndex}
-        Question={IQQuizState?.questionsList[IQQuizState?.currentQuestionIndex]}
+        Question={
+          IQQuizState?.questionsList[IQQuizState?.currentQuestionIndex]
+        }
+        animationInProgress={animationInProgress} 
+        setAnimationInProgress={setAnimationInProgress}
       />
       <IQQuizProgressBar
         currentQuestion={IQQuizState?.currentQuestionIndex + 1}
@@ -175,8 +210,10 @@ const IQQuizPage = () => {
         onPrevious={handleOnPrevious}
         onNext={handleOnNext}
         handleSubmit={handleSubmit}
+        animationInProgress={animationInProgress} // Pass it down here
       />
 
+      {/* Tab Switching Warning Modal */}
       <Modal
         open={openModal}
         onClose={handleModalClose}
@@ -200,7 +237,6 @@ const IQQuizPage = () => {
               xs: "60%",
             },
             bgcolor: "background.paper",
-           
             p: 4,
             borderRadius: 2,
             boxShadow: "2px 3px #FFDA55",
@@ -255,10 +291,10 @@ const IQQuizPage = () => {
               Warning
             </Typography>
           </Box>
-          <Typography id="modal-description" sx={{ mt: 2 , fontWeight:'bold'}}>
+          <Typography id="modal-description" sx={{ mt: 2, fontWeight: "bold" }}>
             {warningMessage}
           </Typography>
-          
+
           <Button
             type="submit"
             fullWidth
@@ -266,14 +302,12 @@ const IQQuizPage = () => {
             onClick={handleModalClose}
             sx={{
               fontWeight: "bold",
-              // backgroundColor: "#1A49BA",
               backgroundColor: "#F44230",
               color: "#ffffff",
               "&:hover": {
                 backgroundColor: "Black",
                 boxShadow: "2px 3px #FFDA55",
               },
-              // boxShadow: "2px 3px #1A49BA",
               boxShadow: "2px 3px #FFDA55",
               mt: 3,
             }}
@@ -282,6 +316,8 @@ const IQQuizPage = () => {
           </Button>
         </Box>
       </Modal>
+
+     
     </Box>
   );
 };

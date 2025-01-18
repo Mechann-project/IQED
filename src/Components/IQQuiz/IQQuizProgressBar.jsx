@@ -12,6 +12,7 @@ const IQQuizProgressBar = ({
   onPrevious,
   onNext,
   handleSubmit,
+  animationInProgress, // Receive the prop
 }) => {
   return (
     <Box sx={{ width: "100%", position: "fixed", bottom: 0, color: "white" }}>
@@ -34,6 +35,7 @@ const IQQuizProgressBar = ({
             aria-label="Previous question"
             sx={{ color: "white", backgroundColor: "#ffffff30" }}
             onClick={onPrevious}
+            disabled={animationInProgress}
           >
             <KeyboardDoubleArrowLeft />
           </IconButton>
@@ -44,8 +46,10 @@ const IQQuizProgressBar = ({
             aria-label="Next question"
             sx={{ color: "white", backgroundColor: "#ffffff30" }}
             onClick={onNext}
+            disabled={animationInProgress}
           >
             <KeyboardDoubleArrowRight />
+            
           </IconButton>
         </Box>
 

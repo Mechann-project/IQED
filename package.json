@@ -1,5 +1,5 @@
 {
-  "homepage": "https://gowthamrajvp.github.io/IQED/",
+  "homepage": "https://iqed-iq.vercel.app/",
   "name": "iqedclient",
   "private": true,
   "version": "0.0.0",
@@ -22,6 +22,8 @@
     "@mui/material": "^5.16.7",
     "@mui/styles": "^6.0.0",
     "@reduxjs/toolkit": "^2.2.7",
+    "@vercel/analytics": "^1.4.1",
+    "@vercel/speed-insights": "^1.1.0",
     "animejs": "^3.2.2",
     "chart.js": "^4.4.6",
     "chartjs": "^0.3.24",
@@ -32,6 +34,7 @@
     "gsap": "^3.12.5",
     "js-cookie": "^3.0.5",
     "lottie-web": "^5.12.2",
+    "mathjs": "^14.0.1",
     "pdf-lib": "^1.17.1",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
@@ -50,6 +53,7 @@
     "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.8.1",
     "vite-plugin-remove-console": "^2.2.0",
+    "vite-plugin-vercel": "^9.0.4",
     "yup": "^1.4.0"
   },
   "devDependencies": {

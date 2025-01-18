@@ -41,7 +41,7 @@ const LandingContainer = () => {
   const listItems = [
     "This test consists of 35 questions, designed to assess various cognitive skills.",
     "The assessment covers logical reasoning, verbal comprehension, working memory, and spatial reasoning.",
-    "All questions are tailored to be age-appropriate, with specific difficulty levels for children, adolescents, and adults.",
+    
     "Each correct answer scores one point, contributing to your overall cognitive score.",
     "The test duration is approximately 25 minutes.",
   ];
@@ -49,7 +49,7 @@ const LandingContainer = () => {
     try {
       dispatch(resetQuiz());
       toast.promise(
-        CreateQuizSession().unwrap(),
+        CreateQuizSession({Age:selectedAgeGroup}).unwrap(),
         {
           loading: "Creating Session...",
           success: (response) => {
@@ -130,7 +130,7 @@ const LandingContainer = () => {
           </Typography>
 
           <Divider sx={{ bgcolor: "#FFDA55", my: "4%" }} />
-          <Typography
+          {/* <Typography
             sx={{
               color: "#fff",
               fontSize: { xs: "12px", md: "16px" },
@@ -140,7 +140,7 @@ const LandingContainer = () => {
             }}
           >
             Please select your age range to start the test
-          </Typography>
+          </Typography> */}
           <Box
             sx={{
               display: "flex",
@@ -148,7 +148,33 @@ const LandingContainer = () => {
               width: "100%",
             }}
           >
-            {ageGroups.map((ageGroup) => (
+            <Button
+                // key={ageGroup.value}
+                // onClick={() => setSelectedAgeGroup(ageGroup.value)}
+                variant="contained"
+                // disabled
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: { md: "20px" },
+                  backgroundColor: "#FFDA55",
+                  color: "#02216F",
+                  boxShadow: "2px 3px white",
+                  borderRadius: { xs: "5px", md: "10px" },
+                  textTransform: "none",
+                  border: "1px solid",
+                  px: "8%",
+                  borderColor: "white",
+                  "&:hover": {
+                    color: "#fff",
+                    backgroundColor: "black",
+                    transform: "translateY(-5px)",
+                    transition: "transform 0.3s ease-in-out",
+                  },
+                }}
+              >
+                Active Soon!
+              </Button>
+            {/* {ageGroups.map((ageGroup) => (
               <Button
                 key={ageGroup.value}
                 onClick={() => setSelectedAgeGroup(ageGroup.value)}
@@ -174,7 +200,7 @@ const LandingContainer = () => {
               >
                 {ageGroup.label}
               </Button>
-            ))}
+            ))} */}
           </Box>
         </Box>
       )}
