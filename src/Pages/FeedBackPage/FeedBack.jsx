@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material"; // Icon for success
 import { AI_Icon, feedback } from "../../assets";
+import toast from "react-hot-toast";
 
 const FeedBack = () => {
   const theme = useTheme();
@@ -40,11 +41,13 @@ const FeedBack = () => {
         if (updatedScreenshots.length < 3) {
           updatedScreenshots.push(file);
         } else {
-          alert("You can upload a maximum of 3 screenshots.");
+          toast.error("You can upload a maximum of 3 screenshots.")
+          // alert("You can upload a maximum of 3 screenshots.");
           break;
         }
       } else {
-        alert("File size should be below 2MB");
+        toast.error("File size should be below 2MB")
+        // alert("File size should be below 2MB");
       }
     }
 
@@ -62,6 +65,7 @@ const FeedBack = () => {
         feedbackType: !feedbackType,
         feedbackText: !feedbackText || feedbackText.length < 50,
       });
+     
       return;
     }
 
@@ -80,6 +84,7 @@ const FeedBack = () => {
       // Reset success message after 3 seconds
       setTimeout(() => {
         setSubmissionSuccess(false);
+        toast.success("Thank for your Feedback")  
       }, 3000);
     }, 2000); // Simulate a 2-second delay for submission
   };
