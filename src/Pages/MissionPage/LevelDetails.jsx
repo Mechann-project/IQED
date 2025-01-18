@@ -286,7 +286,7 @@ function LevelDetails() {
                   <Stepper
                     alternativeLabel
                     activeStep={
-                      UserData?.CourseProgress?.currentTopic
+                      lessonIndex==UserData?.CourseProgress?.currentLesson? UserData?.CourseProgress?.currentTopic:null 
                     }
                     connector={<ColorlibConnector />}
                   >
