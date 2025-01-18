@@ -88,10 +88,10 @@ const useHandleQuizPage = () => {
         timeTaken:currentTime
       }).unwrap().then((session) => {
         console.log("ddddd",session);
-        setTotalxp(session.score * Math.floor(((session.timeTaken/(20*60))*100)));
+        setTotalxp(session.score * (100-Math.floor(((session.timeTaken/(20*60))*100))));
         dispatch(submitQuiz());
         setResultDialog(true);
-        updateUserXP({ xp: session.score * Math.floor(((session.timeTaken/(20*60))*100))}).then(() => {
+        updateUserXP({ xp: session.score * (100-Math.floor(((session.timeTaken/(20*60))*100)))}).then(() => {
           dispatch(UpdateUser(userData));
         });
         toast.success("session Complated");
