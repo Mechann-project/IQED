@@ -6,7 +6,7 @@ export const CareerApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/career" }), // Adjust your base URL
   endpoints: (builder) => ({
     getCourses: builder.query({
-      query: () => `/courses/678b1c5ac9520c2779482c64`,
+      query: () => `/courses/678bdccd39053772c9f9313a`,
     }),
   }),
 });
