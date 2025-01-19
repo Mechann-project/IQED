@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, lazy, Suspense } from "react";
 import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
-import LevelCard from "./LevelCard";
+import LevelCard from "./Levelcard";
 import BreadcrumbsNav from "./BreadcrumbsNav";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetCoursesQuery } from "../../Redux/API/Career.Api";
