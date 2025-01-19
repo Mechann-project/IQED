@@ -11,7 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setQuestionIndex } from "../../Redux/Slice/GameSlice/GameSessionSlice";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-export default function MPQuestionDrawerList({
+
+
+const MPQuestionDrawerList = ({
   sessionState,
   open,
   handleClose,
@@ -22,8 +24,7 @@ export default function MPQuestionDrawerList({
   handleSubmit,
   handleQuit,
   quizAllCompleted,
-}) {
-  
+}) => {
 
   const dispatch = useDispatch();
   const getBorderColor = (index) => {
@@ -42,14 +43,14 @@ export default function MPQuestionDrawerList({
         role="presentation"
         onClick={handleClose}
       >
-        <Box 
-        sx={{
-          p: 2,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-          >
+        <Box
+          sx={{
+            p: 2,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Typography variant="h4" fontWeight={900}>
             {sessionState.Topics ? sessionState.Topics : "Topics"}
           </Typography>
@@ -79,26 +80,26 @@ export default function MPQuestionDrawerList({
           }}
           gap={2}
         >
-          {sessionState.isLive &&(
-          <Button
-            type="submit"
-            fullWidth
-            disabled={!quizAllCompleted}
-            variant="contained"
-            onClick={handleSubmit}
-            sx={{
-              fontWeight: "bold",
+          {sessionState.isLive && (
+            <Button
+              type="submit"
+              fullWidth
+              disabled={!quizAllCompleted}
+              variant="contained"
+              onClick={handleSubmit}
+              sx={{
+                fontWeight: "bold",
 
-              backgroundColor: "#1A49BA",
-              color: "#ffffff",
-              "&:hover": {
-                backgroundColor: "Black",
-              },
-              boxShadow: "2px 3px #FFDA55",
-            }}
-          >
-            Submit
-          </Button>)}
+                backgroundColor: "#1A49BA",
+                color: "#ffffff",
+                "&:hover": {
+                  backgroundColor: "Black",
+                },
+                boxShadow: "2px 3px #FFDA55",
+              }}
+            >
+              Submit
+            </Button>)}
           <Button
             type="submit"
             fullWidth
@@ -122,7 +123,7 @@ export default function MPQuestionDrawerList({
         <Divider
           sx={{ borderBottomWidth: 3, borderColor: "black", mb: "3%" }}
         />
-        
+
         <Box
           sx={{
             bgcolor: "white",
@@ -140,8 +141,8 @@ export default function MPQuestionDrawerList({
                     index === sessionState.currentQuestionIndex
                       ? "#FFDA55" // Highlight the current question with yellow
                       : sessionState.answeredQuestions[index]
-                      ? "#1DC77B50"
-                      : "#c5c5c5",
+                        ? "#1DC77B50"
+                        : "#c5c5c5",
                   border: getBorderColor(index),
                   borderRadius: "10px",
                   mt: 1,
@@ -151,8 +152,8 @@ export default function MPQuestionDrawerList({
                         index === sessionState.currentQuestionIndex
                           ? "#FFDA5550" // Highlight the current question with yellow
                           : sessionState.answeredQuestions[index]
-                          ? "#1DC77B5040"
-                          : "#c5c5c550",
+                            ? "#1DC77B5040"
+                            : "#c5c5c550",
                       opacity: "90%",
                       cursor: "pointer",
                     },
@@ -174,13 +175,13 @@ export default function MPQuestionDrawerList({
                 />
               </ListItem>
             ))}
-            
+
           </List>
           <Divider
             sx={{ borderBottomWidth: 3, borderColor: "black", mt: "3%" }}
           />
         </Box>
-       
+
       </Box>
     ),
     [
@@ -208,3 +209,5 @@ export default function MPQuestionDrawerList({
     </Drawer>
   );
 }
+
+export default MPQuestionDrawerList;
