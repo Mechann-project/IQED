@@ -4,7 +4,8 @@ export const UserApi = createApi({
   reducerPath: "UserApi",
   baseQuery: fetchBaseQuery({
     // baseUrl: "https://iqed-backend1-five.vercel.app/user",
-    baseUrl: "http://localhost:3000/user",
+    // baseUrl: "http://localhost:3000/user",
+    baseUrl: "https://iqed-backend.vercel.app/user",
     credentials: "include",
   }),
   tagTypes: ["User"],
