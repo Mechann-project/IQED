@@ -19,7 +19,7 @@ const CarouselBox = () => {
       height="100%"
       width="50%"
       sx={{
-        backgroundImage: `url(${YellowDesignSVG})`,
+        backgroundImage: `url('https://firebasestorage.googleapis.com/v0/b/eshikhay-database.appspot.com/o/background%2FYellowDesign.svg?alt=media&token=d514c50d-8a55-417f-9907-d86565e3d53b')`,
         backgroundSize: "cover",
         borderRadius: "8px",
         display: { xs: "none", md: "flex" },
