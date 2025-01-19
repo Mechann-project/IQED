@@ -103,8 +103,10 @@ const TotalQuests = () => {
                   icon={<Group />}
                   title={quest.title}
                   progress={100}
-                  goal={100}
-                  reward={100}
+                  current={quest.params.targetValue}
+                  goal={quest.params.targetValue}
+                  About={quest.description}
+                  reward={quest.reward.value + " "+quest.reward.type }
                   active={false}
                 />
               </Grid>

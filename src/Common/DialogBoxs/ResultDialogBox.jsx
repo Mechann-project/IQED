@@ -68,6 +68,7 @@ const ResultDialogBox = ({
     },
     {
       title: "Total Coins Earned",
+      leftText:"250+",
       coinValue: totalCoins,
     },
   ];

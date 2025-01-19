@@ -500,7 +500,7 @@ const MPResultDialogBox = ({
                     fullWidth
                     // startIcon={<PeopleIcon />}
                     variant="contained"
-                    // onClick={handleChallengeFriend}
+                    onClick={handleDone}
                     sx={{
                       fontWeight: "bold",
                       backgroundColor: "#1A49BA",

@@ -30,7 +30,7 @@ const MPResultDialogBox = ({
   const GameSessionState = useSelector((state) => state.GameSessionState);
   const [OppPlayer, setOppPlayer] = useState(null);
   const [ResultMessage, setResultMessage] = useState(null);
-
+  const navigate = useNavigate()
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -138,7 +138,7 @@ const MPResultDialogBox = ({
               <Button
                 variant="contained"
                 fullWidth
-                onClick={handleDone}
+                onClick={navigate("/game")}
                 sx={buttonStyles("#FFDA55", "#02216F")}
               >
                 Done
