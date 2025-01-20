@@ -13,7 +13,8 @@ const RootLayout = () => {
   const location = useLocation();
   const backgroundImage = useMemo(() => {
     const backgroundMap = {
-      "/": YellowBackgroundSVG,
+      // "/": YellowBackgroundSVG,
+      "/": BlueBackgroundSVG,
       "/auth": BlueBackgroundSVG,
       "/match": YellowBackgroundSVG,
       "/iqquiz/result": YellowBackgroundSVG,

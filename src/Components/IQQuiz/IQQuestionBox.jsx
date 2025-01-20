@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Modal, Typography } from "@mui/material";
-import { OptionButton } from "../../Common";
+import { IQOptionButton } from "../../Common";
 
 const IQQuestionBox = ({ index, Question,animationInProgress, setAnimationInProgress  }) => {
   const [fade, setFade] = useState(false); 
@@ -131,7 +131,7 @@ const IQQuestionBox = ({ index, Question,animationInProgress, setAnimationInProg
           }}
         >
           {currentQuestion.options.map((option, idx) => (
-            <OptionButton
+            <IQOptionButton
               key={idx}
               index={idx}
               quiz={currentQuestion}

@@ -21,6 +21,8 @@ import {
   MPQuizPage,
 } from "../Pages";
 import GQSuccessPage from "../Pages/IQQuizPage/GQResultPage";
+import GQSuccessPage1 from "../Pages/IQQuizPage/GQResultPage1";
+import GQSuccessPage2 from "../Pages/IQQuizPage/GQResultPage2";
 import IQQuizLayout from "../Pages/Layout/IQQuizLayout";
 import IQQuizPage from "../Pages/IQQuizPage/IQQuizPage";
 import { AuthLayout, MatchLayout, QuizLayout, StoreOrderLayout, UserLayout } from "../Pages/Layout";
@@ -31,8 +33,8 @@ const basename = import.meta.env.BASE_URL;
 export const Routers = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
-      <Route index element={<LandingPage />} />
-      <Route path="auth" element={<AuthPage />} />
+      {/* <Route index element={<LandingPage />} /> */}
+      <Route index element={<AuthPage />} />
       <Route element={<AuthLayout />}>
         <Route element={<UserLayout />}>
           <Route path="explore" element={<ExplorePage />} />
@@ -65,7 +67,7 @@ export const Routers = createBrowserRouter(
       <Route path="IQquiz" element={<Outlet />}>
         <Route path=":sessionId" element={<IQQuizLayout />}>
           <Route index element={<IQQuizPage />} />
-          <Route path="result" element={<GQSuccessPage />} />
+          <Route path="result" element={<GQSuccessPage1 />} />
         </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />

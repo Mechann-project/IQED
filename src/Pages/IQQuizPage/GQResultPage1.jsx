@@ -53,7 +53,7 @@ const CssTextField = withStyles({
   },
 })(TextField);
 
-const GQSuccessPage = () => {
+const GQResultPage1 = () => {
   const location = useLocation();
   const IQQuizState = useSelector((state) => state.IQQuizState);
   // const { Score, totalTimeTaken } = location.state;
@@ -61,8 +61,10 @@ const GQSuccessPage = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const [name, setName] = useState(sessionStorage.getItem("IQUserusername"));
-  const [contact, setContact] = useState(sessionStorage.getItem("IQUseremail"));
+  // const [name, setName] = useState(sessionStorage.getItem("IQUserusername"));
+  // const [contact, setContact] = useState(sessionStorage.getItem("IQUseremail"));
+  const [name, setName] = useState();
+  const [contact, setContact] = useState();
 
   const [error, setError] = useState(false);
   const [imageData, setImageData] = useState(null);
@@ -97,67 +99,36 @@ const GQSuccessPage = () => {
   //  await generateChart();
   //     const chartImage = canvasRef.current.toDataURL("image/png");
   const sendmail = async (name, score) => {
-    // console.log(contact, name, IQQuizState.IQscore);
+    if (!imageData) {
+      console.error("Image data is not available.");
+      return;
+    }
+    setIsSendingEmail(true); // Disable the button
+    try {
+      const pdfBlob = await generateIqReport(name, IQQuizState, imageData);
+      if (!pdfBlob) throw new Error("Failed to generate the PDF.");
 
-      const pdfBlob = await generateIqReport(name,IQQuizState,imageData);
-      console.log(pdfBlob)
-      if (pdfBlob) {
-        // const downloadLink = document.createElement("a");
-        // const pdfUrl = URL.createObjectURL(pdfBlob);
-        // downloadLink.href = pdfUrl;
-        // downloadLink.download = `${name}_IQ_Report.pdf`;
-  
-        // // Programmatically trigger the download
-        // downloadLink.click();
-  
-        // // Optionally, revoke the object URL after the download to free up memory
-        // URL.revokeObjectURL(pdfUrl);
-        toast.promise(
-          UploadFileMutation({
-            blob: pdfBlob,
-            email: contact,
-            name: name,
-            filename:`${name}_IQ_Report.pdf`,
-            sessionId: sessionStorage.getItem("IQSessionID"),
-          }),
-          {
-            loading: "Send...",
-            success: () => {
-              sessionStorage.clear();
-              navigater("/",{ replace: true });
-              return <b>Check Your Email..</b>;
-            },
-            error: <b>Could not Add Try again.</b>,
-          }
-        );
-      }else {
-            console.error("Failed to generate the PDF.");
-      }
-    // try {
-  
-    //     console.log("PDF generated and saved successfully.");
-    //   } else {
-    //     console.error("Failed to generate the PDF.");
-    //   }
-
-      // if (imageData) {
-      //   const imageDownloadLink = document.createElement("a");
-      //   imageDownloadLink.href = imageData; // Assuming `imageData` is a base64 data URL
-      //   imageDownloadLink.download = `${name}_Chart_Image.png`;
-  
-      //   // Trigger PNG download
-      //   imageDownloadLink.click();
-      //   console.log("Image downloaded successfully.");
-      // } else {
-      //   console.error("No image data available for download.");
-      // }
-
-
-    // } catch (error) {
-    //   console.error("Error generating PDF:", error);
-    // }
-
-    
+      await toast.promise(
+        UploadFileMutation({
+          blob: pdfBlob,
+          email: contact,
+          name: name,
+          filename: `${name}_IQ_Report.pdf`,
+          sessionId: sessionStorage.getItem("IQSessionID"),
+        }),
+        {
+          loading: "Submitting your result...",
+          success: "Result submission successful.",
+          error: "Failed to submit your result. Please try again.",
+        }
+      );
+      sessionStorage.clear();
+    } catch (error) {
+      console.error("Error in sendmail:", error);
+    } finally {
+      sessionStorage.clear();
+      setIsSendingEmail(false); 
+    }
   };
 
   const validateContact = (value) => {
@@ -512,4 +483,4 @@ const GQSuccessPage = () => {
   );
 };
 
-export default GQSuccessPage;
+export default GQResultPage1;
