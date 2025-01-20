@@ -9,8 +9,7 @@ import { useSelector } from "react-redux";
 const AuthLayout = () => {
   const location = useLocation();
   const UserData = useSelector((state) => state.UserState);
-  const sessionid = Cookies.get('connect.sid'); // Get all cookies as an object
-  console.log(sessionid);
+  const sessionid = sessionStorage.getItem("token") // Get all cookies as an object
   const {data:userdata} = useGetUserQuery()
   const isQuizPath = location.pathname.startsWith("/quiz");
   console.log(UserData);
