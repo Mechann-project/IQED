@@ -11,16 +11,14 @@ import { Toaster } from "react-hot-toast";
 
 const RootLayout = () => {
   const location = useLocation();
-  const backgroundImage = useMemo(() => {
+  const backgroundImage = (() => {
     const backgroundMap = {
-      // "/": YellowBackgroundSVG,
       "/": BlueBackgroundSVG,
-      // "/auth": BlueBackgroundSVG,
       "/match": YellowBackgroundSVG,
       "/iqquiz/result": YellowBackgroundSVG,
     };
     console.log(location.pathname.toLowerCase());
-
+  
     const path = location.pathname.toLowerCase();
     if (path.startsWith("/iqquiz") || path.startsWith("/quiz") || path.startsWith("/match")) {
       return YellowBackgroundSVG;
@@ -28,10 +26,9 @@ const RootLayout = () => {
     if (path.endsWith("/result")) {
       return YellowBackgroundSVG;
     }
-
-
     return backgroundMap[path] || WhiteBackgroundSVG;
-  }, [location.pathname]);
+  })();
+  
 
   return (
     <DynamicBackground
