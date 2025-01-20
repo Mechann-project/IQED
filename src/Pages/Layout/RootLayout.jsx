@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useMemo } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { DynamicBackground } from "../../Common";
 import {
@@ -11,35 +11,39 @@ import { Toaster } from "react-hot-toast";
 
 const RootLayout = () => {
   const location = useLocation();
-  const backgroundImage = (() => {
+
+  const backgroundImage = useMemo(() => {
     const backgroundMap = {
       "/": BlueBackgroundSVG,
       "/match": YellowBackgroundSVG,
       "/iqquiz/result": YellowBackgroundSVG,
     };
-    console.log(location.pathname.toLowerCase());
-  
+
     const path = location.pathname.toLowerCase();
-    if (path.startsWith("/iqquiz") || path.startsWith("/quiz") || path.startsWith("/match")) {
+
+    if (
+      path.startsWith("/iqquiz") ||
+      path.startsWith("/quiz") ||
+      path.startsWith("/match")
+    ) {
       return YellowBackgroundSVG;
     }
     if (path.endsWith("/result")) {
       return YellowBackgroundSVG;
     }
-    return backgroundMap[path] || WhiteBackgroundSVG;
-  })();
-  
+
+    return backgroundMap[path] ;
+  }, [location.pathname]);
 
   return (
     <DynamicBackground
-      sx={{ backgroundImage: `url(${backgroundImage})` }}
+    sx={{ backgroundImage: `url(${backgroundImage || WhiteBackgroundSVG})` }}
       className="Root-BackGround"
-
     >
       <Outlet />
-      {/* <SocketProvider>
-       
-      </SocketProvider>  */}
+      {/* Future use of SocketProvider */}
+      {/* <SocketProvider> */}
+      {/* </SocketProvider> */}
       <Toaster position="top-center" reverseOrder={false} />
     </DynamicBackground>
   );
