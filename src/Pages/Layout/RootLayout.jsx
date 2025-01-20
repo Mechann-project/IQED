@@ -15,21 +15,21 @@ const RootLayout = () => {
     const backgroundMap = {
       // "/": YellowBackgroundSVG,
       "/": BlueBackgroundSVG,
-      "/auth": BlueBackgroundSVG,
+      // "/auth": BlueBackgroundSVG,
       "/match": YellowBackgroundSVG,
       "/iqquiz/result": YellowBackgroundSVG,
     };
     console.log(location.pathname.toLowerCase());
 
     const path = location.pathname.toLowerCase();
-    if (path.startsWith("/iqquiz") || path.startsWith("/quiz")|| path.startsWith("/match")) {
-      return YellowBackgroundSVG;  
+    if (path.startsWith("/iqquiz") || path.startsWith("/quiz") || path.startsWith("/match")) {
+      return YellowBackgroundSVG;
     }
     if (path.endsWith("/result")) {
-      return YellowBackgroundSVG;  
+      return YellowBackgroundSVG;
     }
 
-    
+
     return backgroundMap[path] || WhiteBackgroundSVG;
   }, [location.pathname]);
 
@@ -37,13 +37,13 @@ const RootLayout = () => {
     <DynamicBackground
       sx={{ backgroundImage: `url(${backgroundImage})` }}
       className="Root-BackGround"
-      
+
     >
       <Outlet />
       {/* <SocketProvider>
        
       </SocketProvider>  */}
-            <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="top-center" reverseOrder={false} />
     </DynamicBackground>
   );
 };
