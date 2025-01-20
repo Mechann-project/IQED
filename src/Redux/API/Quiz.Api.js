@@ -7,6 +7,13 @@ export const QuizApi = createApi({
     // baseUrl: "http://localhost:3000/quiz",
     baseUrl: "https://iqed-backend.vercel.app/quiz",
     credentials: "include",
+    prepareHeaders: (headers) => {
+      const token = sessionStorage.getItem('token');
+      if (token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   tagTypes: ["User"],
   endpoints: (builder) => ({

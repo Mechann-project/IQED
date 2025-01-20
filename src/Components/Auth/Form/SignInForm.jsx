@@ -22,7 +22,9 @@ const SignInForm = ({ PageSwitch }) => {
         {
           loading: "Logging in...",
           success: (res) => {
+            console.log("res",res.data)
             if (res.data != null  && !isLoading) {
+              sessionStorage.setItem("token",res.data.token)
               navigate("/Explore"); 
               return <b>Login successful!</b>;
             } else {
