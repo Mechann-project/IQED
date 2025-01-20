@@ -16,7 +16,7 @@ const MenuBox = ({ open, anchorEl, handleClose }) => {
     sessionStorage.clear();
     Cookies.remove('connect.sid');
     dispatch(ResetUser);
-    navigate("/auth");
+    navigate("/");
     toast.success("Logout..");
     handleClose();
   };
@@ -25,7 +25,7 @@ const MenuBox = ({ open, anchorEl, handleClose }) => {
     handleClose();
   };
   const handleSettings  = () => {
-    navigate("/auth");  
+    navigate("/");  
     handleClose();
   };
 
