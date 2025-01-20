@@ -5,7 +5,6 @@ import { useGetUserQuery } from "../../Redux/API/User.Api";
 import { useSelector } from "react-redux";
 
 
-
 const AuthLayout = () => {
   const location = useLocation();
   const UserData = useSelector((state) => state.UserState);
@@ -20,5 +19,6 @@ const AuthLayout = () => {
     <Navigate to="/" state={{ from: location }} replace />
   );
 };
+
 
 export default AuthLayout;

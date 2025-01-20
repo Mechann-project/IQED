@@ -23,7 +23,7 @@ export const SignUpvalidSchema = [
       .test("check-email", "Email already exists", async (value) => {
         if (!value) return true; // Skip the check for empty values
         try {
-          const response = await fetch(`http://localhost:3000/auth/checkEmailExists?email=${value}`, {
+          const response = await fetch(`https://iqed-backend.vercel.app/auth/checkEmailExists?email=${value}`, {
             method: "POST",
           });
           // const response = await useCheckEmailExistsMutation({email:value}).unwrap();
