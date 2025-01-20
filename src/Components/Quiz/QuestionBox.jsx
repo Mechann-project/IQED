@@ -133,7 +133,7 @@ const QuestionBox = ({ index, Question }) => {
           {currentQuestion.options.map((option, idx) => (
             <OptionButton
               key={idx}
-              index={idx}
+              index={index}
               quiz={currentQuestion}
               type={option.type}
               content={option.content}
