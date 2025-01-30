@@ -13,7 +13,6 @@ const FormTextField = ({ field, ...props }) => {
       helperText={touched[field] && errors[field]}
       fullWidth
       variant="outlined"
-      
       sx={{
         "& .MuiOutlinedInput-root": {
           height: "40px", 
