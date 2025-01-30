@@ -10,19 +10,20 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material"; // Icon for success
-import { AI_Icon, feedback } from "../../assets";
+import { feedback } from "../../assets";
 import toast from "react-hot-toast";
+import { usePostFeedbackMutation } from "../../Redux/API/Feedback.Api";
 
 const FeedBack = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
+  const [submitFeedback, { isLoading, isSuccess, error }] =
+    usePostFeedbackMutation();
 
   // Form State
   const [feedbackType, setFeedbackType] = useState("");
   const [feedbackText, setFeedbackText] = useState("");
   const [screenshots, setScreenshots] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionSuccess, setSubmissionSuccess] = useState(false);
 
   // Error State
   const [errors, setErrors] = useState({
@@ -41,13 +42,11 @@ const FeedBack = () => {
         if (updatedScreenshots.length < 3) {
           updatedScreenshots.push(file);
         } else {
-          toast.error("You can upload a maximum of 3 screenshots.")
-          // alert("You can upload a maximum of 3 screenshots.");
+          toast.error("You can upload a maximum of 3 screenshots.");
           break;
         }
       } else {
-        toast.error("File size should be below 2MB")
-        // alert("File size should be below 2MB");
+        toast.error("File size should be below 2MB");
       }
     }
 
@@ -55,38 +54,45 @@ const FeedBack = () => {
   };
 
   // Form validation and submission
-  const handleSubmit = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     // Reset errors
     setErrors({ feedbackType: false, feedbackText: false });
 
-    // Check for empty fields and minimum character count
+    // Validate fields
     if (!feedbackType || !feedbackText || feedbackText.length < 50) {
       setErrors({
         feedbackType: !feedbackType,
         feedbackText: !feedbackText || feedbackText.length < 50,
       });
-     
+      toast.error("Please fill all required fields correctly.");
       return;
     }
 
-    // Simulate form submission (e.g., API call)
-    setIsSubmitting(true);
+    // Prepare form data
+    const formData = new FormData();
+  
+    formData.append("type", feedbackType);
+    formData.append("feedback", feedbackText);
 
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmissionSuccess(true);
+    if (feedbackType === "bug" && screenshots.length > 0) {
+      screenshots.forEach((image) => {
+        formData.append("images", image);
+      });
+    }
 
-      // Reset form after successful submission
+    try {
+     
+      const response = await submitFeedback(formData).unwrap();
+
+      toast.success("Feedback submitted successfully!");
       setFeedbackType("");
       setFeedbackText("");
       setScreenshots([]);
-
-      // Reset success message after 3 seconds
-      setTimeout(() => {
-        setSubmissionSuccess(false);
-        toast.success("Thank for your Feedback")  
-      }, 3000);
-    }, 2000); // Simulate a 2-second delay for submission
+    } catch (error) {
+      toast.error(error?.data?.message || "Failed to submit feedback.");
+    } 
   };
 
   return (
@@ -95,9 +101,7 @@ const FeedBack = () => {
         flexGrow: 1,
         display: "flex",
         flexDirection: "column",
-        boxSizing: "border-box",
         gap: "20px",
-        overflow: "hidden",
         marginTop: "10px",
       }}
     >
@@ -105,10 +109,8 @@ const FeedBack = () => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          flexGrow: 0,
           gap: isSm ? "10px" : "20px",
           bgcolor: "#1A49BA",
-          boxSizing: "border-box",
           p: "20px",
           borderRadius: "10px",
         }}
@@ -123,36 +125,23 @@ const FeedBack = () => {
         >
           Submit Your Feedback!
         </Typography>
-        <Typography
-          sx={{
-            fontSize: "12px",
-            color: "White",
-            fontWeight: 400,
-          }}
-        >
-          Help us improve by sharing your feedback. Found a bug? Have a
-          suggestion? Share your thoughts below.
-          {isSm ? null : <br />} Earn **100 IQ Coins** for each valid bug
-          reported!
+        <Typography sx={{ fontSize: "12px", color: "White", fontWeight: 400 }}>
+          Help us improve by sharing your feedback. Earn **100 IQ Coins** for
+          each valid bug reported!
         </Typography>
       </Box>
 
-      {/* Feedback Form Area */}
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           gap: "20px",
           p: "20px",
-          flexGrow: 1,
           bgcolor: "#F3F7FF",
           borderRadius: "10px",
-          fontFamily: "Poppins",
-          border: "2px solid",
-          borderColor: "#02216F",
+          border: "2px solid #02216F",
           boxShadow: "2px 3px #02216F",
           mb: "10px",
-          mr: "10px",
         }}
       >
         <Typography
@@ -163,11 +152,6 @@ const FeedBack = () => {
             display: "flex",
             gap: "10px",
             alignItems: "center",
-            boxSizing: "border-box",
-            px: "10px",
-            py: "5px",
-            borderRadius: "5px",
-            fontSize: "18px",
           }}
         >
           <img
@@ -178,7 +162,6 @@ const FeedBack = () => {
           We'd love to hear from you!
         </Typography>
 
-        {/* Feedback type (Bug Report, Suggestion) */}
         <TextField
           select
           label="Feedback Type"
@@ -195,16 +178,12 @@ const FeedBack = () => {
             <em>Select Feedback Type</em>
           </MenuItem>
           <MenuItem value="bug">Bug Report</MenuItem>
-          <MenuItem value="suggestion">General Suggestion</MenuItem>
+          <MenuItem value="general">General Suggestion</MenuItem>
         </TextField>
 
-        {/* Feedback Text */}
         <TextField
           label="Your Feedback (Minimum 50 characters)"
           multiline
-          sx={{
-            flexGrow: 1,
-          }}
           rows={6}
           value={feedbackText}
           onChange={(e) => setFeedbackText(e.target.value)}
@@ -212,36 +191,17 @@ const FeedBack = () => {
           fullWidth
           error={errors.feedbackText}
           helperText={
-            errors.feedbackText
-              ? feedbackText.length < 50
-                ? "Your feedback must be at least 50 characters"
-                : "Please provide your feedback"
-              : ""
+            errors.feedbackText ? "Feedback must be at least 50 characters" : ""
           }
         />
 
-        {/* Conditionally show the Upload Screenshot for Bug Report */}
         {feedbackType === "bug" && (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-              flexGrow: 1,
-            }}
-          >
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             <Button variant="outlined" component="label" fullWidth>
               Upload Screenshot (Max 2MB each, up to 3 screenshots)
               <input type="file" hidden multiple onChange={handleFileUpload} />
             </Button>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                gap: "10px",
-                flexGrow: 1,
-              }}
-            >
+            <Box sx={{ display: "flex", flexDirection: "row", gap: "10px" }}>
               {screenshots.map((screenshot, index) => (
                 <Typography key={index}>{screenshot.name}</Typography>
               ))}
@@ -249,33 +209,28 @@ const FeedBack = () => {
           </Box>
         )}
 
-        {/* Submit Button with Green Success Icon and Animation */}
         <Button
           variant="contained"
-          color={submissionSuccess ? "success" : "primary"}
+          color={isSuccess ? "success" : "primary"}
           onClick={handleSubmit}
-          disabled={isSubmitting || submissionSuccess}
+          disabled={isLoading || isSuccess}
           sx={{
             fontWeight: "bold",
             backgroundColor: "#1A49BA",
             color: "#ffffff",
-            "&:hover": {
-              backgroundColor: "Black",
-              boxShadow: "2px 3px #FFDA55",
-            },
             boxShadow: "2px 3px #FFDA55",
           }}
           startIcon={
-            isSubmitting ? (
+            isLoading ? (
               <CircularProgress size={20} />
-            ) : submissionSuccess ? (
+            ) : isSuccess ? (
               <CheckCircle sx={{ color: "green" }} />
             ) : null
           }
         >
-          {isSubmitting
+          {isLoading
             ? "Submitting..."
-            : submissionSuccess
+            : isSuccess
             ? "Feedback Submitted!"
             : "Submit Feedback"}
         </Button>
