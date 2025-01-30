@@ -101,8 +101,11 @@ const FeedBack = () => {
         flexGrow: 1,
         display: "flex",
         flexDirection: "column",
+        // flexGrow: 0,
         gap: "20px",
-        marginTop: "10px",
+        boxSizing: "border-box",
+        overflow: "hidden",
+        
       }}
     >
       <Box
@@ -110,8 +113,10 @@ const FeedBack = () => {
           display: "flex",
           flexDirection: "column",
           gap: isSm ? "10px" : "20px",
+          flexGrow: 0,
           bgcolor: "#1A49BA",
           p: "20px",
+          boxSizing: "border-box",
           borderRadius: "10px",
         }}
       >
@@ -139,9 +144,13 @@ const FeedBack = () => {
           p: "20px",
           bgcolor: "#F3F7FF",
           borderRadius: "10px",
+          flexGrow: 1,
+          fontFamily: "Poppins",
           border: "2px solid #02216F",
           boxShadow: "2px 3px #02216F",
           mb: "10px",
+          mr: "10px",
+
         }}
       >
         <Typography
@@ -150,6 +159,11 @@ const FeedBack = () => {
             fontWeight: "bold",
             color: "Black",
             display: "flex",
+            boxSizing: "border-box",
+            px: "10px",
+            py: "5px",
+            borderRadius: "5px",
+            fontSize: "18px",
             gap: "10px",
             alignItems: "center",
           }}
@@ -191,17 +205,27 @@ const FeedBack = () => {
           fullWidth
           error={errors.feedbackText}
           helperText={
-            errors.feedbackText ? "Feedback must be at least 50 characters" : ""
+            
+            errors.feedbackText
+            ? feedbackText.length < 50
+              ? "Your feedback must be at least 50 characters"
+              : "Please provide your feedback"
+            : ""
+
           }
+          sx={{
+            flexGrow: 1,
+          }}
+
         />
 
         {feedbackType === "bug" && (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "10px", flexGrow:1 }}>
             <Button variant="outlined" component="label" fullWidth>
               Upload Screenshot (Max 2MB each, up to 3 screenshots)
               <input type="file" hidden multiple onChange={handleFileUpload} />
             </Button>
-            <Box sx={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+            <Box sx={{ display: "flex", flexDirection: "row", gap: "10px",flexGrow:1 }}>
               {screenshots.map((screenshot, index) => (
                 <Typography key={index}>{screenshot.name}</Typography>
               ))}
@@ -219,6 +243,10 @@ const FeedBack = () => {
             backgroundColor: "#1A49BA",
             color: "#ffffff",
             boxShadow: "2px 3px #FFDA55",
+            "&:hover": {
+              backgroundColor: "Black",
+              boxShadow: "2px 3px #FFDA55",
+            },
           }}
           startIcon={
             isLoading ? (

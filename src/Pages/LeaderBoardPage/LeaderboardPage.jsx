@@ -305,7 +305,7 @@ const LeaderboardPage = () => {
           sx={{
             p: isSm ? "10px" : "20px",
             overflowX: "auto",
-            overflowY: "auto",
+            overflowY: "scroll",
             whiteSpace: "nowrap",
             display: "flex",
             flexDirection: "column",
@@ -314,9 +314,9 @@ const LeaderboardPage = () => {
             borderBottomWidth: "0",
             borderLeftWidth: "0",
             borderStyle: "solid",
-
+            height:'60%',
             borderColor: "#02216F",
-            flexGrow: 1,
+            // flexGrow: 1,
             borderRadius: "10px",
             gap: "5px",
             // bgcolor: "#F6FBFF",

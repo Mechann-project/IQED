@@ -1,6 +1,10 @@
 import React from 'react'
 import { Box, Button, Card, CardActions, CardContent, Divider, Typography } from "@mui/material";
+import { useLocation } from 'react-router-dom';
 const InviteCard = ({GameData ,onStart}) => {
+
+  const location = useLocation()
+
   return (
     <Card
     sx={{
@@ -48,7 +52,7 @@ const InviteCard = ({GameData ,onStart}) => {
       <Box
         sx={{
           p: "5px",
-          width: "60%",
+          width: "100%",
           boxSizing: "border-box",
           bgcolor: "white",
           border: "2px solid",
@@ -58,7 +62,7 @@ const InviteCard = ({GameData ,onStart}) => {
         }}
       >
         <Typography sx={{ fontWeight: "bold", color: "#02216F" }}>
-          learn.iqed.in/join
+          { window.location.href}
         </Typography>
       </Box>
       <Typography sx={{ fontWeight: "bold" }} gutterBottom>

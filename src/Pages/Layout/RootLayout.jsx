@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { DynamicBackground } from "../../Common";
 import { YellowBackgroundSVG, BlueBackgroundSVG } from "../../assets/SVG";
 import { Toaster } from "react-hot-toast";
-// import { SocketProvider } from "../../Socket/SocketContext";
+import { SocketProvider } from "../../Socket/SocketContext";
 
 const DEFAULT_BACKGROUND_URL =
   "https://firebasestorage.googleapis.com/v0/b/eshikhay-database.appspot.com/o/background%2FWhiteLineBG.svg?alt=media&token=0492f27f-f5d6-4e53-8bd0-92d080d3c131";
@@ -32,10 +32,11 @@ const RootLayout = () => {
       sx={{ backgroundImage: `url(${backgroundImage})` }}
       className="Root-BackGround"
     >
-      <Outlet />
+
       {/* Future use of SocketProvider */}
-      {/* <SocketProvider> */}
-      {/* </SocketProvider> */}
+      <SocketProvider>
+        <Outlet />
+      </SocketProvider>
       <Toaster position="top-center" reverseOrder={false} />
     </DynamicBackground>
   );

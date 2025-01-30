@@ -3,8 +3,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const GameApi = createApi({
   reducerPath: 'GameApi',
   // baseQuery: fetchBaseQuery({ baseUrl: 'https://iqed-backend1-five.vercel.app/game' }),
-  // baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/game' }),
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://iqed-backend.vercel.app/game' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/game' }),
+  // baseQuery: fetchBaseQuery({ baseUrl: 'https://iqed-backend.vercel.app/game' }),
   tagTypes: ["Game"], // Ensure correct backend URL
   endpoints: (builder) => ({
     getGameSession: builder.mutation({
