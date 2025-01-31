@@ -41,6 +41,7 @@ const SignUpForm = ({ PageSwitch }) => {
 
   const handleFormSubmit = useCallback(
     async (values, { setSubmitting }) => {
+      console.log(values)
       if (activeStep === 1) {
         const isverify = await handleVerifyEmailOTP(values);
         console.log(isverify);

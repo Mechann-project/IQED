@@ -1,5 +1,4 @@
 import * as yup from "yup";
-import { useCheckEmailExistsMutation } from "../../../Redux/API/Auth.Api";
 
 export const SignUpvalidSchema = [
   yup.object().shape({
@@ -7,8 +6,8 @@ export const SignUpvalidSchema = [
       .string()
       .required("UserName is required")
       .min(8, "UserName must be at least 8 characters long")
-      .test("UserName", "Email already exists", async (value) => {
-        if (!value) return true; // Skip the check for empty values
+      .test("UserName", "User Name already exists", async (value) => {
+        if (!value) return true; 
         try {
           // const response = await fetch(`https://iqed-backend.vercel.app/auth/checkEmailExists?email=${value}`, {
           const response = await fetch(`http://localhost:3000/auth/checkUserNameExists?UserName=${value}`, {
