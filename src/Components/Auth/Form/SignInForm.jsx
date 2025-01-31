@@ -33,25 +33,21 @@ const SignInForm = ({ PageSwitch }) => {
   };
   
   const handleFormSubmit = async (values, { setSubmitting }) => {
-    console.log(values);
     try {
-      await toast.promise(
-        UserLogin({ email: values.email, password: values.password }), // Remove .unwrap()
+       toast.promise(
+        UserLogin({ email: values.email, password: values.password }).unwrap(), // Remove .unwrap()
         {
           loading: "Logging in...",
-          success: (res) => {
-            console.log("res", res.data)
-            if (res.data != null && !isLoading) {
-              sessionStorage.setItem("token", res.data.token)
+          success: (response) => {
+            console.log("res", response)
+            if (response != null && !isLoading) {
+              sessionStorage.setItem("token", response.token)
               navigate("/Explore");
-              return <b>Login successful!</b>;
-            } else {
-              throw new Error("Unexpected response status");
+              return response?.message || "Login successfully!";
             }
           },
-          error: (error) => {
-            console.error("Login error:", error); // Log error for debugging
-            return <b>Could not login. Please try again.</b>;
+          error: (response) => {
+            return response?.data?.message || "Something went wrong. Please try again.";
           },
         }
       );
