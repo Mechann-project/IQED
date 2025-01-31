@@ -44,7 +44,7 @@ const SignInForm = ({ PageSwitch }) => {
             console.log("res", response)
             if (response != null && !isLoading) {
               sessionStorage.setItem("token", response.token)
-              navigate("/Explore");
+              navigate("/missions");
               return response?.message || "Login successfully!";
             }
           },
