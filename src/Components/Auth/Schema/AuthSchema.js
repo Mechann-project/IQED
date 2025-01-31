@@ -6,7 +6,21 @@ export const SignUpvalidSchema = [
     userName: yup
       .string()
       .required("UserName is required")
-      .min(8, "UserName must be at least 8 characters long"),
+      .min(8, "UserName must be at least 8 characters long")
+      .test("UserName", "Email already exists", async (value) => {
+        if (!value) return true; // Skip the check for empty values
+        try {
+          // const response = await fetch(`https://iqed-backend.vercel.app/auth/checkEmailExists?email=${value}`, {
+          const response = await fetch(`http://localhost:3000/auth/checkUserNameExists?UserName=${value}`, {
+            method: "POST",
+          });
+          // const response = await useCheckEmailExistsMutation({email:value}).unwrap();
+          return (response.status == 200 ? false : true); // Adjust based on your backend response
+        } catch (error) {
+          console.error("Error checking email:", error);
+          return false;
+        }
+      }),
     name: yup.string().required(),
     parentsName: yup.string().required(),
     phoneNo: yup
@@ -30,7 +44,7 @@ export const SignUpvalidSchema = [
         if (!value) return true; // Skip the check for empty values
         try {
           // const response = await fetch(`https://iqed-backend.vercel.app/auth/checkEmailExists?email=${value}`, {
-          const response = await fetch(`httphttp://localhost:5173/auth/checkEmailExists?email=${value}`, {
+          const response = await fetch(`http://localhost:3000/auth/checkEmailExists?email=${value}`, {
             method: "POST",
           });
           // const response = await useCheckEmailExistsMutation({email:value}).unwrap();
