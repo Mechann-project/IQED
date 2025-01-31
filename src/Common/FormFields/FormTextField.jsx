@@ -26,7 +26,6 @@ const FormTextField = ({ field, type, ...props }) => {
           height: "40px",
           fontWeight: "600",
           "& input": {
-            height: "40px",
             padding: "8px",
             "&::placeholder": {
               fontSize: "12px",

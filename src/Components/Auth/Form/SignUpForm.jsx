@@ -18,6 +18,7 @@ const SignUpForm = ({ PageSwitch }) => {
   const [otpSent, setOtpSent] = useState(false);
   const [isotpError, setisOtpError] = useState(false);
   const navigate = useNavigate();
+  const [otpTimer, setOtpTimer] = useState(0);
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
@@ -99,20 +100,34 @@ const SignUpForm = ({ PageSwitch }) => {
       alert("Please enter a valid email address first.");
       return;
     }
-    console.log(email);
+
     try {
-      toast.promise(sendEmailOTP({ email }).unwrap(), {
-        loading: "Send...",
+      await toast.promise(sendEmailOTP({ email }).unwrap(), {
+        loading: "Sending...",
         success: <b>OTP has been sent to your email.</b>,
-        error: <b>Could not Send Try again.</b>,
+        error: <b>Could not send. Try again.</b>,
       });
+
       setOtpSent(true);
       setisOtpError(false);
+      setOtpTimer(60); // Set timer to 60 seconds
+
+      // Start countdown
+      const interval = setInterval(() => {
+        setOtpTimer((prev) => {
+          if (prev === 1) {
+            clearInterval(interval);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
     } catch (error) {
       console.error(error);
       setisOtpError(true);
     }
   };
+
 
   return (
     <Box mt={2}>
@@ -157,24 +172,39 @@ const SignUpForm = ({ PageSwitch }) => {
                 {activeStep === 1 && (
                   <>
                     <FormTextField field={"email"} placeholder={"Email"} />
-                    <Button
-                      type="button"
-                      variant="contained"
-                      sx={{
-                        fontWeight: 'bold',
-                        backgroundColor: '#1A49BA',
-                        color: '#ffffff',
-                        mt:'10px',
-                        '&:hover': {
-                          backgroundColor: 'Black',
-                          
-                        },
-                        boxShadow: '2px 3px #FFDA55',
-                      }}
-                      onClick={() => sendOtp(formik.values.email)}
-                    >
-                      {isSendingOTP ? "SENDING..." : "SEND"}
-                    </Button>
+                    {otpSent ? (
+                      otpTimer > 0 ? (
+                        <Typography variant="body2" sx={{ mt: 1, color: "#1A49BA", fontWeight: "bold" }}>
+                          Resend OTP in <b>{otpTimer} sec</b>
+                        </Typography>
+                      ) : (
+                        <Typography
+                          variant="body2"
+                          sx={{ mt: 1, color: "#1A49BA", fontWeight: "bold", cursor: "pointer", textDecoration: "underline" }}
+                          onClick={() => sendOtp(formik.values.email)}
+                        >
+                          Didn't receive the OTP? Click here to resend.
+                        </Typography>
+                      )
+                    ) : (
+                      <Button
+                        type="button"
+                        variant="contained"
+                        sx={{
+                          fontWeight: "bold",
+                          backgroundColor: "#1A49BA",
+                          color: "#ffffff",
+                          mt: "10px",
+                          "&:hover": { backgroundColor: "black" },
+                          boxShadow: "2px 3px #FFDA55",
+                        }}
+                        onClick={() => sendOtp(formik.values.email)}
+                        disabled={isSendingOTP}
+                      >
+                        {isSendingOTP ? "SENDING..." : "SEND OTP"}
+                      </Button>
+                    )}
+
                     {otpSent && (
                       <FormTextField
                         field={"OTP"}
@@ -226,77 +256,77 @@ const SignUpForm = ({ PageSwitch }) => {
                       component="p"
                       sx={{ fontSize: "12px", fontWeight: "bold" }}
                     >
-                      By clicking 'Next,' you agree to our 
-                      <Link component="button" onClick="#" sx={{ marginLeft: "4px"}}> Terms and Conditions.</Link>
+                      By clicking 'Next,' you agree to our
+                      <Link component="button" onClick="#" sx={{ marginLeft: "4px" }}> Terms and Conditions.</Link>
                     </Typography>
                   </Box>
-                <Box sx={{
-                  display:'flex',
-                  flexGrow:1,
-                  flexDirection:'row-reverse',
-                  gap:'20px'
-                }}>
-                  {activeStep === steps.length - 1 ? (
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      fullWidth
-                      sx={{
-                        fontWeight: 'bold',
-                        backgroundColor: '#1A49BA',
-                        color: '#ffffff',
-                        '&:hover': {
-                          backgroundColor: 'Black',
-                          
-                        },
-                        boxShadow: '2px 3px #FFDA55',
-                      }}
-                      disabled={formik.isSubmitting}
-                      onClick={formik.handleSubmit}
-                    >
-                      Submit
-                    </Button>
-                  ) : (
-                    <Button
-                      type="button"
-                      variant="contained"
-                      fullWidth
-                      sx={{
-                        fontWeight: 'bold',
-                        backgroundColor: '#1A49BA',
-                        color: '#ffffff',
-                        '&:hover': {
-                          backgroundColor: 'Black',
-                          
-                        },
-                        boxShadow: '2px 3px #FFDA55',
-                      }}
-                      onClick={formik.handleSubmit}
-                    >
-                      Next
-                    </Button>
-                  )}
-                  {activeStep === 0 ?
-                    null : <Button
-                      disabled={activeStep === 0}
-                      onClick={handleBack}
-                      variant="contained"
-                      fullWidth
-                      sx={{
-                        fontWeight: 'bold',
-                        backgroundColor: '#1A49BA',
-                        color: '#ffffff',
-                        '&:hover': {
-                          backgroundColor: 'Black',
-                          
-                        },
-                        boxShadow: '2px 3px #FFDA55',
-                      }}
-                    >
-                      Back
-                    </Button>}
+                  <Box sx={{
+                    display: 'flex',
+                    flexGrow: 1,
+                    flexDirection: 'row-reverse',
+                    gap: '20px'
+                  }}>
+                    {activeStep === steps.length - 1 ? (
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        fullWidth
+                        sx={{
+                          fontWeight: 'bold',
+                          backgroundColor: '#1A49BA',
+                          color: '#ffffff',
+                          '&:hover': {
+                            backgroundColor: 'Black',
 
-                    </Box>
+                          },
+                          boxShadow: '2px 3px #FFDA55',
+                        }}
+                        disabled={formik.isSubmitting}
+                        onClick={formik.handleSubmit}
+                      >
+                        Submit
+                      </Button>
+                    ) : (
+                      <Button
+                        type="button"
+                        variant="contained"
+                        fullWidth
+                        sx={{
+                          fontWeight: 'bold',
+                          backgroundColor: '#1A49BA',
+                          color: '#ffffff',
+                          '&:hover': {
+                            backgroundColor: 'Black',
+
+                          },
+                          boxShadow: '2px 3px #FFDA55',
+                        }}
+                        onClick={formik.handleSubmit}
+                      >
+                        Next
+                      </Button>
+                    )}
+                    {activeStep === 0 ?
+                      null : <Button
+                        disabled={activeStep === 0}
+                        onClick={handleBack}
+                        variant="contained"
+                        fullWidth
+                        sx={{
+                          fontWeight: 'bold',
+                          backgroundColor: '#1A49BA',
+                          color: '#ffffff',
+                          '&:hover': {
+                            backgroundColor: 'Black',
+
+                          },
+                          boxShadow: '2px 3px #FFDA55',
+                        }}
+                      >
+                        Back
+                      </Button>}
+
+                  </Box>
                   <Typography sx={{ textAlign: "center", fontSize: "12px" }}>
                     I have an account?{" "}
                     <span>
