@@ -19,6 +19,7 @@ import {
   QuizPage,
   MatchLobby,
   MPQuizPage,
+  Forget,
 } from "../Pages";
 import GQSuccessPage from "../Pages/IQQuizPage/GQResultPage";
 import GQSuccessPage1 from "../Pages/IQQuizPage/GQResultPage1";
@@ -35,6 +36,7 @@ export const Routers = createBrowserRouter(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<LandingPage />} />
       <Route path="/Auth" element={<AuthPage />} />
+      <Route path="forget/:id/:token" element={<Forget />} />
       <Route element={<AuthLayout />}>
         <Route element={<UserLayout />}>
           <Route path="explore" element={<ExplorePage />} />

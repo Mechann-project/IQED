@@ -1,6 +1,5 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-
 import {
   Button,
   Dialog,
@@ -11,20 +10,30 @@ import {
   OutlinedInput,
 } from "@mui/material";
 
+const InputDialogBox = ({ open, close, title, content, submitCallBack }) => {
+  const [email, setEmail] = React.useState("");
 
-const InputDialogBox = ({ open, close, title, content , submitCallBack }) => {
+  // Handle input change
+  const handleChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  // Handle form submission
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    submitCallBack(email); // Pass email value to callback
+    close(); // Close the dialog
+  };
+
   return (
     <Dialog
       open={open}
       onClose={close}
       PaperProps={{
         component: "form",
-        onSubmit: (event) => {
-          event.preventDefault();
-          handleClose();
-        },
+        onSubmit: handleSubmit,
         sx: {
-          padding: "20px", // Add padding here
+          padding: "20px",
         },
       }}
     >
@@ -32,18 +41,18 @@ const InputDialogBox = ({ open, close, title, content , submitCallBack }) => {
         {title}
       </DialogTitle>
       <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        <DialogContentText sx={{ fontSize: "14px" }}>
-            {content}
-        </DialogContentText>
+        <DialogContentText sx={{ fontSize: "14px" }}>{content}</DialogContentText>
+        
         <OutlinedInput
           autoFocus
           required
           name="email"
-          label="Email address"
           placeholder="Email address"
           type="email"
           fullWidth
           sx={{ height: "40px" }}
+          value={email} // Bind input value to state
+          onChange={handleChange} // Update state on change
         />
       </DialogContent>
       <DialogActions sx={{ pb: 3, px: 3 }}>
@@ -53,14 +62,13 @@ const InputDialogBox = ({ open, close, title, content , submitCallBack }) => {
         <Button
           variant="contained"
           type="submit"
-          onClick={submitCallBack}
           sx={{
             fontWeight: "bold",
             backgroundColor: "#1A49BA",
             overflow: "hidden",
             color: "#ffffff",
             "&:hover": {
-              backgroundColor: "Black",
+              backgroundColor: "black",
               transition: "transform 0.3s ease-in-out",
               transform: "translateY(-5px)",
             },
@@ -75,8 +83,11 @@ const InputDialogBox = ({ open, close, title, content , submitCallBack }) => {
 };
 
 InputDialogBox.propTypes = {
-  close: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
+  close: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  submitCallBack: PropTypes.func.isRequired, // Ensure callback is required
 };
 
 export default InputDialogBox;

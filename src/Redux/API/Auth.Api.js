@@ -47,6 +47,20 @@ export const AuthApi = createApi({
         body: data,
       }),
     }),
+    ForgetPassword: builder.mutation({
+      query: (data) => ({
+        url: "ForgetPassword",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    NewPassword: builder.mutation({
+      query: (data) => ({
+        url: "NewPassword",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -56,4 +70,6 @@ export const {
   useCheckEmailExistsMutation,
   useSendEmailOTPMutation,
   useVerifyEmailMutation,
+  useForgetPasswordMutation,
+  useNewPasswordMutation
 } = AuthApi;

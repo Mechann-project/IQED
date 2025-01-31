@@ -15,6 +15,7 @@ export { default as LeaderboardPage } from "./LeaderBoardPage/LeaderboardPage.js
 export { default as FeedBackPage } from "./FeedBackPage/FeedBack.jsx";
 export { default as StorePage } from "./Store/StorePage.jsx";
 export { default as MPQuizPage } from "./MPQuiz/MPQuizPage.jsx";
+export { default as Forget } from "./Forget/Forget.jsx";
 
 
 export { default as PageNotFound} from "./404/PageNotFound.jsx"

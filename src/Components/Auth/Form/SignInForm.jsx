@@ -5,7 +5,7 @@ import { Formik, Form, FormikProvider } from "formik";
 import { SignInvalidSchema } from "../Schema/AuthSchema";
 import { FormTextField, InputDialogBox } from "../../../Common";
 import toast from "react-hot-toast";
-import { useLoginMutation } from "../../../Redux/API/Auth.Api";
+import { useForgetPasswordMutation, useLoginMutation } from "../../../Redux/API/Auth.Api";
 import Cookies from "js-cookie";
 import { useGetUserQuery } from "../../../Redux/API/User.Api";
 
@@ -13,7 +13,25 @@ const SignInForm = ({ PageSwitch }) => {
   const [open, setOpen] = useState(false);
   const [UserLogin] = useLoginMutation();
   const navigate = useNavigate();
+  const [ForgetPassword] = useForgetPasswordMutation();
   const { isLoading } = useGetUserQuery()
+  const handlesendEmail = async (email) => {
+    toast.promise(
+      ForgetPassword({ toEmail: email, url: "http://localhost:5173" }).unwrap(),
+      {
+        loading: "Sending email...",
+        success: (response) => {
+          navigate("/"); // Redirect on success
+          return response.message || "Password reset email sent successfully!";
+        },
+        error: (error) => {
+          console.error("Error sending email:", error);
+          return error?.data?.message || "Something went wrong. Please try again.";
+        },
+      }
+    );
+  };
+  
   const handleFormSubmit = async (values, { setSubmitting }) => {
     console.log(values);
     try {
@@ -139,7 +157,7 @@ const SignInForm = ({ PageSwitch }) => {
         content={
           "Enter your account&apos;s email address, and we&apos;ll send you a link to reset your password."
         }
-        submitCallBack={null}
+        submitCallBack={handlesendEmail}
       />
     </Box>
   );
