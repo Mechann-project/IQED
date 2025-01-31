@@ -167,13 +167,7 @@ const SignUpForm = ({ PageSwitch }) => {
                     />
                     <FormTextField field={"grade"} placeholder={"Grade"} />
                     
-                      <Typography
-                      component="p"
-                      sx={{ fontSize: "12px", fontWeight: "bold" }}
-                    > 
-                      By clicking 'Next,' you agree to our
-                      <Link component="button" onClick="#" sx={{ marginLeft: "4px" }}> Terms and Conditions.</Link>
-                    </Typography>
+                      
                     
                   </Fragment>
                 )}
@@ -260,7 +254,13 @@ const SignUpForm = ({ PageSwitch }) => {
                 )}
 
                 <Box display="flex" flexDirection="column" gap={1} mt={1}>
-
+                <Typography
+                      component="p"
+                      sx={{ fontSize: "12px", fontWeight: "bold" }}
+                    > 
+                      By clicking 'Next,' you agree to our
+                      <Link component="button" onClick="#" sx={{ marginLeft: "4px" }}> Terms and Conditions.</Link>
+                    </Typography>
                   <Box sx={{
                     display: 'flex',
                     flexGrow: 1,
