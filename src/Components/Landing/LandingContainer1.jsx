@@ -79,11 +79,13 @@ const LandingContainer = () => {
     <Box
       sx={{
         boxSizing: "border-box",
-        mt: isSm ? "30%" : null,
+        pt: isSm ? "30%" : null,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
+        width:'100%',
+          height:'100%'
       }}
     >
       {/* Introductory text */}
@@ -93,7 +95,7 @@ const LandingContainer = () => {
           px: "15px",
           py: "5px",
           color: "#02216F",
-          fontSize: { xs: "40px", md: "48px", lg: "60px" },
+          fontSize: { xs: "30px", md: "40px", lg: "60px" },
           fontWeight: "bold",
         }}
       >

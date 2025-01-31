@@ -17,11 +17,12 @@ const RootLayout = () => {
       "/auth": BlueBackgroundSVG,
       "/match": YellowBackgroundSVG,
       "/iqquiz/result": YellowBackgroundSVG,
+
     };
 
     const path = location.pathname.toLowerCase();
 
-    if (path.startsWith("/iqquiz") || path.startsWith("/quiz") || path.startsWith("/match")) {
+    if (path.startsWith("/iqquiz") || path.startsWith("/quiz") || path.startsWith("/match") || path.startsWith("/forget")) {
       return YellowBackgroundSVG;
     }
 

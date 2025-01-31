@@ -84,6 +84,8 @@ const LandingContainer = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
+        width:'100%',
+          height:'100%'
       }}
     >
       {/* Introductory text */}

@@ -12,8 +12,8 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
       <App />
-      <Analytics />
-      <SpeedInsights />
+      {/* <Analytics />
+      <SpeedInsights /> */}
     </Provider>
   </StrictMode>
 );
