@@ -15,6 +15,8 @@ const SignInForm = ({ PageSwitch }) => {
   const navigate = useNavigate();
   const [ForgetPassword] = useForgetPasswordMutation();
   const { isLoading } = useGetUserQuery()
+
+
   const handlesendEmail = async (email) => {
     toast.promise(
       ForgetPassword({ toEmail: email, url: "http://localhost:5173" }).unwrap(),
@@ -31,7 +33,7 @@ const SignInForm = ({ PageSwitch }) => {
       }
     );
   };
-  
+
   const handleFormSubmit = async (values, { setSubmitting }) => {
     console.log(values);
     try {
@@ -43,7 +45,7 @@ const SignInForm = ({ PageSwitch }) => {
             console.log("res", res.data)
             if (res.data != null && !isLoading) {
               sessionStorage.setItem("token", res.data.token)
-              navigate("/Explore");
+              navigate("/missions");
               return <b>Login successful!</b>;
             } else {
               throw new Error("Unexpected response status");
@@ -112,7 +114,14 @@ const SignInForm = ({ PageSwitch }) => {
                       justifyContent: "flex-end",
                     }}
                   >
-                    <Link component="button" onClick={() => setOpen(true)} sx={{ fontSize: "12px", textDecoration: 'none' }}>
+                    <Link
+                      component="button"
+                      onClick={(event) => {
+                        event.preventDefault();  // Prevents form submission
+                        setOpen(true);
+                      }}
+                      sx={{ fontSize: "12px", textDecoration: 'none' }}
+                    >
                       Forgot your password?
                     </Link>
                   </Box>

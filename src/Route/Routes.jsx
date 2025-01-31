@@ -29,9 +29,13 @@ import IQQuizPage from "../Pages/IQQuizPage/IQQuizPage";
 import { AuthLayout, MatchLayout, QuizLayout, StoreOrderLayout, UserLayout } from "../Pages/Layout";
 import { OrderDetail, Shipping, YourOrders } from "../Components";
 import { OnLoadLobby } from "../Pages/GamePage/MatchPage/MatchLobby";
-
+import { Navigate } from "react-router-dom";
+const isUserLoggedIn = () => {
+  return !!sessionStorage?.getItem("token"); 
+};
 const basename = import.meta.env.BASE_URL;
 export const Routers = createBrowserRouter(
+
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<LandingPage />} />
@@ -39,7 +43,7 @@ export const Routers = createBrowserRouter(
       <Route path="/forget/:id" element={<Forget />} />
       <Route element={<AuthLayout />}>
         <Route element={<UserLayout />}>
-          <Route path="explore" element={<ExplorePage />} />
+          {/* <Route path="explore" element={<ExplorePage />} /> */}
           <Route path="missions" element={<MissionPage />} />
           <Route path="game" element={<GamePage />} />
           <Route path="Profile" element={<ProfilePage />} />
@@ -72,7 +76,10 @@ export const Routers = createBrowserRouter(
           <Route path="result" element={<GQSuccessPage1 />} />
         </Route>
       </Route>
-      <Route path="*" element={<PageNotFound />} />
+      <Route
+        path="*"
+        element={<Navigate to={isUserLoggedIn() ? "/missions" : "/"} replace />}
+      />
     </Route>
 
   )
