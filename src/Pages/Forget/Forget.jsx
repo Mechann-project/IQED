@@ -1,110 +1,138 @@
 import React, { useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { Box, TextField, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Divider } from "@mui/material";
 import { useNewPasswordMutation } from "../../Redux/API/Auth.Api";
 import toast from "react-hot-toast";
+import { FormTextField } from "../../Common";
+import { Formik, Form, FormikProvider } from "formik";
+import { ResetPasswordValidationSchema } from "../../Components/Auth/Schema/AuthSchema";
+import { LandingHeader } from "../../Components";
+
 
 const Forget = () => {
   const { id } = useParams();
   const location = useLocation();
-  const navigate = useNavigate(); // Fixed typo from 'navicate' to 'navigate'
-
-  // Extract token from URL
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("token")?.replace(/"/g, "");
-
-  // State for form fields
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  // RTK Mutation Hook
   const [useNewPassword] = useNewPasswordMutation();
 
-  // Handle form submission
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    // Basic validation
-    if (!newPassword || !confirmPassword) {
-      toast.error("Both fields are required.");
-      return;
-    }
-    if (newPassword.length < 8) {
-      toast.error("Password must be at least 8 characters long.");
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match.");
-      return;
-    }
-
+  const handleSubmit = async (values) => {
+    console.log("values",values)
     try {
-      // Call API and unwrap the response
-      const response = await useNewPassword({ userid: id, token, NewPassword: newPassword }).unwrap();
-
-      // Success handling
+      const response = await useNewPassword({
+        userid: id,
+        token,
+        NewPassword: values.password,
+      }).unwrap();
       toast.success(response.message || "Password updated successfully!");
-      navigate("/"); // Redirect to home page
+      navigate("/"); // Redirect to home page after password reset
     } catch (error) {
-      // Error handling
       console.error("Error updating password:", error);
       toast.error(error?.data?.message || "Something went wrong. Please try again.");
     }
   };
 
   return (
-    <Box
-      sx={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#f5f5f5",
-      }}
-    >
+    <>
+      <LandingHeader />
       <Box
         sx={{
-          p: 4,
-          boxShadow: 3,
-          borderRadius: 2,
-          backgroundColor: "white",
-          width: "50%",
+          boxSizing: "border-box",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          width:'100%',
+          height:'100%'
         }}
       >
-        <Typography variant="h6" gutterBottom>
-          Reset Password #IQED
-        </Typography>
-
-        <form onSubmit={handleSubmit}>
-          {/* New Password Field */}
-          <TextField
-            fullWidth
-            label="New Password"
-            type="password"
-            variant="outlined"
-            margin="normal"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-
-          {/* Confirm Password Field */}
-          <TextField
-            fullWidth
-            label="Confirm Password"
-            type="password"
-            variant="outlined"
-            margin="normal"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-
-          {/* Submit Button */}
-          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+        <Box
+          sx={{
+            width: { xs: "90%", sm: "80%", md: "60%", lg: "40%" },
+            padding: 4,
+            border: "2px solid",
+            borderColor: "#02216F",
+            backgroundColor: "white",
+            boxShadow: "3px 4px #02216F",
+            borderRadius: "20px",
+            boxSizing: "border-box",
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: "600", color: "#02216F", textAlign: "center" }}
+            gutterBottom
+          >
             Reset Password
-          </Button>
-        </form>
+          </Typography>
+          <Divider
+            sx={{
+              bgcolor: "#FFDA55",
+              mb: "5%",
+              height: "2px",
+              width: "100%",
+            }}
+          />
+          <Formik
+            validationSchema={ResetPasswordValidationSchema}
+            onSubmit={handleSubmit}
+            initialValues={{ password: "", confirmPassword: "" }}
+          >
+            {(formik) => (
+              <FormikProvider value={formik}>
+                <Form>
+                  <Box display="flex" flexDirection="column" gap={2}>
+                    <FormTextField
+                      field={"password"}
+                      placeholder={"Password"}
+                      type={"password"}
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.password && Boolean(formik.errors.password)}
+                      helperText={formik.touched.password && formik.errors.password}
+                    />
+                    <FormTextField
+                      field={"confirmPassword"}
+                      placeholder={"Confirm Password"}
+                      type={"password"}
+                      value={formik.values.confirmPassword}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+                      helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                    />
+                  </Box>
+                  <Box mt={2} display="flex" justifyContent="center">
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "#FFDA55",
+                        color: "#02216F",
+                        boxShadow: "2px 3px white",
+                        borderRadius: "10px",
+                        textTransform: "none",
+                        border: "2px solid",
+                        borderColor: "#02216F",
+                        "&:hover": {
+                          color: "#fff",
+                          backgroundColor: "black",
+                        },
+                      }}
+                    >
+                      Submit
+                    </Button>
+                  </Box>
+                </Form>
+              </FormikProvider>
+            )}
+          </Formik>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

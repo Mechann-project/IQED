@@ -73,3 +73,25 @@ export const SignInvalidSchema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required("Password is required"),
 });
+export const forgotPasswordSchema = yup.object().shape({
+  email: yup.string().email().required(),
+});
+
+
+export const ResetPasswordValidationSchema = yup.object().shape({
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters long")
+    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+    .matches(/\d/, "Password must contain at least one number")
+    .matches(
+      /[@$!%*?&]/,
+      "Password must contain at least one special character (@$!%*?&)"
+    ),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match")
+    .required("Confirm Password is required"),
+});
