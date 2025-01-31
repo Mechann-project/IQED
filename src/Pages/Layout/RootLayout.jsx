@@ -13,7 +13,8 @@ const RootLayout = () => {
 
   const backgroundImage = useMemo(() => {
     const backgroundMap = {
-      "/": BlueBackgroundSVG,
+      "/": YellowBackgroundSVG,
+      "/auth": BlueBackgroundSVG,
       "/match": YellowBackgroundSVG,
       "/iqquiz/result": YellowBackgroundSVG,
     };
@@ -32,7 +33,6 @@ const RootLayout = () => {
       sx={{ backgroundImage: `url(${backgroundImage})` }}
       className="Root-BackGround"
     >
-
       {/* Future use of SocketProvider */}
       <SocketProvider>
         <Outlet />

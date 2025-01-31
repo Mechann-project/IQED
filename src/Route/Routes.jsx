@@ -33,8 +33,8 @@ const basename = import.meta.env.BASE_URL;
 export const Routers = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
-      {/* <Route index element={<LandingPage />} /> */}
-      <Route index element={<AuthPage />} />
+      <Route index element={<LandingPage />} />
+      <Route path="/Auth" element={<AuthPage />} />
       <Route element={<AuthLayout />}>
         <Route element={<UserLayout />}>
           <Route path="explore" element={<ExplorePage />} />

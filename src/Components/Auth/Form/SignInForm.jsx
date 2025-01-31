@@ -80,7 +80,6 @@ const SignInForm = ({ PageSwitch }) => {
                   placeholder={"password"}
                   type={"password"}
                 />
-
                 <Box
                   display="flex"
                   flexDirection="column"

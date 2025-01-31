@@ -69,7 +69,7 @@ const GQResultPage1 = () => {
   const [error, setError] = useState(false);
   const [imageData, setImageData] = useState(null);
   const [UploadFileMutation] = useUploadFileMutation();
-  const navigater = useNavigate();
+  const navigate = useNavigate();
 
   const handleChartRendered = (data) => {
     setImageData(data);
@@ -91,8 +91,8 @@ const GQResultPage1 = () => {
       selectedMethod === "email"
         ? "#GetViaEmail"
         : selectedMethod === "whatsapp"
-        ? "#GetViaWhatsApp"
-        : "";
+          ? "#GetViaWhatsApp"
+          : "";
     window.history.replaceState(null, "", `${window.location.pathname}${hash}`);
   }, [selectedMethod]);
 
@@ -103,11 +103,11 @@ const GQResultPage1 = () => {
       console.error("Image data is not available.");
       return;
     }
-    setIsSendingEmail(true); // Disable the button
+  
     try {
       const pdfBlob = await generateIqReport(name, IQQuizState, imageData);
       if (!pdfBlob) throw new Error("Failed to generate the PDF.");
-
+  
       await toast.promise(
         UploadFileMutation({
           blob: pdfBlob,
@@ -115,21 +115,21 @@ const GQResultPage1 = () => {
           name: name,
           filename: `${name}_IQ_Report.pdf`,
           sessionId: sessionStorage.getItem("IQSessionID"),
+        }).then(() => {
+          sessionStorage.clear();
+          navigate("/Auth");
         }),
         {
           loading: "Submitting your result...",
-          success: "Result submission successful.",
+          success: "Result submission successful. Check your email!",
           error: "Failed to submit your result. Please try again.",
         }
       );
-      sessionStorage.clear();
     } catch (error) {
       console.error("Error in sendmail:", error);
-    } finally {
-      sessionStorage.clear();
-      setIsSendingEmail(false); 
     }
   };
+  
 
   const validateContact = (value) => {
     if (value.includes("@")) {
