@@ -20,7 +20,7 @@ const FormTextField = ({ field, type, ...props }) => {
       helperText={touched[field] && errors[field]}
       fullWidth
       variant="outlined"
-      type={type === "password" && !showPassword ? "password" : "text"}
+      type={type === "password" ? (!showPassword ? "password" : "text") : type}
       sx={{
         "& .MuiOutlinedInput-root": {
           height: "40px",
@@ -32,6 +32,12 @@ const FormTextField = ({ field, type, ...props }) => {
             },
           },
         },
+        "& input[type=number]": {
+          MozAppearance: "textfield", // Hide arrows in Firefox
+        },
+        "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+          display: "none", // Hide arrows in Chrome, Safari, Edge
+        },
       }}
       InputProps={
         type === "password"
@@ -39,7 +45,7 @@ const FormTextField = ({ field, type, ...props }) => {
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton onClick={handleClickShowPassword} edge="end" size="small">
-                    {showPassword ? <VisibilityOff  fontSize="inherit" /> : <Visibility fontSize="inherit" />}
+                    {showPassword ? <VisibilityOff fontSize="inherit" /> : <Visibility fontSize="inherit" />}
                   </IconButton>
                 </InputAdornment>
               ),

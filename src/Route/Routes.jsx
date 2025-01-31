@@ -36,7 +36,7 @@ export const Routers = createBrowserRouter(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<LandingPage />} />
       <Route path="/Auth" element={<AuthPage />} />
-      <Route path="forget/:id/:token" element={<Forget />} />
+      <Route path="/forget/:id" element={<Forget />} />
       <Route element={<AuthLayout />}>
         <Route element={<UserLayout />}>
           <Route path="explore" element={<ExplorePage />} />

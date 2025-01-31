@@ -76,6 +76,8 @@ const SignUpForm = ({ PageSwitch }) => {
     profileImage: "",
     userName: "",
     name: "",
+    parentsName: "",
+    phoneNo:"",
     age: "",
     email: "",
     password: "",
@@ -128,9 +130,36 @@ const SignUpForm = ({ PageSwitch }) => {
     }
   };
 
-
+  const validateOneByOne = async (values, step) => {
+    const errors = {};
+    const schema = SignUpvalidSchema[step];
+  
+    try {
+      await schema.validate(values, { abortEarly: false });
+    } catch (validationErrors) {
+      if (validationErrors.inner && validationErrors.inner.length > 0) {
+        const firstError = validationErrors.inner[0]; // Get only the first error
+        errors[firstError.path] = firstError.message; 
+      }
+    }
+  
+    return errors;
+  };
   return (
-    <Box mt={2}>
+    <Box 
+    mt={2} 
+    width={"60%"} 
+    sx={{
+      justifyContent: 'center', 
+      alignItems: 'center',
+      width: {
+        xs: '90%',  // for extra small screens
+        sm: '70%',  // for small screens
+        md: '65%',  // for medium screens
+        lg: '60%',  // for large screens
+      }
+    }}
+  >
       <Typography
         component="h1"
         variant="h4"
@@ -146,8 +175,9 @@ const SignUpForm = ({ PageSwitch }) => {
       </Typography>
       <Formik
         initialValues={initialValues}
-        validationSchema={SignUpvalidSchema[activeStep]}
+        validate={(values) => validateOneByOne(values, activeStep)}
         onSubmit={handleFormSubmit}
+        
       >
         {(formik) => (
           <FormikProvider value={formik}>
@@ -155,23 +185,15 @@ const SignUpForm = ({ PageSwitch }) => {
               <Box display="flex" flexDirection="column" gap={1} >
                 {activeStep === 0 && (
                   <Fragment>
-                    <FormTextField
-                      field={"userName"}
-                      placeholder={"UserName"}
-                    />
+                    <FormTextField field={"userName"} placeholder={"UserName"}/>
                     <FormTextField field={"name"} placeholder={"Name"} />
+                    <FormTextField field={"parentsName"} placeholder={"Parents Name (Dad or mom)"} />
+                    <FormTextField field={"phoneNo"} type={"Number"} placeholder={"Phone No"} />
                     <FormTextField field={"age"} placeholder={"Age"} />
-                    <FormTextField
-                      field={"schoolName"}
-                      placeholder={"SchoolName"}
-                    />
+                    <FormTextField field={"schoolName"} placeholder={"SchoolName"} />
                     <FormTextField field={"grade"} placeholder={"Grade"} />
-                    
-                      
-                    
                   </Fragment>
                 )}
-
                 {activeStep === 1 && (
                   <Fragment>
                     <FormTextField field={"email"} placeholder={"Email"} />
@@ -256,7 +278,7 @@ const SignUpForm = ({ PageSwitch }) => {
                 <Box display="flex" flexDirection="column" gap={1} mt={1}>
                 <Typography
                       component="p"
-                      sx={{ fontSize: "12px", fontWeight: "bold" }}
+                      sx={{ fontSize: "10px", fontWeight: "bold" }}
                     > 
                       By clicking 'Next,' you agree to our
                       <Link component="button" onClick="#" sx={{ marginLeft: "4px" }}> Terms and Conditions.</Link>
