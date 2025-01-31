@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Box, Input, Typography, Link } from "@mui/material";
 import { Formik, Form, FormikProvider } from "formik";
@@ -152,9 +152,9 @@ const SignUpForm = ({ PageSwitch }) => {
         {(formik) => (
           <FormikProvider value={formik}>
             <Form>
-              <Box display="flex" flexDirection="column" gap={1}>
+              <Box display="flex" flexDirection="column" gap={1} >
                 {activeStep === 0 && (
-                  <>
+                  <Fragment>
                     <FormTextField
                       field={"userName"}
                       placeholder={"UserName"}
@@ -166,11 +166,20 @@ const SignUpForm = ({ PageSwitch }) => {
                       placeholder={"SchoolName"}
                     />
                     <FormTextField field={"grade"} placeholder={"Grade"} />
-                  </>
+                    
+                      <Typography
+                      component="p"
+                      sx={{ fontSize: "12px", fontWeight: "bold" }}
+                    > 
+                      By clicking 'Next,' you agree to our
+                      <Link component="button" onClick="#" sx={{ marginLeft: "4px" }}> Terms and Conditions.</Link>
+                    </Typography>
+                    
+                  </Fragment>
                 )}
 
                 {activeStep === 1 && (
-                  <>
+                  <Fragment>
                     <FormTextField field={"email"} placeholder={"Email"} />
                     {otpSent ? (
                       otpTimer > 0 ? (
@@ -213,11 +222,11 @@ const SignUpForm = ({ PageSwitch }) => {
                         helperText={isotpError || formik.errors.OTP}
                       />
                     )}
-                  </>
+                  </Fragment>
                 )}
 
                 {activeStep === 2 && (
-                  <>
+                  <Fragment>
                     {/* <Input
                       type="file"
                       name="profileImage"
@@ -247,19 +256,11 @@ const SignUpForm = ({ PageSwitch }) => {
                       placeholder={"Confirm Password"}
                       type={"password"}
                     />
-                  </>
+                  </Fragment>
                 )}
 
                 <Box display="flex" flexDirection="column" gap={1} mt={1}>
-                  <Box>
-                    <Typography
-                      component="p"
-                      sx={{ fontSize: "12px", fontWeight: "bold" }}
-                    >
-                      By clicking 'Next,' you agree to our
-                      <Link component="button" onClick="#" sx={{ marginLeft: "4px" }}> Terms and Conditions.</Link>
-                    </Typography>
-                  </Box>
+
                   <Box sx={{
                     display: 'flex',
                     flexGrow: 1,

@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Box, Input, Typography, Link } from "@mui/material";
 import { Formik, Form, FormikProvider } from "formik";
 import { SignInvalidSchema } from "../Schema/AuthSchema";
@@ -13,7 +13,7 @@ const SignInForm = ({ PageSwitch }) => {
   const [open, setOpen] = useState(false);
   const [UserLogin] = useLoginMutation();
   const navigate = useNavigate();
-  const {isLoading} = useGetUserQuery()
+  const { isLoading } = useGetUserQuery()
   const handleFormSubmit = async (values, { setSubmitting }) => {
     console.log(values);
     try {
@@ -22,10 +22,10 @@ const SignInForm = ({ PageSwitch }) => {
         {
           loading: "Logging in...",
           success: (res) => {
-            console.log("res",res.data)
-            if (res.data != null  && !isLoading) {
-              sessionStorage.setItem("token",res.data.token)
-              navigate("/Explore"); 
+            console.log("res", res.data)
+            if (res.data != null && !isLoading) {
+              sessionStorage.setItem("token", res.data.token)
+              navigate("/Explore");
               return <b>Login successful!</b>;
             } else {
               throw new Error("Unexpected response status");
@@ -37,7 +37,7 @@ const SignInForm = ({ PageSwitch }) => {
           },
         }
       );
-      
+
     } catch (error) {
       console.error("Error in login process:", error); // Additional error handling
     }
@@ -94,7 +94,7 @@ const SignInForm = ({ PageSwitch }) => {
                       justifyContent: "flex-end",
                     }}
                   >
-                    <Link component="button" onClick={() => setOpen(true)} sx={{fontSize: "12px",textDecoration: 'none' }}>
+                    <Link component="button" onClick={() => setOpen(true)} sx={{ fontSize: "12px", textDecoration: 'none' }}>
                       Forgot your password?
                     </Link>
                   </Box>
@@ -121,24 +121,26 @@ const SignInForm = ({ PageSwitch }) => {
                   <Typography sx={{ textAlign: "center", fontSize: "12px" }}>
                     Don't have an account?{" "}
                     <span>
-                      <Link component="button" sx={{fontSize: "12px",textDecoration: 'none' }} onClick={PageSwitch}>SignUp</Link>
+                      <Link component="button" sx={{ fontSize: "12px", textDecoration: 'none' }} onClick={PageSwitch}>SignUp</Link>
                     </span>
                   </Typography>
                 </Box>
               </Box>
             </Form>
-            <InputDialogBox
-              open={open}
-              close={() => setOpen(false)}
-              title={"Resert Password"}
-              content={
-                "Enter your account&apos;s email address, and we&apos;ll send you a link to reset your password."
-              }
-              submitCallBack={null}
-            />
+
           </FormikProvider>
+
         )}
       </Formik>
+      <InputDialogBox
+        open={open}
+        close={() => setOpen(false)}
+        title={"Resert Password"}
+        content={
+          "Enter your account&apos;s email address, and we&apos;ll send you a link to reset your password."
+        }
+        submitCallBack={null}
+      />
     </Box>
   );
 };
