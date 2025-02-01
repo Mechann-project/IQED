@@ -27,6 +27,15 @@ import { LoadingScreen } from "../../Components";
 import { useGetCoursesQuery } from "../../Redux/API/Career.Api";
 import LockIcon from "@mui/icons-material/Lock";
 
+
+function formatMinutesSeconds(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+
+  return [minutes, secs]
+    .map((val) => String(val).padStart(2, "0"))
+    .join(":");
+}
 function QontoStepIcon(props) {
   const { active, completed, className } = props;
 
@@ -342,6 +351,19 @@ function LevelDetails() {
                             >
                               {topic.topic.name}
                             </Typography>
+                            {topic.completed &&<Typography
+                              variant="body1"
+                              sx={{
+                                fontWeight: "bold",
+                                textAlign: "center",
+                                color: "red",
+                                fontSize: "14px",
+                                mx: "10px",
+                                px: "10px",
+                              }}
+                            >
+                              {topic.LastSessionTime<5?"":"Time: "+formatMinutesSeconds(topic.LastSessionTime)}
+                            </Typography>}
                           </StepLabel>
                         </Step>
                       ))}
