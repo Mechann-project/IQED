@@ -8,9 +8,9 @@ export const QuizApi = createApi({
     // baseUrl: "https://iqed-backend.vercel.app/quiz",
     credentials: "include",
     prepareHeaders: (headers) => {
-      const token = sessionStorage.getItem('token');
+      const token = sessionStorage.getItem("token");
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
+        headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
     },
@@ -18,27 +18,32 @@ export const QuizApi = createApi({
   tagTypes: ["User"],
   endpoints: (builder) => ({
     createQuizSession: builder.mutation({
-      query: ({ sectionIndex ,lessonIndex ,topicIndex,topicId, questionCount }) => ({
+      query: ({ levelid, lessonid, topicId, questionCount }) => ({
         url: "/createSession",
         method: "POST",
-        body: { sectionIndex ,lessonIndex ,topicIndex,topicId, questionCount},
+        body: { levelid, lessonid, topicId, questionCount },
       }),
     }),
     getQuizSession: builder.mutation({
       query: () => ({
         url: "/getSession",
         method: "POST",
-        body: { 
-          sessionId:sessionStorage.getItem("QuizSessionID"),
+        body: {
+          sessionId: sessionStorage.getItem("QuizSessionID"),
         },
       }),
     }),
     updateQuizSession: builder.mutation({
-      query: ({ answeredQuestions,timeTaken }) => ({
+      query: ({ answeredQuestions, timeTaken }) => ({
         url: `/updateAnswers`,
         method: "PUT",
-        body: {sessionId:sessionStorage.getItem("QuizSessionID"), answeredQuestions,timeTaken },
+        body: {
+          sessionId: sessionStorage.getItem("QuizSessionID"),
+          answeredQuestions,
+          timeTaken,
+        },
       }),
+      invalidatesTags: ["User"],
     }),
   }),
 });

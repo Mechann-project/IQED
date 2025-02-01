@@ -25,8 +25,17 @@ import { resetQuiz } from "../../Redux/Slice/QuizSlice/QuizSlice";
 import toast from "react-hot-toast";
 import { LoadingScreen } from "../../Components";
 import { useGetCoursesQuery } from "../../Redux/API/Career.Api";
-import LockIcon from '@mui/icons-material/Lock';
+import LockIcon from "@mui/icons-material/Lock";
 
+
+function formatMinutesSeconds(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+
+  return [minutes, secs]
+    .map((val) => String(val).padStart(2, "0"))
+    .join(":");
+}
 function QontoStepIcon(props) {
   const { active, completed, className } = props;
 
@@ -50,7 +59,7 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
     top: 20,
     left: "calc(-50% + 7px)",
-    right: "calc(50% + 7px)"
+    right: "calc(50% + 7px)",
   },
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
@@ -135,6 +144,7 @@ function LevelDetails() {
   // const { data: SectionList, isError, isLoading } = useGetAllSectionQuery();
   const { data: Course, isLoading } = useGetCoursesQuery();
   const theme = useTheme();
+  const userProgress = useSelector((state) => state.UserState?.CourseProgress);
   const UserData = useSelector((state) => state.UserState);
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
@@ -162,19 +172,18 @@ function LevelDetails() {
     return <Typography>Error fetching lessons</Typography>;
   }
   const handleQuizCraetion = (
-    sectionIndex,
-    lessonIndex,
-    topicIndex,
+    levelid,
+    lessonid,
     topicId,
     questionCount = 3
   ) => {
     try {
+      console.log("quiz craeter",levelid, lessonid, topicId);
       dispatch(resetQuiz());
       toast.promise(
         CreateQuizSession({
-          sectionIndex,
-          lessonIndex,
-          topicIndex,
+          levelid,
+          lessonid,
           topicId,
           questionCount: 3,
         }).unwrap(),
@@ -200,207 +209,216 @@ function LevelDetails() {
   // Generate dynamic steps based on fetched lessons and topics
   return (
     <>
-      {Course &&
-        Course?.units[sectionIndex]?.lessons?.map((lesson, lessonIndex) => (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "20px",
-              borderRadius: "10px",
-              backgroundColor: "#fff",
-              mb: "16px",
-              mr: isSm ? null : "30px",
-              border: "2px solid",
-              borderColor: "#02216F",
-              gap: "20px",
-              position: "relative",
-              overflow: "hidden",
-              filter: lessonIndex <= UserData?.CourseProgress?.currentLesson ? "none" : "grayscale(100%)",
-            }}
-          >
+      {userProgress.levelProgress[sectionIndex] &&
+        userProgress.levelProgress[sectionIndex]?.lessonProgress?.map(
+          (lesson, lessonIndex) => (
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
+                alignItems: "center",
                 justifyContent: "space-between",
+                padding: "20px",
+                borderRadius: "10px",
+                backgroundColor: "#fff",
+                mb: "16px",
+                mr: isSm ? null : "30px",
+                border: "2px solid",
+                borderColor: "#02216F",
                 gap: "20px",
-                width: "100%",
-                mb: isSm ? "40px" : "20px",
+                position: "relative",
+                overflow: "hidden",
+                filter: lesson.unlocked ? "none" : "grayscale(100%)",
               }}
             >
               <Box
                 sx={{
                   display: "flex",
+                  flexDirection: "column",
                   justifyContent: "space-between",
+                  gap: "20px",
                   width: "100%",
+                  mb: isSm ? "40px" : "20px",
                 }}
               >
-                <Typography
-                  variant={isMd ? "h6" : "h5"}
+                <Box
                   sx={{
-                    fontWeight: "bold",
-                    color: "#02216F",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "100%",
                   }}
                 >
-                  {lesson.name}
-                </Typography>
-                <Button
-                  variant="contained"
+                  <Typography
+                    variant={isMd ? "h6" : "h5"}
+                    sx={{
+                      fontWeight: "bold",
+                      color: "#02216F",
+                    }}
+                  >
+                    {lesson.lesson.name}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      height: "40px",
+                      width: "150px",
+                      fontWeight: "bold",
+                      backgroundColor: "#1A49BA",
+                      color: "#fff",
+                      borderRadius: "50px",
+                      textTransform: "none",
+                      border: "1px solid",
+                      borderColor: "#FFDA55",
+                      "&:hover": {
+                        color: "#1A49BA",
+                        backgroundColor: "#FFDA55",
+                      },
+                    }}
+                  >
+                    Start
+                  </Button>
+                </Box>
+
+                <Box
+                  ref={scrollContainerRef}
+                  onWheel={handleWheel}
                   sx={{
-                    height: "40px",
-                    width: "150px",
-                    fontWeight: "bold",
-                    backgroundColor: "#1A49BA",
-                    color: "#fff",
-                    borderRadius: "50px",
-                    textTransform: "none",
-                    border: "1px solid",
-                    borderColor: "#FFDA55",
-                    "&:hover": {
-                      color: "#1A49BA",
-                      backgroundColor: "#FFDA55",
+                    width: "100%",
+                    overflowX: "auto",
+                    display: "flex",
+                    padding: "10px 0",
+                    scrollbarWidth: "none",
+                    "&::-webkit-scrollbar": {
+                      display: "none",
                     },
                   }}
                 >
-                  Start
-                </Button>
+                  <Stack sx={{ width: "100%" }} spacing={4}>
+                    <Stepper
+                      alternativeLabel
+                      activeStep={
+                        lesson.topicProgress.filter((topic) => topic.completed)
+                          .length
+                      }
+                      connector={<ColorlibConnector />}
+                    >
+                      {lesson?.topicProgress?.map((topic, index) => (
+                        <Step
+                          key={topic._id}
+                          onClick={() => {
+                            console.log(topic._id)
+                            if (topic.unlocked) {
+                              handleQuizCraetion(
+                                userProgress.levelProgress[sectionIndex].level
+                                  ._id,
+                                lesson.lesson._id,
+                                topic.topic._id
+                              );
+                            } else {
+                              toast.error(
+                                <Box
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <LockIcon
+                                    style={{
+                                      marginRight: "8px",
+                                      color: "inherit",
+                                    }}
+                                  />
+                                  Topic Locked
+                                </Box>,
+                                {
+                                  icon: false,
+                                }
+                              );
+                            }
+                          }}
+                        >
+                          <StepLabel StepIconComponent={ColorlibStepIcon}>
+                            <Typography
+                              variant="body1"
+                              sx={{
+                                fontWeight: "bold",
+                                textAlign: "center",
+                                color: "#333",
+                                fontSize: "14px",
+                                mx: "10px",
+                                px: "10px",
+                              }}
+                            >
+                              {topic.topic.name}
+                            </Typography>
+                            {topic.completed &&<Typography
+                              variant="body1"
+                              sx={{
+                                fontWeight: "bold",
+                                textAlign: "center",
+                                color: "red",
+                                fontSize: "14px",
+                                mx: "10px",
+                                px: "10px",
+                              }}
+                            >
+                              {topic.LastSessionTime<5?"":"Time: "+formatMinutesSeconds(topic.LastSessionTime)}
+                            </Typography>}
+                          </StepLabel>
+                        </Step>
+                      ))}
+                    </Stepper>
+                  </Stack>
+                </Box>
               </Box>
-
               <Box
-                ref={scrollContainerRef}
-                onWheel={handleWheel}
                 sx={{
-                  width: "100%",
-                  overflowX: "auto",
                   display: "flex",
-                  padding: "10px 0",
-                  scrollbarWidth: "none",
-                  "&::-webkit-scrollbar": {
-                    display: "none",
-                  },
+                  position: "absolute",
+                  flexDirection: "column",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
                 }}
               >
-                <Stack sx={{ width: "100%" }} spacing={4}>
-                  <Stepper
-                    alternativeLabel
-                    activeStep={
-                      (lessonIndex < UserData?.CourseProgress?.currentLesson)
-                        ? Course.units[UserData?.CourseProgress?.currentUnit].lessons[UserData?.CourseProgress?.currentLesson].topics.length - 1 : (lessonIndex == UserData?.CourseProgress?.currentLesson) ? UserData?.CourseProgress?.currentTopic : null
-                    }
-                    connector={<ColorlibConnector />}
-                  >
-                    {lesson?.topics?.map((topic, index) => (
-                      <Step
-                        key={topic._id}
-
-                        onClick={() => {
-                          if (index <= UserData?.CourseProgress?.currentTopic && lessonIndex == UserData?.CourseProgress?.currentLesson) {
-                            handleQuizCraetion(
-                              sectionIndex,
-                              lessonIndex,
-                              index,
-                              topic._id
-                            )
-                          }
-                          else {
-                            toast.error(
-                              <Box style={{ display: 'flex', alignItems: 'center' }}>
-                                <LockIcon style={{ marginRight: '8px', color: 'inherit' }} />
-                                Topic Locked
-                              </Box>,
-                              {
-                                icon: false,
-                              }
-                            );
-                          }
-                        }
-
-                        }
-                      >
-                        <StepLabel StepIconComponent={ColorlibStepIcon}>
-
-                          <Typography
-                            variant="body1"
-                            sx={{
-                              fontWeight: "bold",
-                              textAlign: "center",
-                              color: "#333",
-                              fontSize: "14px",
-                              mx: '10px',
-                              px: '10px'
-                            }}
-                          >
-                            {topic.name}
-                          </Typography>
-                        </StepLabel>
-                      </Step>
-                    ))}
-                  </Stepper>
-                </Stack>
+                <Typography
+                  variant="body"
+                  sx={{
+                    fontWeight: "bold",
+                    color: "white",
+                    px: "20px",
+                    py: "6px",
+                    bgcolor: "#1A49BA",
+                    borderRadius: "20px 0 0 0",
+                    alignSelf: "flex-end",
+                  }}
+                >
+                  {lesson?.topicProgress.filter((topic) => topic?.completed)
+                    .length +
+                    "/" +
+                    lesson?.topicProgress?.length}
+                </Typography>
+                <LinearProgress
+                  variant="determinate"
+                  value={
+                    (lesson?.topicProgress.filter((topic) => topic?.completed)
+                      .length /
+                      lesson?.topicProgress?.length) *
+                    100
+                  }
+                  sx={{
+                    height: "10px",
+                    bgcolor: "#FFDA55",
+                    "& .MuiLinearProgress-bar": {
+                      backgroundColor: "#1A49BA",
+                      borderRadius: "20px",
+                    },
+                  }}
+                />
               </Box>
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                position: "absolute",
-                flexDirection: "column",
-                bottom: 0,
-                left: 0,
-                right: 0,
-              }}
-            >
-              <Typography
-                variant="body"
-                sx={{
-                  fontWeight: "bold",
-                  color: "white",
-                  px: "20px",
-                  py: "6px",
-                  bgcolor: "#1A49BA",
-                  borderRadius: "20px 0 0 0",
-                  alignSelf: "flex-end",
-                }}
-              >
-                {(() => {
-                  const totalTopics = lesson?.topics.length || 0;
-                  const currentTopics =
-                    lessonIndex < UserData?.CourseProgress?.currentLesson
-                      ? Course.units[sectionIndex]?.lessons[lessonIndex]?.topics.length || 0
-                      : lessonIndex === UserData?.CourseProgress?.currentLesson
-                        ? UserData?.CourseProgress?.currentTopic || 0
-                        : 0;
-                  return `${currentTopics}/${totalTopics}`;
-                })()}
-              </Typography>
-
-              <LinearProgress
-                variant="determinate"
-                value={(() => {
-                  const totalTopics = Course.units[sectionIndex]?.lessons[lessonIndex]?.topics.length || 1; // Avoid division by 0
-                  const completedTopics =
-                    lessonIndex < UserData?.CourseProgress?.currentLesson
-                      ? totalTopics
-                      : lessonIndex === UserData?.CourseProgress?.currentLesson
-                        ? UserData?.CourseProgress?.currentTopic || 0
-                        : 0;
-                  return (completedTopics / totalTopics) * 100;
-                })()}
-                sx={{
-                  height: "10px",
-                  bgcolor: "#FFDA55",
-                  "& .MuiLinearProgress-bar": {
-                    backgroundColor: "#1A49BA",
-                    borderRadius: "20px",
-                  },
-                }}
-              />
-
-            </Box>
-          </Box>
-        ))}
+          )
+        )}
     </>
   );
 }
