@@ -19,6 +19,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import ProductCard from "./ProductCard";
 import { TShirtImg } from "../../assets";
 import { useNavigate } from "react-router-dom";
+import BrandCard from "../../Common/Brand/brandCard/BrandCard";
 
 const products = [
   {
@@ -165,7 +166,7 @@ const ProductArea = () => {
           <IconButton onClick={handleFilterClick} sx={{ marginLeft: "10px" }}>
             <FilterListIcon />
           </IconButton>
-          <Button variant="outlined" startIcon={<AddShoppingCartIcon />} onClick={()=>{navigate('/store/orders')}}>
+          <Button variant="outlined" startIcon={<AddShoppingCartIcon />} onClick={()=>{navigate('/challenge/orders')}}>
             Orders
           </Button>
         </Box>
@@ -243,6 +244,8 @@ const ProductArea = () => {
           {filteredProducts.map((product) => (
             <Grid item xs={6} sm={6} md={4} lg={3} key={product.id}>
               <ProductCard product={product} />
+              {/* <BrandCard/> */}
+
             </Grid>
           ))}
         </Grid>

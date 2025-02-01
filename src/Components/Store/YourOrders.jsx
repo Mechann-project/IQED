@@ -87,7 +87,7 @@ const OrderRow = ({ order, index }) => {
           variant="text"
           color="primary"
           // onClick={() => alert(`Viewing details for ${order.item}`)}
-          onClick={() => navigate(`/store/orders/${order.orderId}`)}
+          onClick={() => navigate(`/challenge/orders/${order.orderId}`)}
           sx={{ fontSize: { lg: "16px", sm: "12px", xs: "10px" } }}
         >
           View Details

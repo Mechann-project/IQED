@@ -10,17 +10,31 @@ import {
   useTheme,
   Tooltip,
 } from "@mui/material";
-import { IQGemIcon } from "../../assets/Image";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { IQGemIcon, TShirtImg } from "../../../assets";
 
-const ProductCard = ({ product }) => {
+
+    
+const BrandCard = () => {
+    const product = 
+    {
+      productID: 1,
+      name: "Wireless Earbuds, IPX8",
+      rating: 4.5,
+      reviews: 121,
+      image: TShirtImg,
+      description: "Organic Cotton, fairtrade certified",
+      originalPrice: 200,
+      discountedPrice: 150,
+      type: "Electronics",
+    }
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const UserData = useSelector((state) => state.UserState);
-  const userCoin = UserData?.earnings?.iqGems;
-  const isAffordable = userCoin >= product.discountedPrice;
   const [openTooltip, setOpenTooltip] = useState(false);
+
+
+
 
   const handleCardClick = () => {
     if (!isAffordable) {
@@ -36,11 +50,15 @@ const ProductCard = ({ product }) => {
     setOpenTooltip(false);
   };
 
+
+
+  
+  
+
   return (
     <Card
       onClick={handleCardClick}
       sx={{
-        height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -95,6 +113,7 @@ const ProductCard = ({ product }) => {
             marginTop: "8px",
           }}
         >
+          {/* Original Price */}
           <Typography
             variant="body2"
             color="text.secondary"
@@ -115,7 +134,7 @@ const ProductCard = ({ product }) => {
             />
             {product.originalPrice}
           </Typography>
-         
+          {/* Discounted Price */}
           <Typography
             variant="h6"
             fontWeight="bold"
@@ -136,7 +155,7 @@ const ProductCard = ({ product }) => {
       </CardContent>
 
       {/* Get Now Button */}
-      <Tooltip
+      {/* <Tooltip
         title={
           !isAffordable ? "You don't have enough coins to get this product" : ""
         }
@@ -153,7 +172,7 @@ const ProductCard = ({ product }) => {
             variant="contained"
             fullWidth
             component={Link}
-            to={`/challenge/shipping/${product.name}`}
+            to={`/store/shipping/${product.name}`}
             disabled={!isAffordable}
             sx={{
               borderRadius: 0,
@@ -164,9 +183,9 @@ const ProductCard = ({ product }) => {
             Get Now
           </Button>
         </span>
-      </Tooltip>
+      </Tooltip> */}
     </Card>
   );
 };
 
-export default ProductCard;
+export default BrandCard;

@@ -18,7 +18,7 @@ const StoreOrderLayout = () => {
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
 
-  const handleBack = () => navigate("/store");
+  const handleBack = () => navigate("/challenge");
   return (
     <Box
       sx={{

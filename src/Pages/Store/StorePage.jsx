@@ -15,7 +15,7 @@ const StorePage = () => {
         gap: "20px",
       }}
     >
-      <StoreBanner />
+      {/* <StoreBanner /> */}
       <ProductArea />
     </Box>
   );

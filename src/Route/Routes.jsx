@@ -49,7 +49,7 @@ export const Routers = createBrowserRouter(
           <Route path="Profile" element={<ProfilePage />} />
           <Route path="Leaderboard" element={<LeaderboardPage />} />
           <Route path="FeedBack" element={<FeedBackPage />} />
-          <Route path="store" element={<Outlet />}>
+          <Route path="challenge" element={<Outlet />}>
             <Route index element={<StorePage />} />
             <Route path="shipping/:productId" element={<Shipping />} />
             <Route path="Orders" element={<StoreOrderLayout />}>

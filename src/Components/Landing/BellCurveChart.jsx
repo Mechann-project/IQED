@@ -36,7 +36,7 @@ const generateBellCurveData = (mean, stdDev, min, max, step = 1) => {
 
 const BellCurveChart = React.memo(({ userIQ, onChartRendered }) => {
   const canvasRef = useRef(null);
-  const chartRef = useRef(null); // To store the Chart.js instance
+  const chartRef = useRef(null); 
   const mean = 100;
   const stdDev = 15;
   const minIQ = 55;

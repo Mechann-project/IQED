@@ -28,7 +28,7 @@ const MainNavBar = () => {
       ...(isSm
         ? [
             { label: "FeedBack", icon: <ErrorIcon />, path: "/feedBack" },
-            { label: "Store", icon: <LocalGroceryStoreIcon />, path: "/Store" },
+            { label: "challenge", icon: <LocalGroceryStoreIcon />, path: "/challenge" },
           ]
         : []),
     ],
@@ -36,7 +36,7 @@ const MainNavBar = () => {
 
   const bottomItems = useMemo(
     () => [
-      { label: "Store", icon: <LocalGroceryStoreIcon />, path: "/Store" },
+      { label: "challenge", icon: <LocalGroceryStoreIcon />, path: "/challenge" },
       ...(!isSm
         ? [{ label: "FeedBack", icon: <ErrorIcon />, path: "/feedBack" }]
         : []),

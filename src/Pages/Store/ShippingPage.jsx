@@ -68,7 +68,7 @@ const Shipping = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
-  const handleBlack = () => navigate("/store");
+  const handleBlack = () => navigate("/challenge");
 
   const { productId } = useParams();
   const product = products.find((p) => p.name === productId);
@@ -140,7 +140,7 @@ const Shipping = () => {
 
         console.log("Order Submitted: ", orderData);
 
-        navigate("/store");
+        navigate("/challenge");
 
         setFormData({
           country: "India",

@@ -84,7 +84,7 @@ const OrderDetail = () => {
   const navigate = useNavigate();
   const { orderId } = useParams();
 
-  const handleBack = () => navigate("/store/orders");
+  const handleBack = () => navigate("/challenge/orders");
 
   // Find order details
   const order = dummyOrders.find((o) => o.orderId === orderId);
