@@ -12,7 +12,7 @@ const SidebarContainer = styled(Box)({
     overflow:'hidden',
     backgroundColor:'#ffff',
     border:'2px solid #02216F'
-    
+
 });
 
 export default SidebarContainer

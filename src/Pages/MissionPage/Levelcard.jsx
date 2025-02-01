@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -13,7 +13,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 const LevelCard = ({ level, onSelect, active }) => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const [isFinalTest,setisFinalTest] = useState(true);
   const cardStyles = active
     ? {}
     : {
@@ -66,24 +66,37 @@ const LevelCard = ({ level, onSelect, active }) => {
         >
           <Typography
             variant="h5"
-            sx={{ fontWeight: "bold", color: "#02216F" }}
+            sx={{ fontWeight: "bold", color: "#02216F",
+
+
+             }}
           >{`Level ${level.level}`} : {level.name}</Typography>
-          <Typography variant="body2" sx={{ color: "black" }}>
+          <Typography variant="body2" sx={{ color: "black",
+            fontSize: {
+              xs: "0.70rem", 
+              sm: "0.75rem", 
+              md: "0.80rem", 
+              lg: "0.875rem", 
+              xl: "0.875rem", 
+            },
+            }}>
             {level.description}
           </Typography>
-          <Box sx={{display:'flex', flexDirection:'row', gap:'20px'}}>
+          <Box sx={{display:'flex', flexDirection:'row', gap:'10px'}}>
             <Button
               variant="contained"
               onClick={onSelect}
               disabled={!active}
               sx={{
                 height: "50px",
-                width: "50%",
+                ...!isFinalTest && {width: "50%"},
                 fontWeight: "bold",
+                fontSize:'12px',
                 backgroundColor: "#1A49BA",
                 color: "#fff",
                 borderRadius: "50px",
                 textTransform: "none",
+                px:"30px",
                 "&:hover": {
                   color: "#1A49BA",
                   backgroundColor: "#FFDA55",
@@ -92,10 +105,10 @@ const LevelCard = ({ level, onSelect, active }) => {
             >
               Continue
             </Button>
-            <Button
+              {isFinalTest && active && <Button
               variant="contained"
               // onClick={onSelect}
-              disabled
+              // disabled
               startIcon={<AssignmentIcon />}
               sx={{
                 height: "50px",
@@ -104,6 +117,7 @@ const LevelCard = ({ level, onSelect, active }) => {
                 backgroundColor: "#1A49BA",
                 color: "#fff",
                 borderRadius: "50px",
+                fontSize:'12px',
                 textTransform: "none",
                 "&:hover": {
                   color: "#1A49BA",
@@ -111,11 +125,12 @@ const LevelCard = ({ level, onSelect, active }) => {
                 },
               }}
             >
-              Take Final Test
-            </Button>
+              Final Test
+            </Button>}
+            
           </Box>
         </Box>
-        <Box
+        <Box  
           sx={{
             marginLeft: "16px",
             width: "30%",
