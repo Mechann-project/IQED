@@ -8,7 +8,7 @@ import { IQCoinIcon, IQGemIcon, IQRankIcon } from "../../assets/Image";
 import { useSelector } from "react-redux";
 import { useGetUserQuery } from "../../Redux/API/User.Api";
 import DandFQuests from "../Quest/DandFQuests";
-import BrandCard from "../../Common/Brand/brandCard/BrandCard";
+import BrandCard from "../../Common/Brand/brandCard/BrandCard2";
 
 const SideBar = () => {
   const UserData = useSelector((state) => state.UserState);

@@ -2,9 +2,23 @@ import React, { useState } from "react";
 import { Card, CardContent, CardMedia, Typography, IconButton, Button, Box, Divider, useTheme, Tooltip, useMediaQuery, } from "@mui/material";
 import { IQGemIcon, TShirtImg } from "../../../assets";
 import { useSelector } from "react-redux";
+import { styled } from "@mui/system";
 
-const BrandCard = ({ Data,isSideBar}) => {
-    console.log("Data",Data)
+const StatItem = styled(Box)({
+    flex: 1,
+    textAlign: "center",
+    color: "#02216F"
+});
+
+const StatRow = styled(Box)({
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: 20,
+});
+
+
+const BrandCard = ({ Data, isSideBar }) => {
+    console.log("Data", Data)
     const theme = useTheme();
     const isSm = useMediaQuery(theme.breakpoints.down("sm"));
     const UserData = useSelector((state) => state.UserState);
@@ -30,11 +44,17 @@ const BrandCard = ({ Data,isSideBar}) => {
             sx={{
                 width: '100%',
                 borderRadius: 3,
-                border: "1px solid black",
-                backgroundColor: "#1A49BA",
+                border: "1px solid #02216F",
+                // backgroundColor: "#1A49BA",
                 position: "relative",
                 boxSizing: 'border-box',
-                overflow: "visible"
+                // overflow: "visible",
+                "&:hover": {
+                    transition: "transform 0.3s ease-in-out",
+                    transform: "translateY(-5px)",
+                    boxShadow: "3px 4px #02216F",
+                    outline: "1px solid #02216F",
+                },
             }}
         >
             {/* <Box
@@ -72,8 +92,8 @@ const BrandCard = ({ Data,isSideBar}) => {
                     alt="ProductThumile"
                     sx={{
                         borderRadius: "10px",
-                        border: "2px solid black",
-                        backgroundColor: "white",
+                        // border: "2px solid #02216F",
+                        backgroundColor: "#f9f9f9",
                         boxSizing: 'border-box',
                     }}
                 />
@@ -96,18 +116,18 @@ const BrandCard = ({ Data,isSideBar}) => {
             </Box>
 
             <CardContent sx={{
-                textAlign: "left", color: "white",
+                textAlign: "left", color: "black",
                 padding: " 10px 10px 10px 10px",
             }}>
                 <Box sx={{
                     display: 'flex', flexDirection: 'column', justifyContent: 'left', alignItems: 'left',
-                    borderLeft: 'solid 2px #FFDA55',
+                    borderLeft: 'solid 2px #02216F',
                     pl: '5px',
                 }}>
                     <Typography fontWeight="bold" sx={{
                         fontSize: '8px',
                         mb: '2px',
-
+                        // color: '#02216F',
 
                     }}>
                         Challenge Topic
@@ -115,7 +135,7 @@ const BrandCard = ({ Data,isSideBar}) => {
                     <Typography fontWeight="bold" sx={{
                         fontSize: '15px',
                         // backgroundColor:'#FFD700',
-                        color: '#FFDA55',
+                        color: '#02216F',
                         borderRadius: '10px',
 
                     }}>
@@ -127,81 +147,118 @@ const BrandCard = ({ Data,isSideBar}) => {
                     flexDirection: 'row',
                     justifyContent: 'space-between'
                 }}>
-                    <Typography sx={{ mt: '10px', fontSize: "8px", fontWeight: '500', }}>
-                        Total Question : <strong style={{ color: '#FFDA55' }}>{Data.totalQuestions}</strong>
+                    <Typography sx={{ mt: '5px', fontSize: "8px", fontWeight: '500', }}>
+                        Total Question : <strong style={{ color: '#02216F' }}>{Data.totalQuestions}</strong>
                     </Typography>
-                    <Typography sx={{ mt: '10px', fontSize: "8px", fontWeight: '500', }}>
-                        Test Time : <strong style={{ color: '#FFDA55' }}>{ Data.time} min</strong>
+                    <Typography sx={{ mt: '5px', fontSize: "8px", fontWeight: '500', }}>
+                        Test Time : <strong style={{ color: '#02216F' }}>{Data.time} min</strong>
                     </Typography>
                 </Box>
-                <Typography sx={{ mt: '10px', fontSize: "10px", fontWeight: 'bold', my: "10px", textAlign: 'justify', letterSpacing: '0.5px', width: '100%' }}>
+                <Divider sx={{ borderBottomWidth: 2, borderColor: '#02216F', my: '5px' }} />
+                <Typography sx={{ fontSize: "10px", fontWeight: 'bold', textAlign: 'justify', letterSpacing: '0.5px', width: '100%' }}>
                     Top {Data.giftCount} players will receive the gift!
                 </Typography>
-                <Divider sx={{ borderBottomWidth: 2, borderColor: 'white', mb: '10px' }} />
-                <Tooltip
-                    title={
-                        !isAffordable ? "You don't have enough gems to participate in this challenge." : ""
-                    }
-                    arrow
-                    placement="top"
-                    open={openTooltip}
-                    onClose={handleTooltipClose}
-                    disableInteractive
-                    onMouseEnter={() => setOpenTooltip(true)}
-                    onMouseLeave={() => setOpenTooltip(false)}
-                >
-                    <span>
-                        <Button
-                            variant="contained"
-                            // component={Link}
-                            // to={`/store/shipping/${product.name}`}
+
+                <StatRow>
+                    <StatItem sx={{
+                        borderRight: '1px solid'
+                    }}>
+                        <Typography variant="body2" sx={{ fontWeight: "bold" }}>{Data.totalQuestions}</Typography>
+                        <Typography 
+                        sx={{
+                            fontSize:"10px",
+                            fontWeight:"bold",
+                        }}
+                        >Total Question </Typography>
+                    </StatItem>
+                    <StatItem sx={{
+                        borderRight: '1px solid'
+                    }}>
+                        <Typography variant="body2" sx={{ fontWeight: "bold" }}>100%</Typography>
+                        <Typography 
+                        sx={{
+                            fontSize:"10px",
+                            fontWeight:"bold",
+                        }}
+                        >Time</Typography>
+                    </StatItem>
+                    <StatItem>
+                        <Typography variant="body2" sx={{ fontWeight: "bold" }}>38,631</Typography>
+                        <Typography sx={{
+                            fontSize:"10px",
+                            fontWeight:"bold",
+                        }}>Contributors</Typography>
+                    </StatItem>
+                </StatRow>
+            </CardContent>
+            <Tooltip
+                title={
+                    !isAffordable ? "You don't have enough gems to participate in this challenge." : ""
+                }
+                arrow
+                placement="top"
+                open={openTooltip}
+                onClose={handleTooltipClose}
+                disableInteractive
+                onMouseEnter={() => setOpenTooltip(true)}
+                onMouseLeave={() => setOpenTooltip(false)}
+            >
+                <span>
+                    <Button
+                        variant="contained"
+                        // component={Link}
+                        // to={`/store/shipping/${product.name}`}
+                        sx={{
+                            width: "100%",
+                            backgroundColor: "#FFDA55",
+                            color: "black",
+                            fontSize: '12px',
+                            fontWeight: "bold",
+                            borderRadius: 0,
+                            justifyContent: 'space-between',
+                            textTransform: 'none',
+                            boxShadow: "2px 2px 5px rgba(0,0,0,0.3)",
+                            "&:hover": {
+                                backgroundColor: "#E6C200"
+                            }
+                        }}
+                    >
+                        <Typography sx={{
+                            textAlign: 'center',
+                            width: "100%",
+                            color: "black",
+                            fontSize: '10px',
+
+                            fontWeight: "bold",
+                        }}>Accept Challenge</Typography>
+
+                        <Typography
+
+                            variant="body"
+                            fontWeight="bold"
                             sx={{
-                                width: "100%",
-                                backgroundColor: "#FFDA55",
-                                color: "black",
-                                fontSize: '12px',
-                                fontWeight: "bold",
-                                borderRadius: "5px",
-                                justifyContent: 'space-between',
-                                textTransform: 'none',
-                                boxShadow: "2px 2px 5px rgba(0,0,0,0.3)",
-                                "&:hover": {
-                                    backgroundColor: "#E6C200"
-                                }
+                                display: "flex",
+                                alignItems: "center",
+                                color: "#02216F",
+                                ml: '10px',
+                                borderLeft: '2px solid',
+                                pl: '10px'
                             }}
                         >
-                            <Typography sx={{
-                                textAlign: 'center',
-                                width: "100%",
-                                color: "black",
-                                fontSize: '10px',
-
-                                fontWeight: "bold",
-                            }}>Accept Challenge</Typography>
-
-                            <Typography
-
-                                variant="body"
-                                fontWeight="bold"
-                                sx={{ display: "flex", alignItems: "center", color: "#02216F", ml: '10px', borderLeft: '2px solid', pl: '10px' }}
-                            >
-                                <Box
-                                    component="img"
-                                    src={IQGemIcon}
-                                    alt="Gem Icon"
-                                    sx={{
-                                        height: "18px",
-                                        marginRight: "4px",
-                                    }}
-                                />
-                                {Data.gemRequired}
-                            </Typography>
-                        </Button>
-                    </span>
-                </Tooltip>
-            </CardContent>
-
-            {/* Add to Cart Button */}
+                            <Box
+                                component="img"
+                                src={IQGemIcon}
+                                alt="Gem Icon"
+                                sx={{
+                                    height: "18px",
+                                    marginRight: "4px",
+                                }}
+                            />
+                            {Data.gemRequired}
+                        </Typography>
+                    </Button>
+                </span>
+            </Tooltip>
 
 
         </Card>

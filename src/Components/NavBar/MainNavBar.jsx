@@ -24,11 +24,13 @@ const MainNavBar = () => {
       { label: "Missions", icon: <FlagCircleIcon />, path: "/missions" },
       { label: "Multiplayer", icon: <SportsMmaIcon />, path: "/game" },
       { label: "Leaderboard", icon: <LeaderboardIcon />, path: "/leaderboard" },
+      { label: "challenge", icon: <LocalActivityIcon />, path: "/challenge" },
       { label: "Profile", icon: <PersonIcon />, path: "/profile" },
+      
       ...(isSm
         ? [
             { label: "FeedBack", icon: <ErrorIcon />, path: "/feedBack" },
-            { label: "challenge", icon: <LocalActivityIcon />, path: "/challenge" },
+            
           ]
         : []),
     ],
@@ -36,14 +38,12 @@ const MainNavBar = () => {
 
   const bottomItems = useMemo(
     () => [
-      { label: "challenge", icon: <LocalActivityIcon />, path: "/challenge" },
       ...(!isSm
         ? [{ label: "FeedBack", icon: <ErrorIcon />, path: "/feedBack" }]
         : []),
     ],
 
   );
-
   const renderButton = ({ label, icon, path, key }) => {
     const isSelected = currentOutlet.toLowerCase().startsWith(path.toLowerCase());
 

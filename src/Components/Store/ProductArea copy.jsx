@@ -19,7 +19,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import ProductCard from "./ProductCard";
 import { TShirtImg } from "../../assets";
 import { useNavigate } from "react-router-dom";
-import BrandCard from "../../Common/Brand/brandCard/BrandCard";
+import BrandCard from "../../Common/Brand/brandCard/BrandCard2";
 
 const products = [
   {

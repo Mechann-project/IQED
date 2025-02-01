@@ -351,7 +351,7 @@ function LevelDetails() {
                             >
                               {topic.topic.name}
                             </Typography>
-                            {topic.completed &&<Typography
+                            {/* {topic.completed &&<Typography
                               variant="body1"
                               sx={{
                                 fontWeight: "bold",
@@ -363,7 +363,7 @@ function LevelDetails() {
                               }}
                             >
                               {topic.LastSessionTime<5?"":"Time: "+formatMinutesSeconds(topic.LastSessionTime)}
-                            </Typography>}
+                            </Typography>} */}
                           </StepLabel>
                         </Step>
                       ))}
