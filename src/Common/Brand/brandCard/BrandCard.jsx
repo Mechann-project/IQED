@@ -1,35 +1,29 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardMedia, Typography, IconButton, Button, Box, Divider, useTheme,Tooltip,useMediaQuery,} from "@mui/material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Card, CardContent, CardMedia, Typography, IconButton, Button, Box, Divider, useTheme, Tooltip, useMediaQuery, } from "@mui/material";
 import { IQGemIcon, TShirtImg } from "../../../assets";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
-const CustomIcon = () => {
-    return <img src={IQGemIcon} alt="Custom Icon" style={{ width: '24px', height: '24px' }} />;
-};
-
-const BrandCard = () => {
+const BrandCard = ({ Data,isSideBar}) => {
+    console.log("Data",Data)
     const theme = useTheme();
     const isSm = useMediaQuery(theme.breakpoints.down("sm"));
     const UserData = useSelector((state) => state.UserState);
-    const userCoin = 10;
+    const userCoin = UserData?.earnings?.iqGems;
     const isAffordable = userCoin >= 20;
     const [openTooltip, setOpenTooltip] = useState(false);
 
     const handleCardClick = () => {
         if (!isAffordable) {
-          setOpenTooltip(true); 
-          setTimeout(() => {
-            setOpenTooltip(false);
-          }, 2000); 
+            setOpenTooltip(true);
+            setTimeout(() => {
+                setOpenTooltip(false);
+            }, 2000);
         }
-      };
-    
-      const handleTooltipClose = () => {
+    };
+
+    const handleTooltipClose = () => {
         setOpenTooltip(false);
-      };
+    };
 
     return (
         <Card
@@ -38,7 +32,6 @@ const BrandCard = () => {
                 borderRadius: 3,
                 border: "1px solid black",
                 backgroundColor: "#1A49BA",
-                padding: "10px",
                 position: "relative",
                 boxSizing: 'border-box',
                 overflow: "visible"
@@ -71,21 +64,17 @@ const BrandCard = () => {
                     10
                 </Typography>
             </Box> */}
-
-
             <Box sx={{ position: "relative", overflow: 'hidden' }}>
-
                 <CardMedia
                     component="img"
-                    height="150"
+                    height={isSm ? "200" : "150"}
                     image={TShirtImg}
-                    alt="Nike Air Force 1"
+                    alt="ProductThumile"
                     sx={{
                         borderRadius: "10px",
                         border: "2px solid black",
                         backgroundColor: "white",
                         boxSizing: 'border-box',
-
                     }}
                 />
                 <Box
@@ -101,12 +90,15 @@ const BrandCard = () => {
                         borderRadius: "5px",
                     }}
                 >
-                    Sponsored by AllReal
+                    Sponsored by {Data.SponsoredBy}
                 </Box>
-                
+
             </Box>
 
-            <CardContent sx={{ textAlign: "left", color: "white", px: '5px',py:'10px' }}>
+            <CardContent sx={{
+                textAlign: "left", color: "white",
+                padding: " 10px 10px 10px 10px",
+            }}>
                 <Box sx={{
                     display: 'flex', flexDirection: 'column', justifyContent: 'left', alignItems: 'left',
                     borderLeft: 'solid 2px #FFDA55',
@@ -127,7 +119,7 @@ const BrandCard = () => {
                         borderRadius: '10px',
 
                     }}>
-                        Number Lines
+                        {Data.topicName}
                     </Typography>
                 </Box>
                 <Box sx={{
@@ -135,82 +127,83 @@ const BrandCard = () => {
                     flexDirection: 'row',
                     justifyContent: 'space-between'
                 }}>
-                    <Typography sx={{ mt: '10px', fontSize: "13px", fontWeight: '500', }}>
-                        Total Question : <strong style={{ color: '#FFDA55' }}>10</strong>
+                    <Typography sx={{ mt: '10px', fontSize: "8px", fontWeight: '500', }}>
+                        Total Question : <strong style={{ color: '#FFDA55' }}>{Data.totalQuestions}</strong>
                     </Typography>
-                    <Typography sx={{ mt: '10px', fontSize: "13px", fontWeight: '500', }}>
-                        Test Time : <strong style={{ color: '#FFDA55' }}>10min</strong>
+                    <Typography sx={{ mt: '10px', fontSize: "8px", fontWeight: '500', }}>
+                        Test Time : <strong style={{ color: '#FFDA55' }}>{ Data.time} min</strong>
                     </Typography>
                 </Box>
-                <Typography sx={{mt: '10px', fontSize: "13px", fontWeight: 'bold', my: "10px", textAlign: 'justify',  }}>
-                    Top 10 players will receive the gift!
+                <Typography sx={{ mt: '10px', fontSize: "10px", fontWeight: 'bold', my: "10px", textAlign: 'justify', letterSpacing: '0.5px', width: '100%' }}>
+                    Top {Data.giftCount} players will receive the gift!
                 </Typography>
-                <Divider sx={{ borderBottomWidth: 2, borderColor: 'white' }} />
+                <Divider sx={{ borderBottomWidth: 2, borderColor: 'white', mb: '10px' }} />
+                <Tooltip
+                    title={
+                        !isAffordable ? "You don't have enough gems to participate in this challenge." : ""
+                    }
+                    arrow
+                    placement="top"
+                    open={openTooltip}
+                    onClose={handleTooltipClose}
+                    disableInteractive
+                    onMouseEnter={() => setOpenTooltip(true)}
+                    onMouseLeave={() => setOpenTooltip(false)}
+                >
+                    <span>
+                        <Button
+                            variant="contained"
+                            // component={Link}
+                            // to={`/store/shipping/${product.name}`}
+                            sx={{
+                                width: "100%",
+                                backgroundColor: "#FFDA55",
+                                color: "black",
+                                fontSize: '12px',
+                                fontWeight: "bold",
+                                borderRadius: "5px",
+                                justifyContent: 'space-between',
+                                textTransform: 'none',
+                                boxShadow: "2px 2px 5px rgba(0,0,0,0.3)",
+                                "&:hover": {
+                                    backgroundColor: "#E6C200"
+                                }
+                            }}
+                        >
+                            <Typography sx={{
+                                textAlign: 'center',
+                                width: "100%",
+                                color: "black",
+                                fontSize: '10px',
+
+                                fontWeight: "bold",
+                            }}>Accept Challenge</Typography>
+
+                            <Typography
+
+                                variant="body"
+                                fontWeight="bold"
+                                sx={{ display: "flex", alignItems: "center", color: "#02216F", ml: '10px', borderLeft: '2px solid', pl: '10px' }}
+                            >
+                                <Box
+                                    component="img"
+                                    src={IQGemIcon}
+                                    alt="Gem Icon"
+                                    sx={{
+                                        height: "18px",
+                                        marginRight: "4px",
+                                    }}
+                                />
+                                {Data.gemRequired}
+                            </Typography>
+                        </Button>
+                    </span>
+                </Tooltip>
             </CardContent>
 
             {/* Add to Cart Button */}
-            
-            <Tooltip
-                title={
-                    !isAffordable ? "You don't have enough coins to get this product" : ""
-                }
-                arrow
-                placement="top"
-                open={openTooltip}
-                onClose={handleTooltipClose}
-                disableInteractive
-                onMouseEnter={() => setOpenTooltip(true)}
-                onMouseLeave={() => setOpenTooltip(false)}
-            >
-                <span>
-                    <Button
-                    variant="contained"
-                    // component={Link}
-                        // to={`/store/shipping/${product.name}`}
-                    sx={{
-                        width: "100%",
-                        backgroundColor: "#FFDA55",
-                        color: "black",
-                        fontSize: '12px',
-                        fontWeight: "bold",
-                        borderRadius: "5px",
-                        justifyContent: 'space-between',
-                        
-                        boxShadow: "2px 2px 5px rgba(0,0,0,0.3)",
-                        "&:hover": {
-                            backgroundColor: "#E6C200"
-                        }
-                    }}
 
-                >
-                    <Typography   sx={{
-                        
-                        textAlign:'center',
-                        width: "100%",
-                        color: "black",
-                        fontSize: '12px',
-                        fontWeight: "bold",}}>Start the Challenge</Typography>
-                    
-                    <Typography
-                    
-                        variant="body"
-                        fontWeight="bold"
-                        sx={{ display: "flex", alignItems: "center", color: "#02216F", ml: '10px', borderLeft: '2px solid', pl: '10px' }}
-                    >
-                        <Box
-                            component="img"
-                            src={IQGemIcon}
-                            alt="Gem Icon"
-                            sx={{
-                                height: "18px",
-                                marginRight: "4px",
-                            }}
-                        />
-                        10
-                    </Typography>
-                </Button>
-                </span>
-            </Tooltip>
+
         </Card>
     );
 };
