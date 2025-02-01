@@ -1,7 +1,7 @@
 import { Avatar, Box, Card, LinearProgress, Typography } from "@mui/material";
 import React from "react";
 
-const QuestCard = ({ icon, title,current, progress, goal, reward, About,active=true }) => {
+const QuestCard = ({ icon, title,current, progress, goal, reward, About,active=true,isSideBar }) => {
   console.log(current,goal)
   return (
     <Card
@@ -25,15 +25,30 @@ const QuestCard = ({ icon, title,current, progress, goal, reward, About,active=t
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
+            gap:2
           }}
         >
 
-          <Typography variant="body1" fontWeight="900">
+          <Typography  fontWeight="900" sx={{
+            fontSize: {
+              xs: "10px", 
+              sm: "10px", 
+              md: "10px", 
+              lg: "12px", 
+            }
+          }}>
             {title}
           </Typography>
        
 
-          <Typography variant="body1" fontWeight="900" color="Black">
+          <Typography  fontWeight="900" color="Black" sx={{
+            fontSize: {
+              xs: "10px", 
+              sm: "10px", 
+              md: "10px", 
+              lg: "12px", 
+            }
+          }}>
             +{reward}
           </Typography>
         </Box>

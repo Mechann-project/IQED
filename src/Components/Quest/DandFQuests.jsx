@@ -12,7 +12,7 @@ import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import AdsClickIcon from "@mui/icons-material/AdsClick";
 import  QuestCard  from "./QuestCard";
 import { useSelector } from "react-redux";
-const DandFQuests = () => {
+const DandFQuests = ({isSideBar}) => {
   const UserData = useSelector((state) => state.UserState);
   return (
     <Box width={'100%'}>
@@ -20,9 +20,10 @@ const DandFQuests = () => {
       <Typography variant="h6" fontWeight="bold" gutterBottom>
         Quests
       </Typography>
-      <Grid container spacing={2} padding={'20px'}>
-        <Grid item xs={12} sm={6}>
-          {!UserData.valueBaseQuest.isCompleted && <QuestCard 
+      <Grid   padding={isSideBar? '10px': "0 0 0 0"} sx={{display:null}} lg={12}>
+        <Grid item >
+          {!UserData.valueBaseQuest.isCompleted && <QuestCard
+            isSideBar
             icon={<AdsClickIcon />}
             title={UserData?.valueBaseQuest?.Quest?.title}
             progress={UserData?.valueBaseQuest.progress}

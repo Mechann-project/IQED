@@ -23,7 +23,6 @@ const LevelCard = ({ level, onSelect, active }) => {
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
     };
-
   return (
     <Box
       sx={{
