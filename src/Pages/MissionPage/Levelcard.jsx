@@ -9,8 +9,10 @@ import {
 } from "@mui/material";
 import { WhiteBackgroundSVG } from "../../assets";
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import toast from "react-hot-toast";
+import LockIcon from "@mui/icons-material/Lock";
 
-const LevelCard = ({ level, onSelect, active }) => {
+const LevelCard = ({ level, onSelect, active,examUnlocked }) => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const [isFinalTest,setisFinalTest] = useState(true);
@@ -100,13 +102,38 @@ const LevelCard = ({ level, onSelect, active }) => {
                   color: "#1A49BA",
                   backgroundColor: "#FFDA55",
                 },
+               
               }}
             >
               Continue
             </Button>
-              {isFinalTest && active && <Button
+              {active && <Button
               variant="contained"
-              // onClick={onSelect}
+              onClick={() => {
+                if (examUnlocked) {
+                  alert("woekinf");
+                } else {
+                  toast.error(
+                    <Box
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <LockIcon
+                        style={{
+                          marginRight: "8px",
+                          color: "inherit",
+                        }}
+                      />
+                      Complete all lesson
+                    </Box>,
+                    {
+                      icon: false,
+                    }
+                  );
+                }
+              }}
               // disabled
               startIcon={<AssignmentIcon />}
               sx={{
@@ -119,11 +146,11 @@ const LevelCard = ({ level, onSelect, active }) => {
                 fontSize:'12px',
                 textTransform: "none",
                 "&:hover": {
-                  color: "#1A49BA",
-                  backgroundColor: "#FFDA55",
+                  color:!examUnlocked?"none": "#1A49BA",
+                  backgroundColor:!examUnlocked?"none": "#FFDA55",
                 },
               }}
-            >
+              >
               Final Test
             </Button>}
             

@@ -26,8 +26,8 @@ const MissionPage = () => {
     const sectionFromUrl = new URLSearchParams(location.search).get("section");
     const sectionIndex = parseInt(sectionFromUrl, 10);
 
-    if (!isNaN(sectionIndex) && Course?.units[sectionIndex]) {
-      setSelectedSection(Course.units[sectionIndex]);
+    if (!isNaN(sectionIndex) && userProgress?.levelProgress[sectionIndex]) {
+      setSelectedSection(userProgress?.levelProgress[sectionIndex]);
     } else {
       setSelectedSection(null);
     }
@@ -42,7 +42,7 @@ const MissionPage = () => {
     if (selectedSection) {
       return [
         { label: "Missions", to: null, onClick: handleReturnToSections },
-        { label: `${selectedSection.name}`, to: null },
+        { label: `${selectedSection.level.name}`, to: null },
       ];
     }
     return [{ label: "Missions", to: null }];
@@ -90,18 +90,19 @@ const MissionPage = () => {
         }}
       >
         {!selectedSection ? (
-          Course?.units.map((unit, index) => (
-            <Grid item xs={12} lg={12} key={unit._id}>
+          userProgress?.levelProgress.map((level, index) => (
+            <Grid item xs={12} lg={12} key={level._id}>
               <LevelCard
                 level={{
-                  level: index + 1,
-                  total: unit?.lessons?.length || 0,
-                  progress: userProgress?.currentLesson || 0, // Use current lesson directly
+                  level: level?.level.levelNumber +1,
+                  total: level?.lessonProgress?.length || 0,
+                  progress:  level.lessonProgress.filter(lesson => lesson.completed).length, 
                   image: trophy,
-                  name: unit?.name,
-                  description: unit?.description,
+                  name: level?.level.name,
+                  description: level?.level.description,
                 }}
-                active={index <= userProgress?.currentUnit}
+                examUnlocked={level.finalExamUnlocked}
+                active={level.unlocked}
                 onSelect={() => handleSelectSection(index)}
               />
             </Grid>
