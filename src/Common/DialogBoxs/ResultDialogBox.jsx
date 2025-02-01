@@ -58,18 +58,16 @@ const ResultDialogBox = ({
   const cardData = [
     {
       title: "Time Taken",
-      leftText: formatTime( totalTimeInMinutes - timeTakenInMinutes*60),
-      coinValue: `+${roundedRemainingTime} min`,
+      leftText: formatTime( timeTakenInMinutes * 60),
     },
     {
       title: "Answered",
       leftText: SessionState.score,
-      coinValue: `${SessionState.score} x ${coinsPerCorrectAnswer}`,
     },
     {
       title: "Total Coins Earned",
-      leftText:"250+",
-      coinValue: totalCoins,
+      leftText:"",
+      coinValue: (correctAnswers * 10)+20,
     },
   ];
 
@@ -105,7 +103,7 @@ const ResultDialogBox = ({
             padding: "2px",
           }}
         >
-          You beat 56% of total players, great job. Keep practicing.
+          Great job. Keep practicing.
         </Typography>
 
         <Divider sx={{ bgcolor: "#FFDA55", height: "2px", width: "100%" }} />

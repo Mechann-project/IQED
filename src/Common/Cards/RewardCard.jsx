@@ -68,18 +68,10 @@ const RewardCard = ({ title, leftText, coinValue }) => {
             >
               {leftText}
             </Typography>
-            <Divider
-              orientation="vertical"
-              sx={{
-                borderRightWidth: 2,
-                bgcolor: "black",
-                borderRadius: "50px",
-              }}
-            />
           </>
         )}
         {/* Right Side Coin + Value */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        {coinValue && <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <Box
             component="img"
             src={IQCoinIcon}
@@ -100,7 +92,7 @@ const RewardCard = ({ title, leftText, coinValue }) => {
           >
             {coinValue}
           </Typography>
-        </Box>
+        </Box>}
       </Box>
     </Box>
   );

@@ -33,7 +33,7 @@ const gameSessionSlice = createSlice({
         const { questionId, answer, answerindex } = action.payload;
         const question = state.questionsList.find((q) => q._id === questionId);
         const isCorrect =
-          question && question.correctAnswer.index === answerindex;
+          question && question.correctAnswer.content == answer;
         state.answeredQuestions[state.currentQuestionIndex] = {
           questionId,
           answer,

@@ -109,17 +109,15 @@ const useHandleGamePage = ({ GameSessionId }) => {
       })
         .unwrap()
         .then(() => {
-          let xp = 0;
-          xp += GameSessionState.score * 2;
-          xp += Math.floor((25 - GameSessionState.timeTaken / 60) * 1);
-          setTotalxp(xp);
+          
+          setTotalxp((GameSessionState.score* 10)+20);
           dispatch(submitQuiz());
           setResultDialog(true);
           socket.emit("game-ended", {
             roomId: GameData?.RoomID,
             GameSessionId: GameData?.SessionID,
           });
-          updateUserXP({ xp: xp }).then(() => {
+          updateUserXP({ xp: (GameSessionState.score* 10)+20 }).then(() => {
             dispatch(UpdateUser(userData));
           });
 

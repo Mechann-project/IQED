@@ -87,11 +87,11 @@ const useHandleQuizPage = () => {
         answeredQuestions: quizState.answeredQuestions,
         timeTaken:quizState?.questionsList.length * 60-currentTime
       }).unwrap().then((session) => {
-        console.log("ddddd",session);
-        setTotalxp(session.score * (100-Math.floor(((session.timeTaken/(20*60))*100))));
+        console.log("ddddd",session); 
+        setTotalxp((session.score* 10)+20);
         dispatch(submitQuiz());
         setResultDialog(true);
-        updateUserXP({ xp: session.score * (100-Math.floor(((session.timeTaken/(20*60))*100)))}).then(() => {
+        updateUserXP({ xp: (session.score* 10)+20}).then(() => {
           dispatch(UpdateUser(userData));
         });
         toast.success("session Complated");

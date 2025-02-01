@@ -41,12 +41,11 @@ const GameTopicArea = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const UserData = useSelector((state) => state.UserState);
-  const { data: Course, isLoading, isError } = useGetCoursesQuery();
+  const { data: ComapltedTopic, isLoading, isError } = useGetCoursesQuery();
 
   const cardData = useMemo(() => {
-    if (!Course || !Course.units) return [];
-    return Course.units[0]?.lessons[0]?.topics || [];
-  }, [Course]);
+    return ComapltedTopic || [];
+  }, [ComapltedTopic]);
 
   const handleCardClick = (card) => {
     setSelectedCard(card);
@@ -66,7 +65,7 @@ const GameTopicArea = () => {
 
   const filteredCards = useMemo(() => 
     cardData.filter((card) =>
-      card.name.toLowerCase().includes(searchInput.toLowerCase())
+      card.topic.name.toLowerCase().includes(searchInput.toLowerCase())
     ), [cardData, searchInput]);
 
   function createRoom(playerData) {
@@ -178,7 +177,7 @@ const GameTopicArea = () => {
 
       <Grid container spacing={2}>
         {filteredCards.map((card) => (
-          <Grid item xs={6} sm={4} md={3} key={card.id}>
+          <Grid item xs={6} sm={4} md={3} key={card.topic._id}>
             <Card
               sx={{
                 bgcolor: "#EEF7FF",
@@ -216,7 +215,7 @@ const GameTopicArea = () => {
                         overflow: "hidden",
                       }}
                     >
-                      {card.name}
+                      {card.topic.name}
                     </Typography>
                   </Box>
                 </CardContent>
