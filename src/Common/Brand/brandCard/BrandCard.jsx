@@ -7,18 +7,22 @@ import { styled } from "@mui/system";
 const StatItem = styled(Box)({
     flex: 1,
     textAlign: "center",
-    color: "#02216F"
+    color: "#02216F",
+    display:'flex',
+    flexDirection:'column',
+    gap:1,
+    justifyContent:'space-between'
 });
 
 const StatRow = styled(Box)({
     display: "flex",
     justifyContent: "space-between",
-    marginTop: 20,
+    // marginTop: 20,
 });
 
 
 const BrandCard = ({ Data, isSideBar }) => {
-    console.log("Data", Data)
+    console.log("challengeData", Data)
     const theme = useTheme();
     const isSm = useMediaQuery(theme.breakpoints.down("sm"));
     const UserData = useSelector((state) => state.UserState);
@@ -142,21 +146,9 @@ const BrandCard = ({ Data, isSideBar }) => {
                         {Data.topicName}
                     </Typography>
                 </Box>
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between'
-                }}>
-                    <Typography sx={{ mt: '5px', fontSize: "8px", fontWeight: '500', }}>
-                        Total Question : <strong style={{ color: '#02216F' }}>{Data.totalQuestions}</strong>
-                    </Typography>
-                    <Typography sx={{ mt: '5px', fontSize: "8px", fontWeight: '500', }}>
-                        Test Time : <strong style={{ color: '#02216F' }}>{Data.time} min</strong>
-                    </Typography>
-                </Box>
-                <Divider sx={{ borderBottomWidth: 2, borderColor: '#02216F', my: '5px' }} />
-                <Typography sx={{ fontSize: "10px", fontWeight: 'bold', textAlign: 'justify', letterSpacing: '0.5px', width: '100%' }}>
-                    Top {Data.giftCount} players will receive the gift!
+            
+                <Typography sx={{ fontSize: "10px", fontWeight: 'bold', textAlign: 'justify', letterSpacing: '0.5px', width: '100%',my: '10px'  }}>
+                Complete the challenge and win a gift!
                 </Typography>
 
                 <StatRow>
@@ -168,26 +160,29 @@ const BrandCard = ({ Data, isSideBar }) => {
                         sx={{
                             fontSize:"10px",
                             fontWeight:"bold",
+                            py:"2px"
                         }}
-                        >Total Question </Typography>
+                        >Total <br/>MCQ </Typography>
                     </StatItem>
                     <StatItem sx={{
                         borderRight: '1px solid'
                     }}>
-                        <Typography variant="body2" sx={{ fontWeight: "bold" }}>100%</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: "bold" }}>{Data.time} Min</Typography>
                         <Typography 
                         sx={{
                             fontSize:"10px",
                             fontWeight:"bold",
+                            py:"2px"
                         }}
-                        >Time</Typography>
+                        >MCQ <br/> Time</Typography>
                     </StatItem>
                     <StatItem>
-                        <Typography variant="body2" sx={{ fontWeight: "bold" }}>38,631</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: "bold" }}>{Data.giftCount}</Typography>
                         <Typography sx={{
                             fontSize:"10px",
                             fontWeight:"bold",
-                        }}>Contributors</Typography>
+                            py:"2px"
+                        }}>Total <br/>winners</Typography>
                     </StatItem>
                 </StatRow>
             </CardContent>

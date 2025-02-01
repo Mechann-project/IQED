@@ -35,25 +35,11 @@ const ResultDialogBox = ({
     return `${String(minutes).padStart(2, '0')} : ${String(remainingSeconds).padStart(2, '00')}`;
   }
 
-  // Time-based coin logic
-  const totalTimeInMinutes  = SessionState.questionCount * 60; // 3 minutes = 180 seconds (Total time for the test)
-  const timeTakenInMinutes = SessionState.timeTaken / 60; // User's time taken to complete the test in minutes
-
-  // Remaining time in minutes, rounded down
-  const remainingTimeInMinutes = timeTakenInMinutes;
-  console.log("remainingTimeInMinutes",remainingTimeInMinutes)
-  const roundedRemainingTime = Math.floor(remainingTimeInMinutes);
-
-  // Coins per correct answer
-  const coinsPerCorrectAnswer = 2;
+  console.log("SessionState",SessionState)
+  const timeTakenInMinutes = SessionState.timeTaken / 60; 
+  const totalQestions = SessionState.questionCount
   const correctAnswers = SessionState.score;
-
-  // Total coins from correct answers
-  const baseCoinsForCorrectAnswers = correctAnswers * coinsPerCorrectAnswer;
-
-  // Total coins earned including the rounded remaining time
-  const totalCoins = baseCoinsForCorrectAnswers + roundedRemainingTime;
-
+  
   // Card data
   const cardData = [
     {
@@ -165,6 +151,8 @@ const ResultDialogBox = ({
               }}
               gap={2}
             >
+
+              {/* score area */}
               {cardData.map((card, index) => (
                 <RewardCard
                   key={index}

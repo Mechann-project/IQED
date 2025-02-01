@@ -73,15 +73,15 @@ const ProductArea = () => {
               flexGrow: 1,
             }}
           /> */}
-          <Button variant="outlined" startIcon={<AddShoppingCartIcon />} onClick={() => { navigate('/challenge/orders') }}>
+          {/* <Button variant="outlined" startIcon={<AddShoppingCartIcon />} onClick={() => { navigate('/challenge/orders') }}>
             Earned Gifts
-          </Button>
+          </Button> */}
         </Box>
 
 
 
       </Box>
-      <Divider />
+      {/* <Divider /> */}
       <Grid container spacing={2}>
         {challengeData.map((data, index) => (
           <Grid item xs={12} sm={12} md={4} lg={3} key={index}>
