@@ -20,7 +20,7 @@ const MainNavBar = () => {
 
   const navItems = useMemo(
     () => [
-      { label: "Explore", icon: <ExtensionIcon />, path: "/explore" },
+      // { label: "Explore", icon: <ExtensionIcon />, path: "/explore" },
       { label: "Missions", icon: <FlagCircleIcon />, path: "/missions" },
       { label: "Multiplayer", icon: <SportsMmaIcon />, path: "/game" },
       { label: "Leaderboard", icon: <LeaderboardIcon />, path: "/leaderboard" },

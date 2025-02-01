@@ -8,6 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { WhiteBackgroundSVG } from "../../assets";
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 const LevelCard = ({ level, onSelect, active }) => {
   const theme = useTheme();
@@ -66,30 +67,53 @@ const LevelCard = ({ level, onSelect, active }) => {
           <Typography
             variant="h5"
             sx={{ fontWeight: "bold", color: "#02216F" }}
-          >{`Section ${level.level}`} : {level.name}</Typography>
+          >{`Level ${level.level}`} : {level.name}</Typography>
           <Typography variant="body2" sx={{ color: "black" }}>
             {level.description}
           </Typography>
-          <Button
-            variant="contained"
-            onClick={onSelect}
-            disabled={!active}
-            sx={{
-              height: "50px",
-              width: "50%",
-              fontWeight: "bold",
-              backgroundColor: "#1A49BA",
-              color: "#fff",
-              borderRadius: "50px",
-              textTransform: "none",
-              "&:hover": {
-                color: "#1A49BA",
-                backgroundColor: "#FFDA55",
-              },
-            }}
-          >
-            Continue
-          </Button>
+          <Box sx={{display:'flex', flexDirection:'row', gap:'20px'}}>
+            <Button
+              variant="contained"
+              onClick={onSelect}
+              disabled={!active}
+              sx={{
+                height: "50px",
+                width: "50%",
+                fontWeight: "bold",
+                backgroundColor: "#1A49BA",
+                color: "#fff",
+                borderRadius: "50px",
+                textTransform: "none",
+                "&:hover": {
+                  color: "#1A49BA",
+                  backgroundColor: "#FFDA55",
+                },
+              }}
+            >
+              Continue
+            </Button>
+            <Button
+              variant="contained"
+              onClick={onSelect}
+              disabled
+              startIcon={<AssignmentIcon />}
+              sx={{
+                height: "50px",
+                width: "50%",
+                fontWeight: "bold",
+                backgroundColor: "#1A49BA",
+                color: "#fff",
+                borderRadius: "50px",
+                textTransform: "none",
+                "&:hover": {
+                  color: "#1A49BA",
+                  backgroundColor: "#FFDA55",
+                },
+              }}
+            >
+              Take Final Test
+            </Button>
+          </Box>
         </Box>
         <Box
           sx={{

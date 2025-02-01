@@ -7,6 +7,7 @@ import {
 import { IQCoinIcon, IQGemIcon, IQRankIcon } from "../../assets/Image";
 import { useSelector } from "react-redux";
 import { useGetUserQuery } from "../../Redux/API/User.Api";
+import DandFQuests from "../Quest/DandFQuests";
 
 const SideBar = () => {
   const UserData = useSelector((state) => state.UserState);
@@ -68,10 +69,11 @@ const SideBar = () => {
   }, [rank, previousRank]);
 
   return (
-    <SidebarContainer gap={2}>
-      <ProgressCard icon={IQGemIcon} title="IQ Gems" Count={iqGems} animate={animateIqGems} delay={0.5} />
+    <SidebarContainer >
+      {/* <ProgressCard icon={IQGemIcon} title="IQ Gems" Count={iqGems} animate={animateIqGems} delay={0.5} />
       <ProgressCard icon={IQCoinIcon} title="XP+ Coin" Count={xpCoins} animate={animateXp} delay={1} />
-      <ProgressCard icon={IQRankIcon} title="Rank" Count={rank} animate={animateRank} delay={1.5} />
+      <ProgressCard icon={IQRankIcon} title="Rank" Count={rank} animate={animateRank} delay={1.5} /> */}
+      <DandFQuests/>
     </SidebarContainer>
   );
 };
