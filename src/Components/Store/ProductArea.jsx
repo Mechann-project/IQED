@@ -27,8 +27,24 @@ const challengeData = [
     topicName: "Number Lines",
     totalQuestions: 10,
     time: 10,
-    giftCount: 10,
+    giftCount: 5,
     gemRequired: 20,
+  },
+  {
+    SponsoredBy: "IQED",
+    topicName: "Speed Math",
+    totalQuestions: 50,
+    time: 30,
+    giftCount: 10,
+    gemRequired: 50,
+  },
+  {
+    SponsoredBy: "Allreal",
+    topicName: "Prime Numbers",
+    totalQuestions: 60,
+    time: 50,
+    giftCount: 8,
+    gemRequired: 150,
   }
 ];
 
@@ -77,9 +93,6 @@ const ProductArea = () => {
             Earned Gifts
           </Button> */}
         </Box>
-
-
-
       </Box>
       {/* <Divider /> */}
       <Grid container spacing={2}>
