@@ -68,14 +68,23 @@ const SideBar = () => {
       setAnimateRank(false);
     }
   }, [rank, previousRank]);
-
+  const challengeData = [
+    {
+      SponsoredBy: "Allreal",
+      topicName: "Number Lines",
+      totalQuestions: 10,
+      time: 10,
+      giftCount: 10,
+      gemRequired: 20,
+    }
+  ];
   return (
     <SidebarContainer >
       {/* <ProgressCard icon={IQGemIcon} title="IQ Gems" Count={iqGems} animate={animateIqGems} delay={0.5} />
       <ProgressCard icon={IQCoinIcon} title="XP+ Coin" Count={xpCoins} animate={animateXp} delay={1} />
       <ProgressCard icon={IQRankIcon} title="Rank" Count={rank} animate={animateRank} delay={1.5} /> */}
       <DandFQuests/>
-      <BrandCard/>
+      <BrandCard Data={challengeData}/>
     </SidebarContainer>
   );
 };

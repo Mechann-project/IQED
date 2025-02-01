@@ -9,7 +9,7 @@ import {useLocation, useNavigate } from "react-router-dom";
 import ErrorIcon from "@mui/icons-material/Error";
 import {Logo,LogoIcon} from "../../Common";
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
-
+import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 const MainNavBar = () => {
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down("md"));
@@ -28,7 +28,7 @@ const MainNavBar = () => {
       ...(isSm
         ? [
             { label: "FeedBack", icon: <ErrorIcon />, path: "/feedBack" },
-            { label: "challenge", icon: <LocalGroceryStoreIcon />, path: "/challenge" },
+            { label: "challenge", icon: <LocalActivityIcon />, path: "/challenge" },
           ]
         : []),
     ],
@@ -36,12 +36,12 @@ const MainNavBar = () => {
 
   const bottomItems = useMemo(
     () => [
-      { label: "challenge", icon: <LocalGroceryStoreIcon />, path: "/challenge" },
+      { label: "challenge", icon: <LocalActivityIcon />, path: "/challenge" },
       ...(!isSm
         ? [{ label: "FeedBack", icon: <ErrorIcon />, path: "/feedBack" }]
         : []),
     ],
-  
+
   );
 
   const renderButton = ({ label, icon, path, key }) => {
