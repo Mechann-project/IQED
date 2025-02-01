@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { useGetUserQuery } from "../../Redux/API/User.Api";
 import { LoadingScreen } from "../../Components";
 import trophy from "./trophy.png";
+import { resetQuiz } from "../../Redux/Slice/QuizSlice/QuizSlice";
 
 const LevelDetails = lazy(() => import("./LevelDetails"));
 
@@ -37,7 +38,40 @@ const MissionPage = () => {
     setSelectedSection(null);
     navigate("/missions");
   };
-
+  const handleQuizCraetion = (
+    levelid,
+    lessonid,
+    topicId,
+    questionCount = 3
+  ) => {
+    try {
+      console.log("quiz craeter",levelid, lessonid, topicId);
+      dispatch(resetQuiz());
+      toast.promise(
+        CreateQuizSession({
+          levelid,
+          lessonid,
+          topicId,
+          questionCount: 3,
+        }).unwrap(),
+        {
+          loading: "Creating Session...",
+          success: (res) => {
+            sessionStorage.setItem("QuizSessionID", res.sessionId);
+            navigate(`/quiz/${res.sessionId}`, { replace: true });
+            return "Session Created Successfully!";
+          },
+          error: (e) => {
+            console.error(e);
+            return "Failed to create session. Please try again.";
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Failed to update quiz session:", error);
+      toast.error("sorry session not save");
+    }
+  };
   const breadcrumbPath = useMemo(() => {
     if (selectedSection) {
       return [
