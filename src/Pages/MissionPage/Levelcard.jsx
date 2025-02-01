@@ -94,7 +94,7 @@ const LevelCard = ({ level, onSelect, active }) => {
             </Button>
             <Button
               variant="contained"
-              onClick={onSelect}
+              // onClick={onSelect}
               disabled
               startIcon={<AssignmentIcon />}
               sx={{
