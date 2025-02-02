@@ -8,6 +8,8 @@ import { store } from './Redux/Store.js'
 import { Provider } from "react-redux";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react"
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>

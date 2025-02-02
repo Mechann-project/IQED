@@ -3,15 +3,16 @@ import { Card, CardContent, CardMedia, Typography, IconButton, Button, Box, Divi
 import { IQGemIcon, TShirtImg } from "../../../assets";
 import { useSelector } from "react-redux";
 import { styled } from "@mui/system";
+import { Link } from "react-router-dom";
 
 const StatItem = styled(Box)({
     flex: 1,
     textAlign: "center",
     color: "#02216F",
-    display:'flex',
-    flexDirection:'column',
-    gap:1,
-    justifyContent:'space-between'
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 1,
+    justifyContent: 'space-between'
 });
 
 const StatRow = styled(Box)({
@@ -27,7 +28,7 @@ const BrandCard = ({ Data, isSideBar }) => {
     const isSm = useMediaQuery(theme.breakpoints.down("sm"));
     const UserData = useSelector((state) => state.UserState);
     const userCoin = UserData?.earnings?.iqGems;
-    const isAffordable = userCoin >= 20;
+    const isAffordable = userCoin >= Data.gemRequired;
     const [openTooltip, setOpenTooltip] = useState(false);
 
     const handleCardClick = () => {
@@ -92,13 +93,14 @@ const BrandCard = ({ Data, isSideBar }) => {
                 <CardMedia
                     component="img"
                     height={isSm ? "200" : "150"}
-                    image={TShirtImg}
+                    image={Data.thumnail}
                     alt="ProductThumile"
                     sx={{
                         borderRadius: "10px",
                         // border: "2px solid #02216F",
                         backgroundColor: "#f9f9f9",
                         boxSizing: 'border-box',
+                        objectFit: "contain",
                     }}
                 />
                 <Box
@@ -123,10 +125,27 @@ const BrandCard = ({ Data, isSideBar }) => {
                 textAlign: "left", color: "black",
                 padding: " 10px 10px 10px 10px",
             }}>
+                <Typography
+                    sx={{
+                        fontSize: "10px",
+                        fontWeight: "bold",
+                        textAlign: "justify",
+                        width: "100%",
+                        my: "10px",
+                        overflow: "hidden",
+                        display: "-webkit-box",
+                        WebkitBoxOrient: "vertical",
+                        WebkitLineClamp: 2, // Limits to 2 lines
+                        textOverflow: "ellipsis",
+                    }}
+                >
+                    {Data.productDetials}
+                </Typography>
+
                 <Box sx={{
                     display: 'flex', flexDirection: 'column', justifyContent: 'left', alignItems: 'left',
                     borderLeft: 'solid 2px #02216F',
-                    pl: '5px',
+                    pl: '5px', my: '10px'
                 }}>
                     <Typography fontWeight="bold" sx={{
                         fontSize: '8px',
@@ -146,43 +165,41 @@ const BrandCard = ({ Data, isSideBar }) => {
                         {Data.topicName}
                     </Typography>
                 </Box>
-            
-                <Typography sx={{ fontSize: "10px", fontWeight: 'bold', textAlign: 'justify', letterSpacing: '0.5px', width: '100%',my: '10px'  }}>
-                Complete the challenge and win a gift!
-                </Typography>
+
+
 
                 <StatRow>
                     <StatItem sx={{
                         borderRight: '1px solid'
                     }}>
                         <Typography variant="body2" sx={{ fontWeight: "bold" }}>{Data.totalQuestions}</Typography>
-                        <Typography 
-                        sx={{
-                            fontSize:"10px",
-                            fontWeight:"bold",
-                            py:"2px"
-                        }}
-                        >Total <br/>MCQ </Typography>
+                        <Typography
+                            sx={{
+                                fontSize: "10px",
+                                fontWeight: "bold",
+                                py: "2px"
+                            }}
+                        >Total <br />MCQ </Typography>
                     </StatItem>
                     <StatItem sx={{
                         borderRight: '1px solid'
                     }}>
                         <Typography variant="body2" sx={{ fontWeight: "bold" }}>{Data.time} Min</Typography>
-                        <Typography 
-                        sx={{
-                            fontSize:"10px",
-                            fontWeight:"bold",
-                            py:"2px"
-                        }}
-                        >MCQ <br/> Time</Typography>
+                        <Typography
+                            sx={{
+                                fontSize: "10px",
+                                fontWeight: "bold",
+                                py: "2px"
+                            }}
+                        >MCQ <br /> Time</Typography>
                     </StatItem>
                     <StatItem>
                         <Typography variant="body2" sx={{ fontWeight: "bold" }}>{Data.giftCount}</Typography>
                         <Typography sx={{
-                            fontSize:"10px",
-                            fontWeight:"bold",
-                            py:"2px"
-                        }}>Total <br/>winners</Typography>
+                            fontSize: "10px",
+                            fontWeight: "bold",
+                            py: "2px"
+                        }}>Total <br />winners</Typography>
                     </StatItem>
                 </StatRow>
             </CardContent>
@@ -201,8 +218,9 @@ const BrandCard = ({ Data, isSideBar }) => {
                 <span>
                     <Button
                         variant="contained"
-                        // component={Link}
-                        // to={`/store/shipping/${product.name}`}
+                        disabled={isAffordable ? false : true}
+                        component={Link}
+                        to={`/challenge/shipping/${Data._id}`}
                         sx={{
                             width: "100%",
                             backgroundColor: "#FFDA55",
@@ -215,6 +233,11 @@ const BrandCard = ({ Data, isSideBar }) => {
                             boxShadow: "2px 2px 5px rgba(0,0,0,0.3)",
                             "&:hover": {
                                 backgroundColor: "#E6C200"
+                            },
+                            "&.Mui-disabled": {
+                                backgroundColor: "#D3D3D3", 
+                                color: "#A0A0A0", 
+                                
                             }
                         }}
                     >

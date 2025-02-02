@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ResetUser } from "../../../Redux/Slice/UserSlice/UserSlice";
 import { useGetUserQuery } from "../../../Redux/API/User.Api";
-
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 const MenuBox = ({ open, anchorEl, handleClose }) => {
   const dispatch = useDispatch()
   
@@ -71,12 +71,12 @@ const MenuBox = ({ open, anchorEl, handleClose }) => {
         <Person sx={{ pr: "5px", color: "red" }} /> Account
       </MenuItem>
       <Divider />
-      {/* <MenuItem onClick={handleSettings}>
+      <MenuItem onClick={() => { navigate('/challenge/orders') }}>
         <ListItemIcon>
-          <Settings fontSize="small" />
+          <AddShoppingCartIcon fontSize="small" />
         </ListItemIcon>
-        Settings
-      </MenuItem> */}
+        Orders
+      </MenuItem>
       <MenuItem onClick={handleLogOut}>
         <ListItemIcon>
           <Logout fontSize="small" />

@@ -11,11 +11,12 @@ const StorePage = () => {
       sx={{
         display:'flex',
         flexDirection: "column",
-        flexGrow: 1,
+       
         gap: "20px",
+        width:'100%',
       }}
     >
-      {/* <StoreBanner /> */}
+      <StoreBanner />
       <ProductArea />
     </Box>
   );

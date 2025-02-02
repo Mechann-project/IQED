@@ -19,49 +19,41 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 const products = [
   {
-    id: 1,
-    name: "Wireless Earbuds, IPX8",
-    rating: 4.5,
-    reviews: 121,
-    image: TShirtImg,
-    description: "Organic Cotton, fairtrade certified",
-    originalPrice: 200,
-    discountedPrice: 150,
-    type: "Electronics",
+    _id:1,
+    SponsoredBy: "Allreal",
+    topicName: "Number Lines",
+    totalQuestions: 10,
+    time: 10,
+    giftCount: 5,
+    gemRequired: 10,
+    productName:"Water Bottle",
+    productDetials:'Water Bottle | Leakproof | 2 Liter | BPA-Free Plastic',
+    thumnail: "https://m.media-amazon.com/images/I/41o9hwA4ORL._SX300_SY300_QL70_FMwebp_.jpg",
   },
   {
-    id: 2,
-    name: "AirPods Max",
-    rating: 4.8,
-    reviews: 121,
-    image: TShirtImg,
-    description: "A perfect balance of high-fidelity audio",
-    originalPrice: 300,
-    discountedPrice: 250,
-    type: "Electronics",
+    _id:2,
+    SponsoredBy: "IQED",
+    topicName: "Speed Math",
+    totalQuestions: 50,
+    time: 30,
+    giftCount: 10,
+    gemRequired: 50,
+    productName:"American Tourister Bag",
+    productDetials:'American Tourister Valex 28 Ltrs Large Laptop Backpack with Bottle Pocket and Front Organizer- Black',
+    thumnail: "https://m.media-amazon.com/images/I/31G4L00mBjL._SY300_SX300_.jpg",
   },
   {
-    id: 3,
-    name: "Kids IQ Puzzle Toy",
-    rating: 4.3,
-    reviews: 121,
-    image: TShirtImg,
-    description: "Educational toy for kids",
-    originalPrice: 50,
-    discountedPrice: 40,
-    type: "Toys",
-  },
-  {
-    id: 4,
-    name: "Men's T-Shirt",
-    rating: 4.0,
-    reviews: 121,
-    image: TShirtImg,
-    description: "100% Cotton",
-    originalPrice: 25,
-    discountedPrice: 20,
-    type: "Clothing",
-  },
+    _id:3,
+    SponsoredBy: "Allreal",
+    topicName: "Prime Numbers",
+    totalQuestions: 60,
+    time: 50,
+    giftCount: 8,
+    gemRequired: 150,
+    productName:"Sketch Pens 24 Colors",
+    productDetials:'KLIFFOO Dual Tip Colorful Art Markers Sketch Pens 24 Colors With Carrying Case',
+    thumnail: "https://m.media-amazon.com/images/I/81wQoBSXR2L._SX450_.jpg",
+  }
 ];
 
 const Shipping = () => {
@@ -71,7 +63,7 @@ const Shipping = () => {
   const handleBlack = () => navigate("/challenge");
 
   const { productId } = useParams();
-  const product = products.find((p) => p.name === productId);
+  const product = products.find((p) => p._id === Number(productId));
 
   const [formData, setFormData] = useState({
     country: "India",
@@ -239,7 +231,7 @@ const Shipping = () => {
         >
           <Box
             component="img"
-            src={product.image}
+            src={product.thumnail}
             height={isSm ? 80 : 100}
             sx={{
               borderRadius: "10px",
@@ -261,7 +253,7 @@ const Shipping = () => {
                 fontWeight: "bold",
               }}
             >
-              {product.name}
+              {product.productName}
             </Typography>
             <Typography
               variant="body2"
@@ -269,7 +261,7 @@ const Shipping = () => {
                 color: "white",
               }}
             >
-              {product.description}
+              {product.productDetials}
             </Typography>
             <Typography
               variant="h6"
@@ -292,7 +284,7 @@ const Shipping = () => {
                   marginRight: "4px",
                 }}
               />
-              {product.discountedPrice}
+              {product.gemRequired}
             </Typography>
           </Box>
         </Box>
