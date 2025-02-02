@@ -71,12 +71,40 @@ const SideBar = () => {
 
   const challengeData = [
     {
+      _id:1,
       SponsoredBy: "Allreal",
       topicName: "Number Lines",
       totalQuestions: 10,
       time: 10,
+      giftCount: 5,
+      gemRequired: 10,
+      productName:"Water Bottle",
+      productDetials:'Water Bottle | Leakproof | 2 Liter | BPA-Free Plastic',
+      thumnail: "https://m.media-amazon.com/images/I/41o9hwA4ORL._SX300_SY300_QL70_FMwebp_.jpg",
+    },
+    {
+      _id:2,
+      SponsoredBy: "IQED",
+      topicName: "Speed Math",
+      totalQuestions: 50,
+      time: 30,
       giftCount: 10,
-      gemRequired: 20,
+      gemRequired: 50,
+      productName:"American Tourister Bag",
+      productDetials:'American Tourister Valex 28 Ltrs Large Laptop Backpack with Bottle Pocket and Front Organizer- Black',
+      thumnail: "https://m.media-amazon.com/images/I/31G4L00mBjL._SY300_SX300_.jpg",
+    },
+    {
+      _id:3,
+      SponsoredBy: "Allreal",
+      topicName: "Prime Numbers",
+      totalQuestions: 60,
+      time: 50,
+      giftCount: 8,
+      gemRequired: 150,
+      productName:"Sketch Pens 24 Colors",
+      productDetials:'KLIFFOO Dual Tip Colorful Art Markers Sketch Pens 24 Colors With Carrying Case',
+      thumnail: "https://m.media-amazon.com/images/I/81wQoBSXR2L._SX450_.jpg",
     }
   ];
   return (
