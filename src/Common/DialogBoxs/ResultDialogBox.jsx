@@ -38,7 +38,7 @@ const ResultDialogBox = ({ SessionState, open, handleReview, handleDone }) => {
   const isPass = scorePercentage >= 80;
 
   function handelClick() {
-    if (SessionState?.type == "Challenge") {
+    if (SessionState?.type == "Challenge" && isPass) {
       navigate(`/challenge/shipping/${SessionState?.Challenge}`);
     } else {
       handleDone();
