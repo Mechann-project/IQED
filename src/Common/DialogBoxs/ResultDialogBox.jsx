@@ -14,26 +14,34 @@ import {
 import { RewardCard } from "../../Common";
 import { IQCoinIcon, retry, SuccessManSVG } from "../../assets";
 
-const ResultDialogBox = ({
-  SessionState,
-  open,
-  handleReview,
-  handleDone,
-}) => {
+const ResultDialogBox = ({ SessionState, open, handleReview, handleDone }) => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
 
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${String(minutes).padStart(2, '0')} : ${String(remainingSeconds).padStart(2, '00')}`;
+    return `${String(minutes).padStart(2, "0")} : ${String(
+      remainingSeconds
+    ).padStart(2, "00")}`;
   }
 
   const totalQuestions = SessionState.questionCount;
   const correctAnswers = SessionState.score;
   const scorePercentage = (correctAnswers / totalQuestions) * 100;
-  const message = scorePercentage >= 80 ? "Awesome! You completed the test." : "Good effort! Try again to improve.";
-  const isPass = scorePercentage >= 80
+  const message =
+    scorePercentage >= 80
+      ? "Awesome! You completed the test."
+      : "Good effort! Try again to improve.";
+  const isPass = scorePercentage >= 80;
+
+  function handelClick() {
+    if (SessionState?.type == "Challenge") {
+      navigate(`/challenge/shipping/${SessionState?.Challenge}`);
+    } else {
+      handleDone();
+    }
+  }
   // Card data
   const cardData = [
     {
@@ -55,7 +63,7 @@ const ResultDialogBox = ({
     { label: "Time Taken", value: formatTime(SessionState.timeTaken) },
     { label: `For completion x ${isPass ? 20 : 0}`, value: isPass ? 20 : 0 },
   ];
-  const totalCoins = (correctAnswers * 10) + isPass ? 20 : 0;
+  const totalCoins = correctAnswers * 10 + isPass ? 20 : 0;
 
   return (
     <Dialog
@@ -113,7 +121,7 @@ const ResultDialogBox = ({
           >
             <Box
               component="img"
-              src={isPass?SuccessManSVG:retry}
+              src={isPass ? SuccessManSVG : retry}
               alt="Player image"
               sx={{
                 width: "auto",
@@ -127,25 +135,24 @@ const ResultDialogBox = ({
               }}
             />
             <Box sx={{ display: "flex", gap: 4, width: isSm ? null : "100%" }}>
-              <Button
+              {SessionState?.type != "Challenge" && <Button
                 variant="contained"
                 fullWidth
                 onClick={handleReview}
                 sx={{ ...buttonStyles("#FFDA55", "#02216F") }}
               >
                 Review
-              </Button>
+              </Button>}
               <Button
                 variant="contained"
                 fullWidth
-                onClick={handleDone}
+                onClick={handelClick}
                 sx={{ ...buttonStyles("#FFDA55", "#02216F") }}
               >
                 {scorePercentage >= 80 ? "Done" : "Retry"}
               </Button>
             </Box>
           </Grid>
-
 
           <Grid item xs={12} sm={6}>
             <Box
@@ -158,7 +165,6 @@ const ResultDialogBox = ({
               }}
               gap={2}
             >
-
               <Box
                 sx={{
                   display: "flex",
@@ -191,7 +197,6 @@ const ResultDialogBox = ({
                   Result
                 </Typography>
 
-
                 <Box
                   sx={{
                     display: "flex",
@@ -201,52 +206,94 @@ const ResultDialogBox = ({
                     borderRadius: "10px",
                     padding: "10px",
                     width: "100%",
-
                   }}
                 >
-
-                  <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: "center",
-                    width: '100%',
-                    // gap: '30px',
-                    // p: "10px",
-                    fontWeight: 'bold'
-                  }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "100%",
+                      // gap: '30px',
+                      // p: "10px",
+                      fontWeight: "bold",
+                    }}
+                  >
                     {rewards.map((reward, index) => (
-                      <Box key={index} display="flex" justifyContent="space-between" padding={1} width='100%'>
-                        <Typography sx={{
-                          fontWeight: 'bold', 
-                          fontSize:
-                           {
-                            xs: "12px",
-                            sm: "13px",
-                            md: "15px",
-                            lg: "15px",
-                          },
-                        }} >{reward.label}</Typography>
+                      <Box
+                        key={index}
+                        display="flex"
+                        justifyContent="space-between"
+                        padding={1}
+                        width="100%"
+                      >
+                        <Typography
+                          sx={{
+                            fontWeight: "bold",
+                            fontSize: {
+                              xs: "12px",
+                              sm: "13px",
+                              md: "15px",
+                              lg: "15px",
+                            },
+                          }}
+                        >
+                          {reward.label}
+                        </Typography>
                         <Box display="flex" alignItems="center" gap={1}>
-                          <Typography sx={{ fontWeight: 'bold',fontSize: {
-                            xs: "12px",
-                            sm: "13px",
-                            md: "15px",
-                            lg: "15px",
-                          }, }}>{reward.value}</Typography>
-                          <Box component="img" src={IQCoinIcon} alt="coin" width={20} height={20} />
+                          <Typography
+                            sx={{
+                              fontWeight: "bold",
+                              fontSize: {
+                                xs: "12px",
+                                sm: "13px",
+                                md: "15px",
+                                lg: "15px",
+                              },
+                            }}
+                          >
+                            {reward.value}
+                          </Typography>
+                          <Box
+                            component="img"
+                            src={IQCoinIcon}
+                            alt="coin"
+                            width={20}
+                            height={20}
+                          />
                         </Box>
-
                       </Box>
                     ))}
 
-                    <Divider orientation="horizontal" sx={{ borderBottomWidth: "3px", borderColor: "black", width: '100%' }} />
-                    <Box display="flex" justifyContent="space-between" padding={1} width='100%' >
-
-                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Total</Typography>
+                    <Divider
+                      orientation="horizontal"
+                      sx={{
+                        borderBottomWidth: "3px",
+                        borderColor: "black",
+                        width: "100%",
+                      }}
+                    />
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      padding={1}
+                      width="100%"
+                    >
+                      <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                        Total
+                      </Typography>
                       <Box display="flex" alignItems="center" gap={1}>
-                        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{totalCoins}</Typography>
-                        <Box component="img" src={IQCoinIcon} alt="coin" width={20} height={20} />
+                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                          {totalCoins}
+                        </Typography>
+                        <Box
+                          component="img"
+                          src={IQCoinIcon}
+                          alt="coin"
+                          width={20}
+                          height={20}
+                        />
                       </Box>
                     </Box>
                   </Box>
