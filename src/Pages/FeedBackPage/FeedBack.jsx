@@ -8,11 +8,117 @@ import {
   TextField,
   MenuItem,
   CircularProgress,
+  IconButton,
+  Autocomplete,
+  styled,
+  Divider
 } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material"; // Icon for success
 import { feedback } from "../../assets";
 import toast from "react-hot-toast";
 import { usePostFeedbackMutation } from "../../Redux/API/Feedback.Api";
+import DeleteIcon from "@mui/icons-material/Delete";
+import CloseIcon from '@mui/icons-material/Close';
+import OptionBox from "./OptionBox";
+
+
+
+const Heading = styled(Typography)(({ theme }) => ({
+  fontSize: theme.typography.pxToRem(15),
+  flexBasis: "80%",
+  flexShrink: 0,
+  fontWeight: 'bold',
+
+}));
+
+const Container = styled("div")(({ theme }) => ({
+  margin: "30px",
+  [theme.breakpoints.down("sm")]: { margin: "16px" },
+  "& .breadcrumb": {
+    marginBottom: "30px",
+    [theme.breakpoints.down("sm")]: { marginBottom: "16px" }
+  }
+}));
+
+const Sidebar = styled("div")(() => ({
+  width: "25%",
+  paddingRight: "16px",
+  maxHeight: "calc(100vh - 60px)",
+  overflowY: "auto",
+  position: "sticky",
+  top: "0",
+}));
+
+const MainContent = styled("div")(() => ({
+  width: "75%",
+  padding: "16px",
+  border: "1px solid #e0e0e0",
+  borderRadius: "8px",
+  maxHeight: "calc(100vh - 60px)",
+  overflowY: "auto",
+}));
+
+const EditorContiner = styled("div")(() => ({
+  border: "1px solid #e0e0e0",
+  borderRadius: "8px",
+  marginBottom: "16px",
+  overflow: 'hidden'
+}));
+const TopicBox = styled("div")(() => ({
+  // border: "1px solid #e0e0e0",
+  paddingLeft: "10px",
+  marginBottom: "16px",
+  overflow: 'hidden'
+}));
+
+
+
+const SecondaryHeading = styled(Typography)(({ theme }) => ({
+  fontSize: theme.typography.pxToRem(15),
+  color: theme.palette.text.secondary,
+  fontWeight: 'bold',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '10px',
+}));
+
+const TitleBar = styled("div")(() => ({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: " 10px 15px 10px 15px",
+  backgroundColor: '#007bff20'
+}));
+const ContentBox = styled("div")(() => ({
+
+  alignItems: "center",
+  padding: "15px",
+}));
+
+const ContentHeader = styled("h3")(({ theme }) => ({
+  fontSize: "1.4rem",
+  fontWeight: "600",
+  display: 'flex',
+  alignItems: 'center',
+  gap: '10px',
+  marginBottom: "8px",
+}));
+const CustomTextField = styled(TextField)(({ theme }) => ({
+  margin: "10px 0 10px 0",
+  "& .MuiOutlinedInput-root": {
+    // height: "40px", 
+    fontWeight: "600",
+    "& input": {
+      height: "40",
+      padding: "8px",
+      "&::placeholder": {
+        fontSize: theme.typography.pxToRem(12),
+      },
+    },
+  },
+}));
+
+
 
 const FeedBack = () => {
   const theme = useTheme();
@@ -24,7 +130,9 @@ const FeedBack = () => {
   const [feedbackType, setFeedbackType] = useState("");
   const [feedbackText, setFeedbackText] = useState("");
   const [screenshots, setScreenshots] = useState([]);
-
+  const [topic, setTopic] = useState("");
+  const [question, setQuestion] = useState("");
+  const [options, setOptions] = useState(["", "", "", ""]);
   // Error State
   const [errors, setErrors] = useState({
     feedbackType: false,
@@ -72,7 +180,7 @@ const FeedBack = () => {
 
     // Prepare form data
     const formData = new FormData();
-  
+
     formData.append("type", feedbackType);
     formData.append("feedback", feedbackText);
 
@@ -83,7 +191,7 @@ const FeedBack = () => {
     }
 
     try {
-     
+
       const response = await submitFeedback(formData).unwrap();
 
       toast.success("Feedback submitted successfully!");
@@ -92,7 +200,7 @@ const FeedBack = () => {
       setScreenshots([]);
     } catch (error) {
       toast.error(error?.data?.message || "Failed to submit feedback.");
-    } 
+    }
   };
 
   return (
@@ -105,7 +213,7 @@ const FeedBack = () => {
         gap: "20px",
         boxSizing: "border-box",
         overflow: "hidden",
-        
+
       }}
     >
       <Box
@@ -150,7 +258,10 @@ const FeedBack = () => {
           boxShadow: "2px 3px #02216F",
           mb: "10px",
           mr: "10px",
-
+          overflow: "scroll",
+          "::-webkit-scrollbar": {
+            display: "none",
+          },
         }}
       >
         <Typography
@@ -175,63 +286,165 @@ const FeedBack = () => {
           />
           We'd love to hear from you!
         </Typography>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          width: '100%',
+          gap: "10px"
+        }}>
+          <CustomTextField
+            select
+            label="Feedback Type"
+            value={feedbackType}
+            onChange={(e) => setFeedbackType(e.target.value)}
+            variant="outlined"
+            fullWidth
+            error={errors.feedbackType}
+            helperText={
+              errors.feedbackType ? "Please select a feedback type" : ""
+            }
+          >
+            <MenuItem value="">
+              <em>Select Feedback Type</em>
+            </MenuItem>
+            <MenuItem value="bug">Bug Report</MenuItem>
+            <MenuItem value="general">General Suggestion</MenuItem>
+            <MenuItem value="suggestQuestions">Suggest Questions</MenuItem>
+          </CustomTextField>
 
-        <TextField
-          select
-          label="Feedback Type"
-          value={feedbackType}
-          onChange={(e) => setFeedbackType(e.target.value)}
-          variant="outlined"
-          fullWidth
-          error={errors.feedbackType}
-          helperText={
-            errors.feedbackType ? "Please select a feedback type" : ""
+        </Box>
+        <Box sx={{
+          height: '100%',
+        }}>
+          {
+            feedbackType === "suggestQuestions" ?
+              (
+                <Box sx={{ display: "flex", flexDirection: "column", gap: "20px", flexGrow: 1, width: '100%' }}>
+                  <EditorContiner>
+                    <TitleBar>
+                      <Heading>Suggest Question</Heading>
+                      <Autocomplete
+                        options={["Number Line", "Types of Numbers", "Prime Numbers", "Tally System"]}
+                        getOptionLabel={(option) => option}
+                        sx={{
+                          width: '30%',
+                          '& .MuiInputBase-root': {
+                            height: 50, 
+                          },
+                          '& .MuiOutlinedInput-root': {
+                            padding: '5px', 
+                          },
+                        }}
+                        onChange={(e, value) => setTopic(value)}
+                        renderInput={(params) => (
+                          <TextField {...params} label="Select Topic" variant="outlined" fullWidth />
+                        )}
+                      />
+
+                    </TitleBar>
+                    <Divider />
+                    <ContentBox>
+                      <Heading >
+                        Question
+                      </Heading>
+                      <CustomTextField
+                        // value={selectedUnit.lessons[0].name}
+                        // onChange={(e) => setEditedName(e.target.value)}
+                        variant="outlined"
+                        size="small"
+                        fullWidth
+                      />
+                      <Divider style={{ margin: "16px 0", borderWidth: "1px" }} />
+                      <OptionBox />
+                      <Divider />
+                    </ContentBox>
+                  </EditorContiner>
+
+                </Box>
+              )
+              :
+              (
+
+                <Box sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  flexDirection: 'column',
+                  height: '100%'
+                }}>
+                  <TextField
+                    label="Your Feedback (Minimum 50 characters)"
+                    multiline
+                    rows={6}
+                    value={feedbackText}
+                    onChange={(e) => setFeedbackText(e.target.value)}
+                    variant="outlined"
+                    fullWidth
+                    error={errors.feedbackText}
+                    helperText={
+                      errors.feedbackText
+                        ? feedbackText.length < 50
+                          ? "Your feedback must be at least 50 characters"
+                          : "Please provide your feedback"
+                        : ""
+
+                    }
+                    sx={{
+                      flexGrow: 1,
+                    }}
+
+                  />
+                  {feedbackType === "bug" && (
+                    <Box sx={{ display: "flex", flexDirection: "column", gap: "10px", flexGrow: 1 }}>
+                      <Button variant="outlined" component="label" fullWidth>
+                        Upload Screenshot (Max 2MB each, up to 3 screenshots)
+                        <input type="file" hidden multiple onChange={handleFileUpload} />
+                      </Button>
+                      <Box sx={{ display: "flex", flexDirection: "row", gap: "10px", flexGrow: 1 }}>
+                        {screenshots.map((screenshot, index) => (
+                          <Box
+                            key={index}
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "5px",
+                              position: "relative",
+                            }}
+                          >
+                            <img
+                              src={URL.createObjectURL(screenshot)}
+                              alt={`Screenshot ${index}`}
+                              style={{
+                                width: 50,
+                                height: 50,
+                                objectFit: "cover",
+                                borderRadius: "5px",
+                              }}
+                            />
+                            <IconButton
+                              color="error"
+                              size="small"
+                              sx={{
+                                position: "absolute",
+                                top: 0,
+                                right: -15,
+                              }}
+                              onClick={() => {
+                                const updatedScreenshots = screenshots.filter((_, i) => i !== index);
+                                setScreenshots(updatedScreenshots);
+                              }}
+                            >
+                              <CloseIcon />
+                            </IconButton>
+                          </Box>
+                        ))}
+                      </Box>
+                    </Box>
+                  )}
+                </Box>
+              )
           }
-        >
-          <MenuItem value="">
-            <em>Select Feedback Type</em>
-          </MenuItem>
-          <MenuItem value="bug">Bug Report</MenuItem>
-          <MenuItem value="general">General Suggestion</MenuItem>
-        </TextField>
+        </Box>
 
-        <TextField
-          label="Your Feedback (Minimum 50 characters)"
-          multiline
-          rows={6}
-          value={feedbackText}
-          onChange={(e) => setFeedbackText(e.target.value)}
-          variant="outlined"
-          fullWidth
-          error={errors.feedbackText}
-          helperText={
-            
-            errors.feedbackText
-            ? feedbackText.length < 50
-              ? "Your feedback must be at least 50 characters"
-              : "Please provide your feedback"
-            : ""
-
-          }
-          sx={{
-            flexGrow: 1,
-          }}
-
-        />
-
-        {feedbackType === "bug" && (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: "10px", flexGrow:1 }}>
-            <Button variant="outlined" component="label" fullWidth>
-              Upload Screenshot (Max 2MB each, up to 3 screenshots)
-              <input type="file" hidden multiple onChange={handleFileUpload} />
-            </Button>
-            <Box sx={{ display: "flex", flexDirection: "row", gap: "10px",flexGrow:1 }}>
-              {screenshots.map((screenshot, index) => (
-                <Typography key={index}>{screenshot.name}</Typography>
-              ))}
-            </Box>
-          </Box>
-        )}
 
         <Button
           variant="contained"
@@ -259,8 +472,8 @@ const FeedBack = () => {
           {isLoading
             ? "Submitting..."
             : isSuccess
-            ? "Feedback Submitted!"
-            : "Submit Feedback"}
+              ? "Feedback Submitted!"
+              : "Submit"}
         </Button>
       </Box>
     </Box>
