@@ -20,6 +20,11 @@ import ProductCard from "./ProductCard";
 import { TShirtImg } from "../../assets";
 import { useNavigate } from "react-router-dom";
 import BrandCard from "../../Common/Brand/brandCard/BrandCard";
+import { useGetChallengeQuery } from "../../Redux/API/User.Api";
+import { useDispatch } from "react-redux";
+import { useCreateChallengeSessionMutation } from "../../Redux/API/Quiz.Api";
+import { resetQuiz } from "../../Redux/Slice/QuizSlice/QuizSlice";
+import toast from "react-hot-toast";
 
 const challengeData = [
   {
@@ -63,7 +68,10 @@ const challengeData = [
 const ProductArea = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
-  const navigate = useNavigate()
+  const { data: ChallengeData, isLoading: Loading } = useGetChallengeQuery();
+  
+
+
   return (
     <Box
       sx={{
@@ -108,7 +116,7 @@ const ProductArea = () => {
       </Box>
       {/* <Divider /> */}
       <Grid container spacing={2}>
-        {challengeData.map((data, index) => (
+        {!Loading && ChallengeData?.challenges.map((data, index) => (
           <Grid item xs={12} sm={12} md={4} lg={3} key={index}>
             <BrandCard Data={data} />
           </Grid>

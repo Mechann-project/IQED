@@ -14,7 +14,7 @@ export const UserApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["User"],
+  tagTypes: ["User","challenge"],
   endpoints: (builder) => ({
     GetUser: builder.query({
       query: () => ({ url: `get` }),
@@ -36,6 +36,14 @@ export const UserApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+    UpdateChallenge: builder.mutation({
+      query: (data) => ({
+        url: "challengeUpdate",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["User"],
+    }),
     addGEM: builder.mutation({
       query: (data) => ({
         url: "iqgem",
@@ -44,9 +52,24 @@ export const UserApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+    CraeteOrder: builder.mutation({
+      query: (data) => ({
+        url: "orders",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["challenge"],
+    }),
     getleaderboard: builder.query({
       query: () => ({ url: `leaderboard` }),
       invalidatesTags: ["User"],
+    }),
+    getChallenge: builder.query({
+      query: () => ({ url: `challenge` }),
+      providesTags: ["challenge"],
+    }),
+    getChallengeById: builder.query({
+      query: (productId) => ({ url: `challenge/${productId}` }),
     }),
   }),
 });
@@ -56,5 +79,9 @@ export const {
   useUpdateUserMutation,
   useAddXPMutation,
   useAddGEMMutation,
-  useGetleaderboardQuery
+  useGetleaderboardQuery,
+  useGetChallengeQuery,
+  useUpdateChallengeMutation,
+  useGetChallengeByIdQuery,
+  useCraeteOrderMutation
 } = UserApi;

@@ -80,8 +80,6 @@ const useHandleQuizPage = () => {
     timerRef.current.pauseTimer();
     const currentTime = timerRef.current.getCurrentTime();
     dispatch(setTimer(currentTime));
-
-    
     try {
       updateQuizSession({
         answeredQuestions: quizState.answeredQuestions,

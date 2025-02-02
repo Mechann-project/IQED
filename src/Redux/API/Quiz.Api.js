@@ -1,3 +1,4 @@
+import { TroubleshootSharp } from "@mui/icons-material";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const QuizApi = createApi({
@@ -22,6 +23,13 @@ export const QuizApi = createApi({
         url: "/createSession",
         method: "POST",
         body: { levelid, lessonid, topicId, questionCount },
+      }),
+    }),
+    createChallengeSession: builder.mutation({
+        query: ({ levelid, lessonid, topicId, questionCount, Challenge=true,ChallengeId}) => ({
+        url: "/createSession",
+        method: "POST",
+        body: { levelid, lessonid, topicId, questionCount ,Challenge,ChallengeId},
       }),
     }),
     getQuizSession: builder.mutation({
@@ -52,4 +60,5 @@ export const {
   useCreateQuizSessionMutation,
   useGetQuizSessionMutation,
   useUpdateQuizSessionMutation,
+  useCreateChallengeSessionMutation
 } = QuizApi;

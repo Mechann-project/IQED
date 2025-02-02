@@ -16,6 +16,7 @@ import { IQGemIcon, TShirtImg } from "../../assets";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 import { useNavigate, useParams } from "react-router-dom";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { useCraeteOrderMutation, useGetChallengeByIdQuery } from "../../Redux/API/User.Api";
 
 const products = [
   {
@@ -61,10 +62,10 @@ const Shipping = () => {
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const navigate = useNavigate();
   const handleBlack = () => navigate("/challenge");
-
   const { productId } = useParams();
-  const product = products.find((p) => p._id === Number(productId));
-
+  const product = products.find((p) => p._id === Number(1));
+  const {data: ChallengeData,isSuccess} = useGetChallengeByIdQuery(productId);
+  const [CreateOrder] = useCraeteOrderMutation();
   const [formData, setFormData] = useState({
     country: "India",
     fullName: "",
@@ -129,23 +130,25 @@ const Shipping = () => {
           product: product,
           formData: formData,
         };
-
-        console.log("Order Submitted: ", orderData);
-
-        navigate("/challenge");
-
-        setFormData({
-          country: "India",
-          fullName: "",
-          mobileNumber: "",
-          pincode: "",
-          address: "",
-          area: "",
-          landmark: "",
-          city: "",
-          state: "",
-          size: "",
-        });
+        CreateOrder({
+          Challenge:productId,
+          shippingAddress:formData
+        }).unwrap().then(()=>{
+          console.log("Order Submitted: ", orderData);
+          setFormData({
+            country: "India",
+            fullName: "",
+            mobileNumber: "",
+            pincode: "",
+            address: "",
+            area: "",
+            landmark: "",
+            city: "",
+            state: "",
+            size: "",
+          });
+          navigate("/challenge");
+        })
 
         setTimeout(() => {
           setSubmissionSuccess(false);
@@ -231,7 +234,7 @@ const Shipping = () => {
         >
           <Box
             component="img"
-            src={product.thumnail}
+            src={ChallengeData?.challenges?.banner}
             height={isSm ? 80 : 100}
             sx={{
               borderRadius: "10px",
@@ -253,7 +256,7 @@ const Shipping = () => {
                 fontWeight: "bold",
               }}
             >
-              {product.productName}
+              {ChallengeData?.challenges?.productName}
             </Typography>
             <Typography
               variant="body2"
@@ -261,7 +264,7 @@ const Shipping = () => {
                 color: "white",
               }}
             >
-              {product.productDetials}
+              {ChallengeData?.challenges?.description}
             </Typography>
             <Typography
               variant="h6"
@@ -284,7 +287,7 @@ const Shipping = () => {
                   marginRight: "4px",
                 }}
               />
-              {product.gemRequired}
+              {ChallengeData?.challenges?.eligibleGem}
             </Typography>
           </Box>
         </Box>
