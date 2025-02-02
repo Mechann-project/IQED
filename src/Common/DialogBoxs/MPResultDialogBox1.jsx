@@ -478,7 +478,7 @@ const MPResultDialogBox = ({
                     p: "10px",
                   }}
                 >
-                  <Button
+                  {/* <Button
                     type="submit"
                     fullWidth
                     variant="contained"
@@ -494,7 +494,7 @@ const MPResultDialogBox = ({
                     }}
                   >
                     Score Board
-                  </Button>
+                  </Button> */}
                   <Button
                     type="submit"
                     fullWidth
