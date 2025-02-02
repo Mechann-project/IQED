@@ -71,7 +71,7 @@ const ProductArea = () => {
   const { data: ChallengeData, isLoading: Loading } = useGetChallengeQuery();
   
 
-
+  
   return (
     <Box
       sx={{
