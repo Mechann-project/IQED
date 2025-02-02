@@ -27,10 +27,10 @@ export const QuizApi = createApi({
       }),
     }),
     createChallengeSession: builder.mutation({
-        query: ({ levelid, lessonid, topicId, questionCount, Challenge=true,ChallengeId}) => ({
+        query: ({ levelid, lessonid, topicId, questionCount, Type="Challenge",ChallengeId}) => ({
         url: "/createSession",
         method: "POST",
-        body: { levelid, lessonid, topicId, questionCount ,Challenge,ChallengeId},
+        body: { levelid, lessonid, topicId, questionCount ,Type,ChallengeId},
       }),
     }),
     getQuizSession: builder.mutation({
