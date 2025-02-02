@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import Cookies from "js-cookie";
 
 export const UserApi = createApi({
   reducerPath: "UserApi",
@@ -7,7 +8,7 @@ export const UserApi = createApi({
     // baseUrl: "https://iqed-backend.vercel.app/user",
     credentials: "include",
     prepareHeaders: (headers) => {
-      const token = sessionStorage.getItem('token');
+      const token = Cookies.get("token");
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }

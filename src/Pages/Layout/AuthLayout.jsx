@@ -8,8 +8,8 @@ import { useSelector } from "react-redux";
 const AuthLayout = () => {
   const location = useLocation();
   const UserData = useSelector((state) => state.UserState);
-  const sessionid = sessionStorage.getItem("token") // Get all cookies as an object
-  const {data:userdata} = useGetUserQuery()
+  const sessionid = Cookies.get("token") // Get all cookies as an object
+  const {data:userdata,isLoading} = useGetUserQuery()
   const isQuizPath = location.pathname.startsWith("/quiz");
   console.log(UserData);
   // Allow access to quiz paths or require authentication for other paths

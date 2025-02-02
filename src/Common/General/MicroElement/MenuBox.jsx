@@ -14,7 +14,7 @@ const MenuBox = ({ open, anchorEl, handleClose }) => {
   const navigate = useNavigate();
   const handleLogOut = () => {
     sessionStorage.clear();
-    Cookies.remove('connect.sid');
+    Cookies.remove('token');
     dispatch(ResetUser);
     navigate("/");
     toast.success("Logout..");

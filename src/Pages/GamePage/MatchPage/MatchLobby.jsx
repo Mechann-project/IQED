@@ -146,7 +146,7 @@ const MatchLobby = () => {
 export default MatchLobby;
 
 export const OnLoadLobby = async ({params}) => {
-  const sessionid = Cookies.get("connect.sid");
+  const sessionid = Cookies.get("token");
   const {GameCode} = params;
   if (sessionid && GameCode) {
     return true;

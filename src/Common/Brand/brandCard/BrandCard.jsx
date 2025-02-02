@@ -59,14 +59,14 @@ const BrandCard = ({ Data, isSideBar, trigger }) => {
     Data._id
   );
   const dispatch = useDispatch();
-  const handleQuizCraetion = (topicId, ChallengeId) => {
+  const handleQuizCraetion = (topicId, ChallengeId,qcount) => {
     try {
-      console.log("quiz craeter", topicId, ChallengeId);
+      console.log("quiz craeter", topicId, ChallengeId,qcount);
       dispatch(resetQuiz());
       toast.promise(
         CreateChallengeSession({
           topicId,
-          questionCount: 3,
+          questionCount: qcount,
           ChallengeId,
         }).unwrap(),
         {
@@ -300,7 +300,7 @@ const BrandCard = ({ Data, isSideBar, trigger }) => {
             disabled={isAffordable ? false : true}
             onClick={() => {
               if (!Data?.Winners?.includes(UserData?._id)) {
-                handleQuizCraetion(Data?.Topic, Data?._id);
+                handleQuizCraetion(Data?.Topic, Data?._id,Data?.QuestionCount);
               } else {
                 if (!NotOrder==true) {
                   toast.success("Order");

@@ -30,8 +30,9 @@ import { AuthLayout, MatchLayout, QuizLayout, StoreOrderLayout, UserLayout } fro
 import { OrderDetail, Shipping, YourOrders } from "../Components";
 import { OnLoadLobby } from "../Pages/GamePage/MatchPage/MatchLobby";
 import { Navigate } from "react-router-dom";
+import Cookies from "js-cookie";
 const isUserLoggedIn = () => {
-  return !!sessionStorage?.getItem("token"); 
+  return !!Cookies.get("token"); 
 };
 const basename = import.meta.env.BASE_URL;
 export const Routers = createBrowserRouter(

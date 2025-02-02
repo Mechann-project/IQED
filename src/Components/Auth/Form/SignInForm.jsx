@@ -42,14 +42,15 @@ const SignInForm = ({ PageSwitch }) => {
           loading: "Logging in...",
           success: (response) => {
             console.log("res", response)
-            if (response != null && !isLoading) {
-              sessionStorage.setItem("token", response.token)
+            if (response!= null) {
+              // sessionStorage.setItem("token", response.token)
+              Cookies.set('token', response.token,{ expires: 1 })
               navigate("/missions");
               return response?.message || "Login successfully!";
             }
           },
           error: (response) => {
-            return response?.data?.message || "Something went wrong. Please try again.";
+            return response?.message || "Something went wrong. Please try again.";
           },
         }
       );

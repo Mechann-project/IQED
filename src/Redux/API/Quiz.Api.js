@@ -1,5 +1,6 @@
 import { TroubleshootSharp } from "@mui/icons-material";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import Cookies from "js-cookie";
 
 export const QuizApi = createApi({
   reducerPath: "QuizApi",
@@ -9,7 +10,7 @@ export const QuizApi = createApi({
     // baseUrl: "https://iqed-backend.vercel.app/quiz",
     credentials: "include",
     prepareHeaders: (headers) => {
-      const token = sessionStorage.getItem("token");
+      const token = Cookies.get("token");
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }

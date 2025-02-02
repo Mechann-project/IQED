@@ -2,14 +2,13 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const AuthApi = createApi({
   reducerPath: "AuthApi",
-  baseQuery: fetchBaseQuery({ 
-    
+  baseQuery: fetchBaseQuery({
     // baseUrl: "https://iqed-backend1-five.vercel.app/auth",
     baseUrl: "http://localhost:3000/auth",
     // baseUrl: "https://iqed-backend.vercel.app/auth",
-    
-    
-    credentials:"include" }),
+
+    credentials: "include",
+  }),
   // baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/auth",credentials:"include" }),
   endpoints: (builder) => ({
     register: builder.mutation({
@@ -71,5 +70,5 @@ export const {
   useSendEmailOTPMutation,
   useVerifyEmailMutation,
   useForgetPasswordMutation,
-  useNewPasswordMutation
+  useNewPasswordMutation,
 } = AuthApi;

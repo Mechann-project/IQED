@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import Cookies from "js-cookie";
 
 export const feedbackApi = createApi({
   reducerPath: "feedbackApi",
@@ -7,7 +8,7 @@ export const feedbackApi = createApi({
     baseUrl: "http://localhost:3000/user",
     credentials: "include",
     prepareHeaders: (headers) => {
-      const token = sessionStorage.getItem('token');
+      const token = Cookies.get("token");
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
