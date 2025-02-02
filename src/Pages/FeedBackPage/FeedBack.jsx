@@ -356,7 +356,7 @@ const FeedBack = () => {
                       />
                       <Divider style={{ margin: "16px 0", borderWidth: "1px" }} />
                       <OptionBox />
-                      <Divider />
+                      {/* <Divider /> */}
                     </ContentBox>
                   </EditorContiner>
 
