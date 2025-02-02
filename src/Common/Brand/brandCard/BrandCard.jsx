@@ -19,6 +19,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCreateChallengeSessionMutation } from "../../../Redux/API/Quiz.Api";
 import toast from "react-hot-toast";
 import { resetQuiz } from "../../../Redux/Slice/QuizSlice/QuizSlice";
+import { useCheckUserOrderQuery } from "../../../Redux/API/User.Api";
 
 const StatItem = styled(Box)({
   flex: 1,
@@ -44,7 +45,6 @@ const BrandCard = ({ Data, isSideBar, trigger }) => {
   const userCoin = UserData?.earnings?.iqGems;
   const isAffordable = userCoin >= Data.eligibleGem;
   const [openTooltip, setOpenTooltip] = useState(false);
-
   const handleCardClick = () => {
     if (!isAffordable) {
       setOpenTooltip(true);
@@ -55,6 +55,9 @@ const BrandCard = ({ Data, isSideBar, trigger }) => {
   };
   const navigate = useNavigate();
   const [CreateChallengeSession] = useCreateChallengeSessionMutation();
+  const { data: NotOrder, isSuccess: Loading } = useCheckUserOrderQuery(
+    Data._id
+  );
   const dispatch = useDispatch();
   const handleQuizCraetion = (topicId, ChallengeId) => {
     try {
@@ -298,8 +301,13 @@ const BrandCard = ({ Data, isSideBar, trigger }) => {
             onClick={() => {
               if (!Data?.Winners?.includes(UserData?._id)) {
                 handleQuizCraetion(Data?.Topic, Data?._id);
-              }else{
-                toast.success("Challenge already Completed");
+              } else {
+                if (!NotOrder==true) {
+                  toast.success("Order");
+                  navigate(`/challenge/shipping/${Data?._id}`);
+                } else {
+                  toast.success("Challenge already Completed");
+                }
               }
             }}
             sx={{

@@ -13,6 +13,7 @@ import {
 
 import { RewardCard } from "../../Common";
 import { IQCoinIcon, retry, SuccessManSVG } from "../../assets";
+import { useNavigate } from "react-router-dom";
 
 const ResultDialogBox = ({ SessionState, open, handleReview, handleDone }) => {
   const theme = useTheme();
@@ -29,6 +30,7 @@ const ResultDialogBox = ({ SessionState, open, handleReview, handleDone }) => {
   const totalQuestions = SessionState.questionCount;
   const correctAnswers = SessionState.score;
   const scorePercentage = (correctAnswers / totalQuestions) * 100;
+  const navigate = useNavigate();
   const message =
     scorePercentage >= 80
       ? "Awesome! You completed the test."

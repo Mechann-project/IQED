@@ -71,6 +71,10 @@ export const UserApi = createApi({
     getChallengeById: builder.query({
       query: (productId) => ({ url: `challenge/${productId}` }),
     }),
+    CheckUserOrder: builder.query({
+      query: (productId) => ({ url: `CheckUserOrder/${productId}` }),
+      providesTags: ["challenge"],
+    }),
   }),
 });
 
@@ -83,5 +87,5 @@ export const {
   useGetChallengeQuery,
   useUpdateChallengeMutation,
   useGetChallengeByIdQuery,
-  useCraeteOrderMutation
+  useCraeteOrderMutation,useCheckUserOrderQuery
 } = UserApi;

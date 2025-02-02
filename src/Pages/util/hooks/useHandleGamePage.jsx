@@ -107,20 +107,19 @@ const useHandleGamePage = ({ GameSessionId }) => {
         answeredQuestions: GameSessionState?.answeredQuestions,
         timeTaken: currentTime,
       })
-        .unwrap()
-        .then(() => {
-          
-          setTotalxp((GameSessionState.score* 10)+20);
-          dispatch(submitQuiz());
+      .unwrap()
+      .then(() => {
+        setTotalxp((GameSessionState.score * 10)+20);
+         dispatch(submitQuiz());
           setResultDialog(true);
           socket.emit("game-ended", {
             roomId: GameData?.RoomID,
             GameSessionId: GameData?.SessionID,
           });
-          updateUserXP({ xp: (GameSessionState.score* 10)+20 }).then(() => {
+          updateUserXP({ xp: (GameSessionState.score * 10)+20 }).then(() => {
             dispatch(UpdateUser(userData));
           });
-
+          
           toast.success("session Complated");
         });
     } catch (error) {
