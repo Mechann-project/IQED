@@ -165,9 +165,6 @@ const BrandCard = ({ Data, isSideBar }) => {
                         {Data.topicName}
                     </Typography>
                 </Box>
-
-
-
                 <StatRow>
                     <StatItem sx={{
                         borderRight: '1px solid'

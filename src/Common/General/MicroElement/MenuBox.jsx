@@ -73,7 +73,7 @@ const MenuBox = ({ open, anchorEl, handleClose }) => {
       <Divider />
       <MenuItem onClick={() => { navigate('/challenge/orders') }}>
         <ListItemIcon>
-          <AddShoppingCartIcon fontSize="small" />
+          <AddShoppingCartIcon fontSize="small"/>
         </ListItemIcon>
         Orders
       </MenuItem>
