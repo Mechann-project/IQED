@@ -155,7 +155,7 @@ function RecentLevelDetails() {
     lessonIndex,
     topicIndex,
     topicId,
-    questionCount = 3
+    questionCount = 20
   ) => {
     try {
       dispatch(resetQuiz());

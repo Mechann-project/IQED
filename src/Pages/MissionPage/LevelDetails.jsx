@@ -185,7 +185,7 @@ function LevelDetails() {
           levelid,
           lessonid,
           topicId,
-          questionCount: 3,
+          questionCount: 20,
         }).unwrap(),
         {
           loading: "Creating Session...",
