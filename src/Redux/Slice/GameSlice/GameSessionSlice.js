@@ -39,6 +39,9 @@ const gameSessionSlice = createSlice({
           answer,
           correct: isCorrect,
         };
+        if(isCorrect){
+          state.score+=1
+        }
       },
       setTimer: (state, action) => {
         state.timeTaken = action.payload;
