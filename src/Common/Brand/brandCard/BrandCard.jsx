@@ -216,7 +216,7 @@ const BrandCard = ({ Data, isSideBar, trigger }) => {
           <Typography
             fontWeight="bold"
             sx={{
-              fontSize: "15px",
+              fontSize: "13px",
               // backgroundColor:'#FFD700',
               color: "#02216F",
               borderRadius: "10px",

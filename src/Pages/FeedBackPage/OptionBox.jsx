@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import { Typography, IconButton, Stack, Box, TextField } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import {
+  Typography,
+  Stack,
+  Box,
+  TextField,
+  Grid,
+  Autocomplete,
+  IconButton,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 
 const TopicBox = styled("div")({
   paddingLeft: "10px",
   marginBottom: "16px",
-  overflow: "visible", // Ensure dragging is not blocked
+  overflow: "visible",
 });
 
 const Heading = styled(Typography)(({ theme }) => ({
@@ -19,11 +25,9 @@ const Heading = styled(Typography)(({ theme }) => ({
 }));
 
 const CustomTextField = styled(TextField)(({ theme }) => ({
-  margin: "0 0 10px 0",
   "& .MuiOutlinedInput-root": {
     fontWeight: "600",
     "& input": {
-      height: "40",
       padding: "8px",
       "&::placeholder": {
         fontSize: theme.typography.pxToRem(12),
@@ -34,73 +38,81 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
 
 const OptionBox = () => {
   const [options, setOptions] = useState([
-    { id: "1", text: "Option 1" },
-    { id: "2", text: "Option 2" },
-    { id: "3", text: "Option 3" },
-    { id: "4", text: "Option 4" },
+    { id: "1", text: "" },
+    { id: "2", text: "" },
+    { id: "3", text: "" },
+    { id: "4", text: "" },
   ]);
+  const [correctOption, setCorrectOption] = useState(null);
+  const [explanation, setExplanation] = useState("");
 
-  // Handle drag end
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
-
-    const newOptions = Array.from(options);
-    const [movedOption] = newOptions.splice(result.source.index, 1);
-    newOptions.splice(result.destination.index, 0, movedOption);
-
+  const handleOptionChange = (index, value) => {
+    const newOptions = [...options];
+    newOptions[index].text = value;
     setOptions(newOptions);
   };
 
-  // Handle delete option
-  const handleDelete = (id) => {
-    setOptions(options.filter((option) => option.id !== id));
-  };
+  const allOptionsFilled = options.every((option) => option.text.trim() !== "");
 
   return (
     <>
       <Heading sx={{ mb: "2%" }}>Options</Heading>
       <TopicBox>
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="options">
-            {(provided) => (
-              <Stack spacing={0} ref={provided.innerRef} {...provided.droppableProps}>
-                {options.map((option, index) => (
-                  <Draggable key={option.id} draggableId={option.id} index={index}>
-                    {(provided, snapshot) => (
-                      <Box
-                        ref={provided.innerRef}
-                        {...provided.draggableProps} // Ensure the draggable area is registered
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          background: snapshot.isDragging ? "#f0f0f0" : "transparent",
-                          padding: "5px",
-                          borderRadius: "5px",
-                        }}
-                      >
-                        {/* 🛠 Fix: Apply dragHandleProps to the IconButton */}
-                        {/* <IconButton
-                          {...provided.dragHandleProps} // This makes the button the drag handle
-                          sx={{ marginRight: "16px", cursor: "grab" }}
-                        >
-                          <DragIndicatorIcon fontSize="small" />
-                        </IconButton> */}
-                        <CustomTextField
-                          variant="outlined"
-                          size="small"
-                          placeholder={option.text}
-                          fullWidth
-                        />
+        <Grid container spacing={2}>
+          {options.map((option, index) => (
+            <Grid item xs={6} key={option.id}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <IconButton>
+                  <DragIndicatorIcon fontSize="small" />
+                </IconButton>
+                <CustomTextField
+                  variant="outlined"
+                  size="small"
+                  placeholder={`Option ${index + 1}`}
+                  fullWidth
+                  value={option.text}
+                  onChange={(e) => handleOptionChange(index, e.target.value)}
+                />
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
 
-                      </Box>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </Stack>
-            )}
-          </Droppable>
-        </DragDropContext>
+        {/* Correct Option Selection */}
+        <Autocomplete
+          options={options.map((_, index) => `Option ${index + 1}`)}
+          value={correctOption}
+          onChange={(event, newValue) => setCorrectOption(newValue)}
+          disabled={!allOptionsFilled}
+          renderInput={(params) => (
+            <CustomTextField
+              {...params}
+              label="Correct Option"
+              variant="outlined"
+              margin="normal"
+            />
+          )}
+          fullWidth
+        />
+
+        {/* Explanation */}
+        <CustomTextField
+          label="Explanation"
+          multiline
+          rows={3}
+          variant="outlined"
+          fullWidth
+          value={explanation}
+          onChange={(e) => setExplanation(e.target.value)}
+          margin="normal"
+        />
       </TopicBox>
     </>
   );
