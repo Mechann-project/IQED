@@ -19,6 +19,7 @@ import SuccessManSVG from "./Others/SuccessMan.svg";
 import ProductBG from "./Others/ProductBG.svg";
 import PNF_404 from "./Others/404.svg"
 import G_Medal from './Others/G_Medal.svg'
+import retry from "./Others/retry.svg";
 export {
   WhiteBackgroundSVG,
   YellowBackgroundSVG,
@@ -30,6 +31,7 @@ export {
   G_Medal,
   S_Medal,
   Null_Medal,
+  retry,
   CUP,
   AI_Icon,
   feedback,

@@ -37,10 +37,7 @@ const UserLayout = () => {
           overflow: "scroll",
           "::-webkit-scrollbar": {
             display: "none",
-          },
-         
-              
-        }}
+          },}}
       >
         <Outlet />
       </Box>
