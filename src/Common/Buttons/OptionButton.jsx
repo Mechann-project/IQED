@@ -11,8 +11,6 @@ const OptionButton = ({ quiz, type = "text", content, index }) => {
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
 
   const [isAnimating, setIsAnimating] = useState(false);
-
-
   const isAnswered = QuizState?.answeredQuestions[index] ;
   const iamSelected = QuizState?.answeredQuestions[index]?.answer == content;
   console.log(iamSelected,isAnswered);

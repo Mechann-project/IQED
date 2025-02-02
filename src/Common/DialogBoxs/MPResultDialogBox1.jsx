@@ -283,7 +283,7 @@ const MPResultDialogBox = ({
                   sx={{ fontWeight: "bold", mb: 0, zIndex: 99 }}
                 >
                   {GameSessionState?.status !== "completed" ? (
-                    "waiting.. anther Player"
+                    "Waiting for Opponent Player..."
                   ) : (
                     <>{ResultMessage}</>
                   )}
@@ -330,7 +330,7 @@ const MPResultDialogBox = ({
                           p: "12px",
                         }}
                       >
-                        Score : {SessionState.score}
+                        Score : {SessionState.score} x 10
                       </TableCell>
                       <TableCell align="center" sx={{ p: 0 }}>
                         <Box
@@ -355,9 +355,10 @@ const MPResultDialogBox = ({
                               color: "#02216F",
                               fontSize: "12px",
                               p: "2px",
+                              ml:'10px'
                             }}
                           >
-                            {SessionState.score * 1}
+                            {SessionState.score * 10}
                           </Typography>
                         </Box>
                       </TableCell>
@@ -374,7 +375,7 @@ const MPResultDialogBox = ({
                           p: "12px",
                         }}
                       >
-                        Time taken: {formatTime(SessionState.timeTaken)}
+                        Bones Point:  + 20
                       </TableCell>
                       <TableCell align="center" sx={{ p: 0 }}>
                         <Box
@@ -399,6 +400,7 @@ const MPResultDialogBox = ({
                               color: "#02216F",
                               fontSize: "12px",
                               p: "2px",
+                              ml:'10px'
                             }}
                           >
                             {/* {SessionState.score === 0
@@ -407,10 +409,7 @@ const MPResultDialogBox = ({
                                   0,
                                   Math.floor(25 - SessionState.timeTaken / 60)
                                 )} */}
-                            {Math.max(
-                              0,
-                              Math.floor(25 - SessionState.timeTaken / 60)
-                            )}
+                            20
                           </Typography>
                         </Box>
                       </TableCell>
@@ -452,9 +451,10 @@ const MPResultDialogBox = ({
                               color: "#02216F",
                               fontSize: "12px",
                               p: "2px",
+                              ml:"10px"
                             }}
                           >
-                            {SessionState.score === 0 ? 0 : Totalxp}
+                            {(SessionState.score * 10)+20} 
                           </Typography>
                         </Box>
                       </TableCell>
