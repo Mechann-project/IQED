@@ -6,7 +6,7 @@ import {
 } from "../../Common";
 import { IQCoinIcon, IQGemIcon, IQRankIcon } from "../../assets/Image";
 import { useSelector } from "react-redux";
-import { useGetUserQuery } from "../../Redux/API/User.Api";
+import { useGetChallengeQuery, useGetUserQuery } from "../../Redux/API/User.Api";
 import DandFQuests from "../Quest/DandFQuests";
 import BrandCard from "../../Common/Brand/brandCard/BrandCard";
 
@@ -24,6 +24,8 @@ const SideBar = () => {
   const [previousXp, setPreviousXp] = useState(xpCoins);
   const [previousIqGems, setPreviousIqGems] = useState(iqGems);
   const [previousRank, setPreviousRank] = useState(rank);
+  const { data: ChallengeData, isSuccess: Loading } = useGetChallengeQuery();
+ 
 
   const [animateXp, setAnimateXp] = useState(false);
   const [animateIqGems, setAnimateIqGems] = useState(false);
@@ -113,7 +115,7 @@ const SideBar = () => {
       <ProgressCard icon={IQCoinIcon} title="XP+ Coin" Count={xpCoins} animate={animateXp} delay={1} />
       <ProgressCard icon={IQRankIcon} title="Rank" Count={rank} animate={animateRank} delay={1.5} /> */}
       <DandFQuests/>
-      <BrandCard Data={challengeData[0]}/>
+      {Loading && <BrandCard Data={ChallengeData?.challenges[0]}/>}
     </SidebarContainer>
   );
 };
