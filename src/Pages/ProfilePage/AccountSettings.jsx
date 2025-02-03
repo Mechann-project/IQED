@@ -24,11 +24,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { UpdateUser } from "../../Redux/Slice/UserSlice/UserSlice";
+import { ResetUser, UpdateUser } from "../../Redux/Slice/UserSlice/UserSlice";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useUpdateUserMutation } from "../../Redux/API/User.Api";
 import toast from "react-hot-toast";
+import Cookies from "js-cookie";
+// import { ResetUser } from "../../../Redux/Slice/UserSlice/UserSlice";
 // import { useUpdateUserProfileMutation } from "../../Redux/RTK/AuthAPI/AuthAPI";
 const AccountSettings = ({ onClose }) => {
   const theme = useTheme();
@@ -205,7 +207,9 @@ const AccountSettings = ({ onClose }) => {
   };
   const handleLogOut = () => {
     sessionStorage.clear();
-    navigate("/auth");
+    dispatch(ResetUser);
+    Cookies.remove('token');
+    navigate(0);
     toast.success("Logout..");
     handleClose();
   };
@@ -414,13 +418,6 @@ const AccountSettings = ({ onClose }) => {
         </Typography>
 
         <List sx={{ mb: "16px" }}>
-          <ListItem button onClick={openChangePasswordDialog} sx={hoverEffect}>
-            <ListItemText primary="Change Password" />
-          </ListItem>
-          <Divider />
-          <ListItem button onClick={openDeleteAccountDialog} sx={hoverEffect}>
-            <ListItemText primary="Delete Account" />
-          </ListItem>
           <ListItem button onClick={handleLogOut} sx={hoverEffect}>
             <ListItemText primary="Logout" />
           </ListItem>
