@@ -26,6 +26,7 @@ import {
   VSCard,
 } from "../../Components";
 import { resetQuiz, setTotalxp } from "../../Redux/Slice/QuizSlice/QuizSlice";
+import { useSelector } from "react-redux";
 
 const QuizPage = () => {
   const [initialLoading, setInitialLoading] = useState(true);
@@ -37,7 +38,9 @@ const QuizPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
   const dispatch = useDispatch();
-
+  const QuizState = useSelector((state) => state.QuizState);
+  const isLive = QuizState?.isLive;
+  const iscompleted = QuizState?.status == "completed";
 
   const {
     Totalxp,
@@ -96,7 +99,7 @@ const QuizPage = () => {
 
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (ResultDialog) {
+      if (iscompleted || ResultDialog) {
         return;
       }
       if (document.hidden) {
