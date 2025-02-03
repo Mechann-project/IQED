@@ -83,7 +83,7 @@ const useHandleQuizPage = () => {
     try {
       updateQuizSession({
         answeredQuestions: quizState.answeredQuestions,
-        timeTaken:quizState?.questionsList.length * 60-currentTime
+        timeTaken:(quizState?.type=="Challenge"?quizState?.Challenge?.TestTime*60:quizState?.questionsList.length * 60)-currentTime
       }).unwrap().then((session) => {
         console.log("ddddd",session); 
         setTotalxp((session.score* 10)+20);

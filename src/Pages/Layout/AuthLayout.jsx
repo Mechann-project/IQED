@@ -9,15 +9,18 @@ import toast from "react-hot-toast";
 const AuthLayout = () => {
   const location = useLocation();
   const UserData = useSelector((state) => state.UserState);
-  const sessionid = Cookies.get("token") // Get all cookies as an object
-  const {data:userdata,isError} = useGetUserQuery()
+  const sessionid = Cookies.get("token");
+  const { data: userdata, isError } = useGetUserQuery();
   const isQuizPath = location.pathname.startsWith("/quiz");
+
   console.log(UserData);
-  // Allow access to quiz paths or require authentication for other paths
-  return (isQuizPath || sessionid) && !isError ? (
-    <Outlet />
-  ) : ()=>{toast.error("Please check your network connection and log in again."); return<Navigate to="/" state={{ from: location }} replace />}
-  
+
+  if ((isQuizPath || sessionid) && !isError) {
+    return <Outlet />;
+  } else {
+    toast.error("Please check your network connection and log in again.");
+    return <Navigate to="/" state={{ from: location }} replace />;
+  }
 };
 
 
