@@ -19,7 +19,11 @@ const SignInForm = ({ PageSwitch }) => {
 
   const handlesendEmail = async (email) => {
     toast.promise(
-      ForgetPassword({ toEmail: email, url: "http://localhost:5173" }).unwrap(),
+      ForgetPassword({ toEmail: email, 
+        url: "https://iqed-platform.vercel.app" 
+        // url: "http://localhost:5173" 
+        
+        }).unwrap(),
       {
         loading: "Sending email...",
         success: (response) => {

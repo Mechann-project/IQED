@@ -22,7 +22,7 @@ const MainNavBar = () => {
     () => [
       // { label: "Explore", icon: <ExtensionIcon />, path: "/explore" },
       { label: "Missions", icon: <FlagCircleIcon />, path: "/missions" },
-      { label: "Multiplayer", icon: <SportsMmaIcon />, path: "/game" },
+      // { label: "Multiplayer", icon: <SportsMmaIcon />, path: "/game" },
       { label: "Leaderboard", icon: <LeaderboardIcon />, path: "/leaderboard" },
       { label: "challenge", icon: <LocalActivityIcon />, path: "/challenge" },
       { label: "Profile", icon: <PersonIcon />, path: "/profile" },

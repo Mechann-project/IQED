@@ -10,7 +10,7 @@ export const SignUpvalidSchema = [
         if (!value) return true; 
         try {
           // const response = await fetch(`https://iqed-backend.vercel.app/auth/checkEmailExists?email=${value}`, {
-          const response = await fetch(`http://localhost:3000/auth/checkUserNameExists?UserName=${value}`, {
+          const response = await fetch(`https://iqed-backend.vercel.app/auth/checkUserNameExists?UserName=${value}`, {
             method: "POST",
           });
           // const response = await useCheckEmailExistsMutation({email:value}).unwrap();

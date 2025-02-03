@@ -15,11 +15,12 @@ const AuthLayout = () => {
 
   console.log(UserData);
 
-  if ((isQuizPath || sessionid) && !isError) {
+  if (isQuizPath || sessionid) {
     return <Outlet />;
   } else {
-    toast.error("Please check your network connection and log in again.");
-    return <Navigate to="/" state={{ from: location }} replace />;
+    return <Navigate to="/" state={{ from: location }} replace />
+    // toast.error("Please check your network connection and log in again.");
+    // return <Navigate to="/" state={{ from: location }} replace />;
   }
 };
 

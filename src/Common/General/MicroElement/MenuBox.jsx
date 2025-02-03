@@ -16,8 +16,8 @@ const MenuBox = ({ open, anchorEl, handleClose }) => {
     sessionStorage.clear();
     dispatch(ResetUser);
     Cookies.remove('token');
-    toast.success("Logout..");
     navigate(0);
+    toast.success("Logout..");
     handleClose();
   };
   const handleAccount = () => {
