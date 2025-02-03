@@ -11,9 +11,11 @@ import SearchIcon from "@mui/icons-material/Search";
 // import { useGetUsersSortedByMaxStreakAndMinRankQuery } from "../../Redux/RTK/AuthAPI/AuthAPI";
 
 import { LoadingScreen } from "../../Components";
-import { B_Medal, CUP, 
+import {
+  B_Medal, CUP,
   G_Medal,
-   Null_Medal, S_Medal } from "../../assets";
+  Null_Medal, S_Medal
+} from "../../assets";
 import { useGetleaderboardQuery } from "../../Redux/API/User.Api";
 
 const mockLeaderboardData = [
@@ -119,9 +121,9 @@ const LeaderboardHeader = () => (
 const LeaderboardRow = ({ player, index }) => {
   // Determine which medal to display based on rank
   let medalSrc = Null_Medal;
-  if (index+1 === 1) medalSrc = G_Medal; // Gold medal for 1st place
-  else if (index+1  === 2) medalSrc = S_Medal; // Silver medal for 2nd place
-  else if (index+1  === 3) medalSrc = B_Medal;
+  if (index + 1 === 1) medalSrc = G_Medal; // Gold medal for 1st place
+  else if (index + 1 === 2) medalSrc = S_Medal; // Silver medal for 2nd place
+  else if (index + 1 === 3) medalSrc = B_Medal;
 
   return (
     <Box
@@ -180,7 +182,7 @@ const LeaderboardRow = ({ player, index }) => {
       >
         {[
           {
-            label: String(index+1).padStart(2, "0"),
+            label: String(index + 1).padStart(2, "0"),
           },
           { label: player.name },
           { label: player.earnings.xp },
@@ -207,7 +209,7 @@ const LeaderboardPage = () => {
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const [searchQuery, setSearchQuery] = useState("");
   const { data, error, isLoading } = useGetleaderboardQuery();
-  console.log(data,error);
+  console.log(data, error);
 
   const filteredLeaderboardData = useMemo(() => {
     if (!data?.users || !Array.isArray(data.users)) return [];
@@ -223,11 +225,10 @@ const LeaderboardPage = () => {
         display: "flex",
         flexDirection: "column",
         boxSizing: "border-box",
-        p: "5px",
-        ml: isSm ? "10px" : "10px",
+        ml: isSm ? "10px" : "20px",
         mr: isSm ? null : "20px",
-        mt: isSm ? "10px" : "10px",
-        mb: isSm ? "50px" : "10px",
+        mt: isSm ? "10px" : "20px",
+        mb: isSm ? "50px" : "20px",
         pr: isSm ? "10px" : null,
         gap: "20px",
         overflow: "hidden",
@@ -242,7 +243,7 @@ const LeaderboardPage = () => {
           justifyContent: "center",
           gap: "20px",
           boxSizing: "border-box",
-          p: "20px",
+          p: "10px",
           borderRadius: "10px",
         }}
       >
@@ -269,6 +270,7 @@ const LeaderboardPage = () => {
             padding: "5px 10px",
             border: "2px solid",
             borderColor: "#02216F",
+            overflow:'hidden'
           }}
         >
           <SearchIcon sx={{ color: "#02216F", marginX: "8px" }} />
@@ -289,8 +291,7 @@ const LeaderboardPage = () => {
       </Box>
 
       <Divider sx={{ borderColor: "#FFDA55", borderBottomWidth: 2 }} />
-      <Box>
-        <Box
+      <Box
           sx={{
             p: isSm ? "10px" : "20px",
             display: "flex",
@@ -304,9 +305,7 @@ const LeaderboardPage = () => {
         <Box
           sx={{
             p: isSm ? "10px" : "20px",
-            overflowX: "auto",
-            overflowY: "scroll",
-            whiteSpace: "nowrap",
+            overflowY: "auto", // Enables scrolling when content overflows
             display: "flex",
             flexDirection: "column",
             borderTopWidth: "2px",
@@ -314,9 +313,8 @@ const LeaderboardPage = () => {
             borderBottomWidth: "0",
             borderLeftWidth: "0",
             borderStyle: "solid",
-            height:'60%',
+            height:'100%',
             borderColor: "#02216F",
-            // flexGrow: 1,
             borderRadius: "10px",
             gap: "5px",
             // bgcolor: "#F6FBFF",
@@ -356,7 +354,7 @@ const LeaderboardPage = () => {
           )}
         </Box>
       </Box>
-    </Box>
+   
   );
 };
 
