@@ -36,16 +36,9 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-const OptionBox = () => {
-  const [options, setOptions] = useState([
-    { id: "1", text: "" },
-    { id: "2", text: "" },
-    { id: "3", text: "" },
-    { id: "4", text: "" },
-  ]);
-  const [correctOption, setCorrectOption] = useState(null);
-  const [explanation, setExplanation] = useState("");
+const OptionBox = ({ options, setOptions, correctOption, setCorrectOption, explanation, setExplanation,errors }) => {
 
+  console.log("correctOption", correctOption)
   const handleOptionChange = (index, value) => {
     const newOptions = [...options];
     newOptions[index].text = value;
@@ -56,11 +49,13 @@ const OptionBox = () => {
 
   return (
     <>
-      <Heading sx={{ mb: "2%" }}>Options</Heading>
+      <Heading >Options</Heading>
       <TopicBox>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{
+          my: "10px" 
+        }}>
           {options.map((option, index) => (
-            <Grid item xs={6} key={option.id}>
+            <Grid item xs={6} key={index}>
               <Box
                 sx={{
                   display: "flex",
@@ -73,12 +68,19 @@ const OptionBox = () => {
                   <DragIndicatorIcon fontSize="small" />
                 </IconButton>
                 <CustomTextField
+                  key={index}
+                  placeholder={`Option ${index + 1}`}
                   variant="outlined"
                   size="small"
-                  placeholder={`Option ${index + 1}`}
                   fullWidth
                   value={option.text}
-                  onChange={(e) => handleOptionChange(index, e.target.value)}
+                  onChange={(e) => {
+                    const newOptions = [...options];
+                    newOptions[index].text = e.target.value;
+                    setOptions(newOptions);
+                  }}
+                  error={errors.options && !option.text.trim()}
+                  helperText={errors.options && !option.text.trim() ? "Option cannot be empty" : ""}
                 />
               </Box>
             </Grid>
@@ -87,22 +89,33 @@ const OptionBox = () => {
 
         {/* Correct Option Selection */}
         <Autocomplete
-          options={options.map((_, index) => `Option ${index + 1}`)}
-          value={correctOption}
-          onChange={(event, newValue) => setCorrectOption(newValue)}
-          disabled={!allOptionsFilled}
+          options={options
+            .map((option, index) => ({
+              label: `Option ${index + 1}`,
+              index: index,
+              value: option.text,
+            }))
+            .filter((opt) => opt.value.trim() !== "")}
+          value={`Option ${correctOption ? correctOption.index + 1 : ""}`}
+          onChange={(event, newValue) =>
+            setCorrectOption(newValue ? { index: newValue.index, value: newValue.value } : null)
+          }
+          disabled={!options.every((opt) => opt.text.trim() !== "")}
           renderInput={(params) => (
             <CustomTextField
               {...params}
               label="Correct Option"
               variant="outlined"
               margin="normal"
+              error={errors.correctOption}
+              helperText={errors.correctOption ? "Please select the correct option" : ""}
             />
           )}
           fullWidth
         />
 
-        {/* Explanation */}
+
+        {/*    */}
         <CustomTextField
           label="Explanation"
           multiline

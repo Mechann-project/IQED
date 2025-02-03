@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -132,11 +132,23 @@ const FeedBack = () => {
   const [screenshots, setScreenshots] = useState([]);
   const [topic, setTopic] = useState("");
   const [question, setQuestion] = useState("");
-  const [options, setOptions] = useState(["", "", "", ""]);
+  const [options, setOptions] = useState([
+    { text: "" },
+    { text: "" },
+    { text: "" },
+    { text: "" },
+  ]);
+  const [correctOption, setCorrectOption] = useState(null);
+  const [explanation, setExplanation] = useState("");
+  console.log("question", question)
   // Error State
   const [errors, setErrors] = useState({
     feedbackType: false,
     feedbackText: false,
+    topic: false,
+    question: false,
+    options: false,
+    correctOption: false,
   });
 
   // Handle file upload for screenshots
@@ -164,44 +176,72 @@ const FeedBack = () => {
   // Form validation and submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let newErrors = { ...errors };
 
-    // Reset errors
-    setErrors({ feedbackType: false, feedbackText: false });
+    if (!feedbackType) {
+      newErrors.feedbackType = true;
+      toast.error("Please select a feedback type.");
+    } else {
+      newErrors.feedbackType = false;
+    }
 
-    // Validate fields
-    if (!feedbackType || !feedbackText || feedbackText.length < 50) {
-      setErrors({
-        feedbackType: !feedbackType,
-        feedbackText: !feedbackText || feedbackText.length < 50,
-      });
-      toast.error("Please fill all required fields correctly.");
+    if (feedbackType === "suggestQuestions") {
+      newErrors.topic = !topic;
+      newErrors.question = !question.trim();
+      newErrors.options = options.some((opt) => !opt.text.trim());
+      newErrors.correctOption = !correctOption;
+
+      if (newErrors.topic || newErrors.question || newErrors.options || newErrors.correctOption) {
+        toast.error("Please fill in all required fields for the question.");
+        setErrors(newErrors);
+        return;
+      }
+    } else if (!feedbackText || feedbackText.length < 50) {
+      newErrors.feedbackText = true;
+      toast.error("Your feedback must be at least 50 characters.");
+      setErrors(newErrors);
       return;
     }
 
-    // Prepare form data
+    setErrors(newErrors);
+
     const formData = new FormData();
-
     formData.append("type", feedbackType);
-    formData.append("feedback", feedbackText);
 
-    if (feedbackType === "bug" && screenshots.length > 0) {
-      screenshots.forEach((image) => {
-        formData.append("images", image);
-      });
+    if (feedbackType === "suggestQuestions") {
+      formData.append("topic", topic);
+      formData.append("question", question);
+      formData.append("options", JSON.stringify(options));
+      formData.append("correctOption", correctOption);
+      formData.append("explanation", explanation);
+    } else {
+      formData.append("feedback", feedbackText);
+      screenshots.forEach((image) => formData.append("images", image));
     }
 
     try {
-
-      const response = await submitFeedback(formData).unwrap();
-
+      await submitFeedback(formData).unwrap();
       toast.success("Feedback submitted successfully!");
+
       setFeedbackType("");
       setFeedbackText("");
       setScreenshots([]);
+      setTopic("");
+      setQuestion("");
+      setOptions([{ text: "" }, { text: "" }, { text: "" }, { text: "" }]);
+      setCorrectOption(null);
+      setExplanation("");
     } catch (error) {
       toast.error(error?.data?.message || "Failed to submit feedback.");
     }
   };
+
+  useEffect(() => {
+    return () => {
+      screenshots.forEach((file) => URL.revokeObjectURL(file));
+    };
+  }, [screenshots]);
+
 
   return (
     <Box
@@ -328,19 +368,22 @@ const FeedBack = () => {
                         getOptionLabel={(option) => option}
                         sx={{
                           width: '30%',
-                          '& .MuiInputBase-root': {
-                            height: 50, 
-                          },
-                          '& .MuiOutlinedInput-root': {
-                            padding: '5px', 
-                          },
+                          '& .MuiInputBase-root': { height: 50 },
+                          '& .MuiOutlinedInput-root': { padding: '5px' },
                         }}
+                        value={topic}
                         onChange={(e, value) => setTopic(value)}
                         renderInput={(params) => (
-                          <TextField {...params} label="Select Topic" variant="outlined" fullWidth />
+                          <TextField
+                            {...params}
+                            label="Select Topic"
+                            variant="outlined"
+                            fullWidth
+                            error={errors.topic}
+                            helperText={errors.topic ? "Topic is required" : ""}
+                          />
                         )}
                       />
-
                     </TitleBar>
                     <Divider />
                     <ContentBox>
@@ -348,14 +391,26 @@ const FeedBack = () => {
                         Question
                       </Heading>
                       <CustomTextField
-                        // value={selectedUnit.lessons[0].name}
-                        // onChange={(e) => setEditedName(e.target.value)}
+                        placeholder="Enter your question"
                         variant="outlined"
                         size="small"
                         fullWidth
+                        value={question}
+                        onChange={(e) => setQuestion(e.target.value)}
+                        error={errors.question}
+                        helperText={errors.question ? "Question is required" : ""}
                       />
+
                       <Divider style={{ margin: "16px 0", borderWidth: "1px" }} />
-                      <OptionBox />
+                      <OptionBox
+                        options={options}
+                        setOptions={setOptions}
+                        correctOption={correctOption}
+                        setCorrectOption={setCorrectOption}
+                        explanation={explanation}
+                        setExplanation={setExplanation}
+                        errors={errors}
+                      />
                       {/* <Divider /> */}
                     </ContentBox>
                   </EditorContiner>
@@ -386,7 +441,6 @@ const FeedBack = () => {
                           ? "Your feedback must be at least 50 characters"
                           : "Please provide your feedback"
                         : ""
-
                     }
                     sx={{
                       flexGrow: 1,
@@ -444,8 +498,6 @@ const FeedBack = () => {
               )
           }
         </Box>
-
-
         <Button
           variant="contained"
           color={isSuccess ? "success" : "primary"}
@@ -460,6 +512,7 @@ const FeedBack = () => {
               backgroundColor: "Black",
               boxShadow: "2px 3px #FFDA55",
             },
+            mt:'20px'
           }}
           startIcon={
             isLoading ? (
