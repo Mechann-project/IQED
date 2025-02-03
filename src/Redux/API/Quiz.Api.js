@@ -6,8 +6,8 @@ export const QuizApi = createApi({
   reducerPath: "QuizApi",
   baseQuery: fetchBaseQuery({
     // baseUrl: "https://iqed-backend1-five.vercel.app/quiz",
-    // baseUrl: "http://localhost:3000/quiz",
-    baseUrl: "https://iqed-backend.vercel.app/quiz",
+    baseUrl: "http://localhost:3000/quiz",
+    // baseUrl: "https://iqed-backend.vercel.app/quiz",
     credentials: "include",
     prepareHeaders: (headers) => {
       const token = Cookies.get("token");
