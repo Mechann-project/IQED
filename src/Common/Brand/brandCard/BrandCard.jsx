@@ -38,7 +38,7 @@ const StatRow = styled(Box)({
 });
 
 const BrandCard = ({ Data, isSideBar, trigger }) => {
-  console.log("challengeData", Data);
+//   console.log("challengeData", Data);
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const UserData = useSelector((state) => state.UserState);

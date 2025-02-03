@@ -14,10 +14,10 @@ const MenuBox = ({ open, anchorEl, handleClose }) => {
   const navigate = useNavigate();
   const handleLogOut = () => {
     sessionStorage.clear();
-    Cookies.remove('token');
     dispatch(ResetUser);
-    navigate("/");
+    Cookies.remove('token');
     toast.success("Logout..");
+    navigate(0);
     handleClose();
   };
   const handleAccount = () => {

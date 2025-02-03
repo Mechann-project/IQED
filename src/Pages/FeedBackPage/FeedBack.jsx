@@ -20,6 +20,8 @@ import { usePostFeedbackMutation } from "../../Redux/API/Feedback.Api";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from '@mui/icons-material/Close';
 import OptionBox from "./OptionBox";
+import { useAddXPMutation } from "../../Redux/API/User.Api";
+import { UpdateUser } from "../../Redux/Slice/UserSlice/UserSlice";
 
 
 
@@ -124,7 +126,8 @@ const FeedBack = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const [submitFeedback, { isLoading, isSuccess, error }] =
-    usePostFeedbackMutation();
+  usePostFeedbackMutation();
+  const [updateUserXP] = useAddXPMutation();
 
   // Form State
   const [feedbackType, setFeedbackType] = useState("");
@@ -222,7 +225,9 @@ const FeedBack = () => {
     try {
       await submitFeedback(formData).unwrap();
       toast.success("Feedback submitted successfully!");
-
+      updateUserXP({ xp: 100}).then(() => {
+        dispatch(UpdateUser(userData));
+      });
       setFeedbackType("");
       setFeedbackText("");
       setScreenshots([]);

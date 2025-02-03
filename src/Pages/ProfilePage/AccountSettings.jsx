@@ -36,8 +36,6 @@ const AccountSettings = ({ onClose }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userId = sessionStorage.getItem("UserId");
-  console.log("User ID:", userId);
   const [profileFields, setProfileFields] = useState([
     { label: "Name", value: UserData.name || "Gowthamraj" },
     { label: "School Name", value: UserData.schoolName || "TNGR" },
@@ -47,13 +45,13 @@ const AccountSettings = ({ onClose }) => {
     UserData.profileImage || "/default-avatar.jpg"
   );
   useEffect(() => {
-    if (UserData?.ProfileImage?.base64) {
-        setProfileImagePreview(UserData.ProfileImage.base64);
+    if (UserData?.ProfileImage) {
+      setProfileImagePreview(UserData.ProfileImage);
     } else {
-        setProfileImagePreview(''); // Fallback if no image is available
+      setProfileImagePreview(""); // Fallback if no image is available
     }
-}, [UserData]);
-  const [profileImageBase64, setProfileImageBase64] = useState("");
+  }, [UserData]);
+  const [profileImageBase64, setProfileImageBase64] = useState();
   const [isEditing, setIsEditing] = useState(false);
   const [isChanged, setIsChanged] = useState(false);
   const [openChangePassword, setOpenChangePassword] = useState(false);
@@ -96,9 +94,9 @@ const AccountSettings = ({ onClose }) => {
   const handleProfileImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      setProfileImageBase64(file); // Store the base64 image for dispatch
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfileImageBase64(reader.result); // Store the base64 image for dispatch
         setIsChanged(true);
       };
       reader.readAsDataURL(file);
@@ -109,10 +107,6 @@ const AccountSettings = ({ onClose }) => {
   };
 
   const handleSave = async () => {
-    if (!userId) {
-      console.error("User ID is not found in sessionStorage.");
-      return;
-    }
     const updatedUserData = { ...modifiedFields };
     profileFields.forEach((field) => {
       if (field.changed) {
@@ -120,33 +114,32 @@ const AccountSettings = ({ onClose }) => {
       }
     });
 
-    if (profileImageBase64) {
-      updatedUserData.profileImage = profileImageBase64;
-    }
+    console.log(profileImageBase64);
 
-    if (Object.keys(updatedUserData).length > 0) {
+    if (Object.keys(updatedUserData).length > 0 || profileImageBase64) {
       console.log("Updated Profile Data:", updatedUserData);
       try {
-        // Log the full payload being sent
+        const formData = new FormData();
+        if (updatedUserData.Name) formData.append("Name", updatedUserData.Name);
+        if (updatedUserData.SchoolName)
+          formData.append("schoolName", updatedUserData.Name);
+        if (updatedUserData.Grade)
+          formData.append("grade", updatedUserData.Name);
+        formData.append("file", profileImageBase64);
+
         console.log("Sending API request with User ID and updated data:", {
-          userid: userId, 
-          ...updatedUserData
+          formData,
         });
-  
-        // Send the request to the API
-        await updateUserProfile({
-          userId: userId,  // Ensure this is the correct user ID
-          ...updatedUserData
-        }).unwrap();
-  
+        await updateUserProfile(formData).unwrap();
+
         // Update the Redux state
         dispatch(UpdateUser(updatedUserData));
-        alert('Profile updated successfully!');
+        alert("Profile updated successfully!");
       } catch (err) {
-        console.error('Failed to update profile:', err);
+        console.error("Failed to update profile:", err);
       }
     }
-  
+
     setIsEditing(false);
     setIsChanged(false);
   };
@@ -306,8 +299,7 @@ const AccountSettings = ({ onClose }) => {
         >
           <Box sx={{ position: "relative" }}>
             <Avatar
-          
-          src={profileImagePreview || '/default-avatar.jpg'} 
+              src={profileImagePreview || UserData.profileImage || "/default-avatar.jpg"}
               sx={{ width: 100, height: 100, mb: "8px" }}
             />
             {isEditing ? (

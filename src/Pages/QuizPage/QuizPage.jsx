@@ -152,7 +152,7 @@ const QuizPage = () => {
     >
       <Timer
         ref={timerRef}
-        initialTime={quizState?.questionsList.length * 60}
+        initialTime={quizState?.type=="Challenge"?quizState?.Challenge?.TestTime*60:quizState?.questionsList.length * 60}
         start={!sessionLoading}
       />
       <QuestionDrawerList
