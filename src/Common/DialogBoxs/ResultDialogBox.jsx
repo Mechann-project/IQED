@@ -63,9 +63,9 @@ const ResultDialogBox = ({ SessionState, open, handleReview, handleDone }) => {
   const rewards = [
     { label: `Correct Answer x ${correctAnswers}`, value: correctAnswers * 10 },
     { label: "Time Taken", value: formatTime(SessionState.timeTaken) },
-    { label: `For completion x ${isPass ? 20 : 0}`, value: isPass ? 20 : 0 },
+    { label: `For ${isPass ? "completion" : "attending" } x ${20}`,value:20},
   ];
-  const totalCoins = (correctAnswers * 10 )+ (isPass ? 20 : 0);
+  const totalCoins = (correctAnswers * 10 )+  20 ;
   
   return (
     <Dialog

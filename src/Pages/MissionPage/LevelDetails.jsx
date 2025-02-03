@@ -196,7 +196,7 @@ function LevelDetails() {
           },
           error: (e) => {
             console.error(e);
-            return "Failed to create session. Please try again.";
+            return "Failed to create session. Please try again later.";
           },
         }
       );
@@ -257,7 +257,7 @@ function LevelDetails() {
                   >
                     {lesson.lesson.name}
                   </Typography>
-                  <Button
+                  {/* <Button
                     variant="contained"
                     sx={{
                       height: "40px",
@@ -276,7 +276,7 @@ function LevelDetails() {
                     }}
                   >
                     Start
-                  </Button>
+                  </Button> */}
                 </Box>
 
                 <Box
