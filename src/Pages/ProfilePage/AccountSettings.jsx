@@ -28,6 +28,7 @@ import { UpdateUser } from "../../Redux/Slice/UserSlice/UserSlice";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useUpdateUserMutation } from "../../Redux/API/User.Api";
+import toast from "react-hot-toast";
 // import { useUpdateUserProfileMutation } from "../../Redux/RTK/AuthAPI/AuthAPI";
 const AccountSettings = ({ onClose }) => {
   const theme = useTheme();
@@ -100,12 +101,12 @@ const AccountSettings = ({ onClose }) => {
         setIsChanged(true);
       };
       reader.readAsDataURL(file);
-
+      
       const previewUrl = URL.createObjectURL(file);
       setProfileImagePreview(previewUrl); // Show the preview directly
     }
   };
-
+  
   const handleSave = async () => {
     const updatedUserData = { ...modifiedFields };
     profileFields.forEach((field) => {
@@ -113,12 +114,13 @@ const AccountSettings = ({ onClose }) => {
         updatedUserData[field.label.replace(" ", "_")] = field.value;
       }
     });
-
+    
     console.log(profileImageBase64);
-
+    
     if (Object.keys(updatedUserData).length > 0 || profileImageBase64) {
       console.log("Updated Profile Data:", updatedUserData);
       try {
+        setIsEditing(false);
         const formData = new FormData();
         if (updatedUserData.Name) formData.append("Name", updatedUserData.Name);
         if (updatedUserData.SchoolName)
@@ -134,13 +136,13 @@ const AccountSettings = ({ onClose }) => {
 
         // Update the Redux state
         dispatch(UpdateUser(updatedUserData));
-        alert("Profile updated successfully!");
+        toast.success("Profile updated successfully!");
       } catch (err) {
         console.error("Failed to update profile:", err);
+        toast.error("Failed to update profile. Please check the inputs.");
       }
     }
 
-    setIsEditing(false);
     setIsChanged(false);
   };
 

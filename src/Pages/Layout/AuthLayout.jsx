@@ -9,11 +9,11 @@ const AuthLayout = () => {
   const location = useLocation();
   const UserData = useSelector((state) => state.UserState);
   const sessionid = Cookies.get("token") // Get all cookies as an object
-  const {data:userdata,isLoading} = useGetUserQuery()
+  const {data:userdata,isError} = useGetUserQuery()
   const isQuizPath = location.pathname.startsWith("/quiz");
   console.log(UserData);
   // Allow access to quiz paths or require authentication for other paths
-  return isQuizPath || sessionid ? (
+  return (isQuizPath || sessionid) && !isError ? (
     <Outlet />
   ) : (
     <Navigate to="/" state={{ from: location }} replace />
