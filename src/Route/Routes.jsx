@@ -26,17 +26,24 @@ import GQSuccessPage1 from "../Pages/IQQuizPage/GQResultPage1";
 import GQSuccessPage2 from "../Pages/IQQuizPage/GQResultPage2";
 import IQQuizLayout from "../Pages/Layout/IQQuizLayout";
 import IQQuizPage from "../Pages/IQQuizPage/IQQuizPage";
-import { AuthLayout, MatchLayout, QuizLayout, StoreOrderLayout, UserLayout } from "../Pages/Layout";
+import {
+  AuthLayout,
+  MatchLayout,
+  MissonsLayout,
+  QuizLayout,
+  StoreOrderLayout,
+  UserLayout,
+} from "../Pages/Layout";
 import { OrderDetail, Shipping, YourOrders } from "../Components";
 import { OnLoadLobby } from "../Pages/GamePage/MatchPage/MatchLobby";
 import { Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import LevelDetails from "../Pages/MissionPage/LevelDetails";
 const isUserLoggedIn = () => {
-  return !!Cookies.get("token"); 
+  return !!Cookies.get("token");
 };
 const basename = import.meta.env.BASE_URL;
 export const Routers = createBrowserRouter(
-
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<LandingPage />} />
@@ -45,7 +52,10 @@ export const Routers = createBrowserRouter(
       <Route element={<AuthLayout />}>
         <Route element={<UserLayout />}>
           {/* <Route path="explore" element={<ExplorePage />} /> */}
-          <Route path="missions" element={<MissionPage />} />
+          <Route path="missions" element={<MissonsLayout/>}>
+            <Route index element={<MissionPage />} />
+            <Route path=":sectionIndex" element={<LevelDetails />} />
+          </Route>
           <Route path="game" element={<GamePage />} />
           <Route path="Profile" element={<ProfilePage />} />
           <Route path="Leaderboard" element={<LeaderboardPage />} />
@@ -82,9 +92,7 @@ export const Routers = createBrowserRouter(
         element={<Navigate to={isUserLoggedIn() ? "/missions" : "/"} replace />}
       />
     </Route>
-
   )
   // ,
   // { basename }
-
 );
