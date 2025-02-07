@@ -159,7 +159,7 @@ const QuizPage = () => {
           quizState?.type == "Challenge"
             ? quizState?.Challenge?.TestTime * 60
             : quizState?.careerPath?.Lesson == "679d3fd96aeede5b160420aa"
-            ? 10 * 60
+            ? 3 * 60
             : quizState?.questionsList.length * 60
         }
         start={!sessionLoading}
