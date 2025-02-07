@@ -265,7 +265,7 @@ function LevelDetails() {
                         color: "#02216F",
                       }}
                     >
-                      {lesson.lesson.name}
+                      {lesson?.lesson?.name}
                     </Typography>
                     {/* <Button
                     variant="contained"
@@ -315,15 +315,15 @@ function LevelDetails() {
                       >
                         {lesson?.topicProgress?.map((topic, index) => (
                           <Step
-                            key={topic._id}
+                            key={topic?._id}
                             onClick={() => {
-                              console.log(topic._id);
+                              console.log(topic?._id);
                               if (topic.unlocked) {
                                 handleQuizCraetion(
-                                  userProgress.levelProgress[sectionIndex].level
+                                  userProgress?.levelProgress[sectionIndex]?.level
                                     ._id,
-                                  lesson.lesson._id,
-                                  topic.topic._id
+                                  lesson?.lesson?._id,
+                                  topic?.topic?._id
                                 );
                               } else {
                                 toast.error(
@@ -360,7 +360,7 @@ function LevelDetails() {
                                   px: "10px",
                                 }}
                               >
-                                {topic.topic.name}
+                                {topic?.topic?.name}
                               </Typography>
                               {/* {topic.completed &&<Typography
                               variant="body1"
