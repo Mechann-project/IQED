@@ -163,6 +163,7 @@ const QuizPage = () => {
             : quizState?.questionsList.length * 60
         }
         start={!sessionLoading}
+        
       />
       <QuestionDrawerList
         sessionState={quizState}

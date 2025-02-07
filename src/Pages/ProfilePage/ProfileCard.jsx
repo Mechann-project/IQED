@@ -251,7 +251,7 @@ const ProfileCard = ({ onSettingsClick }) => {
           <StatBox
             icon={FireIconSVG}
             value={UserData.earnings.streak?.count}
-            label="Total Strike"
+            label="Total Streak"
           />
         </Grid>
         <Grid item xs={4}>
