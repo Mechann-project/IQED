@@ -4,8 +4,8 @@ export const AuthApi = createApi({
   reducerPath: "AuthApi",
   baseQuery: fetchBaseQuery({
     // baseUrl: "https://iqed-backend1-five.vercel.app/auth",
-    baseUrl: "http://localhost:3000/auth",
-    // baseUrl: "https://iqed-backend.vercel.app/auth",
+    // baseUrl: "http://localhost:3000/auth",
+    baseUrl: "https://iqed-backend.vercel.app/auth",
 
     credentials: "include",
   }),

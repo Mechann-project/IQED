@@ -61,19 +61,19 @@ const QuizPage = () => {
   useEffect(() => {
     const unloadCallback = (event) => {
       event.preventDefault();
-      event.returnValue = ""; 
+      event.returnValue = "";
     };
     window.addEventListener("beforeunload", unloadCallback);
     return () => window.removeEventListener("beforeunload", unloadCallback);
   }, []);
 
   const navigate = useNavigate();
- 
+
   useEffect(() => {
     const isReload = sessionStorage.getItem("isReloaded");
     if (isReload && quizState._id) {
       sessionStorage.removeItem("isReloaded");
-      console.log("Page was reloaded, and quizState._id is missing.")
+      console.log("Page was reloaded, and quizState._id is missing.");
     } else {
       sessionStorage.setItem("isReloaded", "true");
     }
@@ -124,7 +124,7 @@ const QuizPage = () => {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [tabSwitchCount,ResultDialog]);
+  }, [tabSwitchCount, ResultDialog]);
 
   const handleModalClose = () => {
     if (tabSwitchCount === 1) {
@@ -155,7 +155,13 @@ const QuizPage = () => {
     >
       <Timer
         ref={timerRef}
-        initialTime={quizState?.type=="Challenge"?quizState?.Challenge?.TestTime*60:quizState?.questionsList.length * 60}
+        initialTime={
+          quizState?.type == "Challenge"
+            ? quizState?.Challenge?.TestTime * 60
+            : quizState?.careerPath?.Lesson == "679d3fd96aeede5b160420aa"
+            ? 10 * 60
+            : quizState?.questionsList.length * 60
+        }
         start={!sessionLoading}
       />
       <QuestionDrawerList
@@ -182,7 +188,7 @@ const QuizPage = () => {
       >
         <KeyboardDoubleArrowRight />
       </Button>
-      
+
       <QuestionBox
         index={quizState?.currentQuestionIndex}
         Question={quizState?.questionsList[quizState?.currentQuestionIndex]}
