@@ -83,7 +83,8 @@ const useHandleQuizPage = () => {
     try {
       updateQuizSession({
         answeredQuestions: quizState.answeredQuestions,
-        timeTaken:(quizState?.type=="Challenge"?quizState?.Challenge?.TestTime*60:quizState?.questionsList.length * 60)-currentTime
+        // timeTaken:(quizState?.type=="Challenge"?quizState?.Challenge?.TestTime*60:   quizState?.questionsList.length * 60)-currentTime
+        timeTaken:( quizState?.type == "Challenge" ? quizState?.Challenge?.TestTime * 60 : quizState?.careerPath?.Lesson == "679d3fd96aeede5b160420aa" ? 3 * 60 : quizState?.questionsList.length * 60)-currentTime
       }).unwrap().then((session) => {
         console.log("ddddd",session); 
         setTotalxp((session.score* 10)+20);
