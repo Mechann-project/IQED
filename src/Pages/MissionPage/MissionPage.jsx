@@ -51,6 +51,7 @@ const MissionPage = () => {
                 image: trophy,
                 name: level?.level.name,
                 description: level?.level.description,
+                _id:level._id
               }}
               examUnlocked={level.finalExamUnlocked}
               active={level.unlocked}

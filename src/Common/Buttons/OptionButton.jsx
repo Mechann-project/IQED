@@ -13,12 +13,11 @@ const OptionButton = ({ quiz, type = "text", content, index }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const isAnswered = QuizState?.answeredQuestions[index] ;
   const iamSelected = QuizState?.answeredQuestions[index]?.answer == content;
-  console.log(iamSelected,isAnswered);
   const isCorrectAnswer = QuizState?.questionsList[index]?.correctAnswer.content == content;
   const isLive = QuizState?.isLive;
   const backgroundColor = !isLive? iamSelected  ? isCorrectAnswer? "#06b410":"#c90909":"#02216F": "#02216F";
   const color = iamSelected && isAnswered && isCorrectAnswer && !isLive ? "#02216F" : "#ffffff";
-
+  const bgcolor = !isLive ? isCorrectAnswer? "#06b410":iamSelected?"#c90909":"#02216F":"#02216F"
   const handleClick = () => {
     if (!isAnimating) {
       dispatch(
@@ -44,7 +43,7 @@ const OptionButton = ({ quiz, type = "text", content, index }) => {
         height: { xs: "4rem", lg: "7rem", md: "6rem" },
         width: "100%",
         display: "flex",
-        backgroundColor: !isLive ? backgroundColor : iamSelected ? "#FFDA55" : "#02216F",
+        backgroundColor: !isLive ? bgcolor : iamSelected ? "#FFDA55" : "#02216F",
         color,
         borderRadius: "10px",
         justifyContent: "center",

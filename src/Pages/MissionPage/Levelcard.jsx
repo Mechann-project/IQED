@@ -11,11 +11,19 @@ import { WhiteBackgroundSVG } from "../../assets";
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import toast from "react-hot-toast";
 import LockIcon from "@mui/icons-material/Lock";
+import { useCreateQuizSessionMutation } from "../../Redux/API/Quiz.Api";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { resetQuiz } from "../../Redux/Slice/QuizSlice/QuizSlice";
 
 const LevelCard = ({ level, onSelect, active,examUnlocked }) => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const [isFinalTest,setisFinalTest] = useState(true);
+  const [CreateQuizSession] = useCreateQuizSessionMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  console.log(level)
   const cardStyles = active
     ? {}
     : {
@@ -24,6 +32,34 @@ const LevelCard = ({ level, onSelect, active,examUnlocked }) => {
       backgroundSize: "cover",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
+    };
+    const handleQuizCraetion = () => {
+      try {
+        dispatch(resetQuiz());
+        toast.promise(
+          CreateQuizSession({
+            levelid:"679d3fd96aeede5b160420a7",
+            lessonid:"679d3fd96aeede5b160420ac",
+            topicId:"678ba5c339053772c9f93053",
+            questionCount: 60,
+          }).unwrap(),
+          {
+            loading: "Creating Session...",
+            success: (res) => {
+              sessionStorage.setItem("QuizSessionID", res.sessionId);
+              navigate(`/quiz/${res.sessionId}`, { replace: true });
+              return "Session Created Successfully!";
+            },
+            error: (e) => {
+              console.error(e);
+              return "Failed to create session. Please try again later.";
+            },
+          }
+        );
+      } catch (error) {
+        console.error("Failed to update quiz session:", error);
+        toast.error("sorry session not save");
+      }
     };
   return (
     <Box
@@ -111,7 +147,7 @@ const LevelCard = ({ level, onSelect, active,examUnlocked }) => {
               variant="contained"
               onClick={() => {
                 if (examUnlocked) {
-                  alert("woekinf");
+                  handleQuizCraetion();
                 } else {
                   toast.error(
                     <Box

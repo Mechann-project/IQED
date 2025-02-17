@@ -224,7 +224,7 @@ const FeedBack = () => {
     try {
       await submitFeedback(formData).unwrap();
       toast.success("Feedback submitted successfully!");
-      updateUserXP({ xp: 100 }).then(() => {
+      updateUserXP({ xp: 10 }).then(() => {
         dispatch(UpdateUser(userData));
       });
       setFeedbackType("");
