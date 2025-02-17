@@ -12,7 +12,8 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import toast from "react-hot-toast";
 import LockIcon from "@mui/icons-material/Lock";
 
-const LevelCard = ({ level, onSelect, active,examUnlocked }) => {
+const LevelCard = ({ level, onSelect, active,examUnlocked,Index }) => {
+  console.log("index",Index)
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const [isFinalTest,setisFinalTest] = useState(true);
@@ -69,9 +70,8 @@ const LevelCard = ({ level, onSelect, active,examUnlocked }) => {
             variant="h5"
             sx={{ fontWeight: "bold", color: "#02216F",
 
-
              }}
-          >{`Level ${level.level}`} : {level.name}</Typography>
+          >{`Level ${Index}`} : {level.name}</Typography>
           <Typography variant="body2" sx={{ color: "black",
             fontSize: {
               xs: "0.70rem", 

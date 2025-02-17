@@ -93,7 +93,7 @@ const useHandleQuizPage = () => {
         updateUserXP({ xp: (session.score* 10)+20}).then(() => {
           dispatch(UpdateUser(userData));
         });
-        toast.success("session Complated");
+        toast.success("Session Completed");
       });
     } catch (error) {
       console.error("Failed to update quiz session:", error);
