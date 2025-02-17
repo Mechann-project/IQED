@@ -120,7 +120,7 @@ const useHandleGamePage = ({ GameSessionId }) => {
             dispatch(UpdateUser(userData));
           });
           
-          toast.success("session Complated");
+          toast.success("Session Completed");
         });
     } catch (error) {
       console.error("Failed to update quiz session:", error);

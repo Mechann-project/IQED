@@ -20,6 +20,7 @@ const MissionPage = () => {
   const userProgress = useSelector((state) => state.UserState?.CourseProgress);
 
   const handleSelectSection = (index) => {
+    console.log("index,,",index)
     navigate(`/missions/${index}`);
   };
 
@@ -42,7 +43,9 @@ const MissionPage = () => {
         {userProgress?.levelProgress.map((level, index) => (
           <Grid item xs={12} lg={12} key={level._id}>
             <LevelCard
+              Index= {index+1}
               level={{
+                
                 level: level?.level.levelNumber + 1,
                 total: level?.lessonProgress?.length || 0,
                 progress: level.lessonProgress.filter(
