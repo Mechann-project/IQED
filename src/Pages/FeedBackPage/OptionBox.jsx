@@ -98,7 +98,7 @@ const OptionBox = ({ options, setOptions, correctOption, setCorrectOption, expla
             .filter((opt) => opt.value.trim() !== "")}
           value={`Option ${correctOption ? correctOption.index + 1 : ""}`}
           onChange={(event, newValue) =>
-            setCorrectOption(newValue ? { index: newValue.index, value: newValue.value } : null)
+            setCorrectOption(newValue ? newValue : null)
           }
           disabled={!options.every((opt) => opt.text.trim() !== "")}
           renderInput={(params) => (

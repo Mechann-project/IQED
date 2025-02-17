@@ -11,26 +11,24 @@ import {
   IconButton,
   Autocomplete,
   styled,
-  Divider
+  Divider,
 } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material"; // Icon for success
 import { feedback } from "../../assets";
 import toast from "react-hot-toast";
 import { usePostFeedbackMutation } from "../../Redux/API/Feedback.Api";
 import DeleteIcon from "@mui/icons-material/Delete";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import OptionBox from "./OptionBox";
 import { useAddXPMutation } from "../../Redux/API/User.Api";
 import { UpdateUser } from "../../Redux/Slice/UserSlice/UserSlice";
-
-
+import { useGetTopicsAllQuery } from "../../Redux/API/Career.Api";
 
 const Heading = styled(Typography)(({ theme }) => ({
   fontSize: theme.typography.pxToRem(15),
   flexBasis: "80%",
   flexShrink: 0,
-  fontWeight: 'bold',
-
+  fontWeight: "bold",
 }));
 
 const Container = styled("div")(({ theme }) => ({
@@ -38,8 +36,8 @@ const Container = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("sm")]: { margin: "16px" },
   "& .breadcrumb": {
     marginBottom: "30px",
-    [theme.breakpoints.down("sm")]: { marginBottom: "16px" }
-  }
+    [theme.breakpoints.down("sm")]: { marginBottom: "16px" },
+  },
 }));
 
 const Sidebar = styled("div")(() => ({
@@ -64,24 +62,22 @@ const EditorContiner = styled("div")(() => ({
   border: "1px solid #e0e0e0",
   borderRadius: "8px",
   marginBottom: "16px",
-  overflow: 'hidden'
+  overflow: "hidden",
 }));
 const TopicBox = styled("div")(() => ({
   // border: "1px solid #e0e0e0",
   paddingLeft: "10px",
   marginBottom: "16px",
-  overflow: 'hidden'
+  overflow: "hidden",
 }));
-
-
 
 const SecondaryHeading = styled(Typography)(({ theme }) => ({
   fontSize: theme.typography.pxToRem(15),
   color: theme.palette.text.secondary,
-  fontWeight: 'bold',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '10px',
+  fontWeight: "bold",
+  display: "flex",
+  alignItems: "center",
+  gap: "10px",
 }));
 
 const TitleBar = styled("div")(() => ({
@@ -89,10 +85,9 @@ const TitleBar = styled("div")(() => ({
   justifyContent: "space-between",
   alignItems: "center",
   padding: " 10px 15px 10px 15px",
-  backgroundColor: '#007bff20'
+  backgroundColor: "#007bff20",
 }));
 const ContentBox = styled("div")(() => ({
-
   alignItems: "center",
   padding: "15px",
 }));
@@ -100,15 +95,15 @@ const ContentBox = styled("div")(() => ({
 const ContentHeader = styled("h3")(({ theme }) => ({
   fontSize: "1.4rem",
   fontWeight: "600",
-  display: 'flex',
-  alignItems: 'center',
-  gap: '10px',
+  display: "flex",
+  alignItems: "center",
+  gap: "10px",
   marginBottom: "8px",
 }));
 const CustomTextField = styled(TextField)(({ theme }) => ({
   margin: "10px 0 10px 0",
   "& .MuiOutlinedInput-root": {
-    // height: "40px", 
+    // height: "40px",
     fontWeight: "600",
     "& input": {
       height: "40",
@@ -120,13 +115,12 @@ const CustomTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
-
-
 const FeedBack = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
   const [submitFeedback, { isLoading, isSuccess, error }] =
-  usePostFeedbackMutation();
+    usePostFeedbackMutation();
+  const { data: TotalTopic } = useGetTopicsAllQuery();
   const [updateUserXP] = useAddXPMutation();
 
   // Form State
@@ -143,7 +137,7 @@ const FeedBack = () => {
   ]);
   const [correctOption, setCorrectOption] = useState(null);
   const [explanation, setExplanation] = useState("");
-  console.log("question", question)
+  console.log("question", question);
   // Error State
   const [errors, setErrors] = useState({
     feedbackType: false,
@@ -194,7 +188,12 @@ const FeedBack = () => {
       newErrors.options = options.some((opt) => !opt.text.trim());
       newErrors.correctOption = !correctOption;
 
-      if (newErrors.topic || newErrors.question || newErrors.options || newErrors.correctOption) {
+      if (
+        newErrors.topic ||
+        newErrors.question ||
+        newErrors.options ||
+        newErrors.correctOption
+      ) {
         toast.error("Please fill in all required fields for the question.");
         setErrors(newErrors);
         return;
@@ -215,7 +214,7 @@ const FeedBack = () => {
       formData.append("topic", topic);
       formData.append("question", question);
       formData.append("options", JSON.stringify(options));
-      formData.append("correctOption", correctOption);
+      formData.append("correctOption", JSON.stringify(correctOption));
       formData.append("explanation", explanation);
     } else {
       formData.append("feedback", feedbackText);
@@ -225,7 +224,7 @@ const FeedBack = () => {
     try {
       await submitFeedback(formData).unwrap();
       toast.success("Feedback submitted successfully!");
-      updateUserXP({ xp: 100}).then(() => {
+      updateUserXP({ xp: 100 }).then(() => {
         dispatch(UpdateUser(userData));
       });
       setFeedbackType("");
@@ -247,7 +246,6 @@ const FeedBack = () => {
     };
   }, [screenshots]);
 
-
   return (
     <Box
       sx={{
@@ -258,7 +256,6 @@ const FeedBack = () => {
         gap: "20px",
         boxSizing: "border-box",
         overflow: "hidden",
-
       }}
     >
       <Box
@@ -331,12 +328,14 @@ const FeedBack = () => {
           />
           We'd love to hear from you!
         </Typography>
-        <Box sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          width: '100%',
-          gap: "10px"
-        }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            gap: "10px",
+          }}
+        >
           <CustomTextField
             select
             label="Feedback Type"
@@ -356,152 +355,177 @@ const FeedBack = () => {
             <MenuItem value="general">General Suggestion</MenuItem>
             <MenuItem value="suggestQuestions">Suggest Questions</MenuItem>
           </CustomTextField>
-
         </Box>
-        <Box sx={{
-          height: '100%',
-        }}>
-          {
-            feedbackType === "suggestQuestions" ?
-              (
-                <Box sx={{ display: "flex", flexDirection: "column", gap: "20px", flexGrow: 1, width: '100%' }}>
-                  <EditorContiner>
-                    <TitleBar>
-                      <Heading>Suggest Question</Heading>
-                      <Autocomplete
-                        options={["Number Line", "Types of Numbers", "Prime Numbers", "Tally System"]}
-                        getOptionLabel={(option) => option}
-                        sx={{
-                          width: '30%',
-                          '& .MuiInputBase-root': { height: 50 },
-                          '& .MuiOutlinedInput-root': { padding: '5px' },
-                        }}
-                        value={topic}
-                        onChange={(e, value) => setTopic(value)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Select Topic"
-                            variant="outlined"
-                            fullWidth
-                            error={errors.topic}
-                            helperText={errors.topic ? "Topic is required" : ""}
-                          />
-                        )}
-                      />
-                    </TitleBar>
-                    <Divider />
-                    <ContentBox>
-                      <Heading >
-                        Question
-                      </Heading>
-                      <CustomTextField
-                        placeholder="Enter your question"
-                        variant="outlined"
-                        size="small"
-                        fullWidth
-                        value={question}
-                        onChange={(e) => setQuestion(e.target.value)}
-                        error={errors.question}
-                        helperText={errors.question ? "Question is required" : ""}
-                      />
-
-                      <Divider style={{ margin: "16px 0", borderWidth: "1px" }} />
-                      <OptionBox
-                        options={options}
-                        setOptions={setOptions}
-                        correctOption={correctOption}
-                        setCorrectOption={setCorrectOption}
-                        explanation={explanation}
-                        setExplanation={setExplanation}
-                        errors={errors}
-                      />
-                      {/* <Divider /> */}
-                    </ContentBox>
-                  </EditorContiner>
-
-                </Box>
-              )
-              :
-              (
-
-                <Box sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  flexDirection: 'column',
-                  height: '100%'
-                }}>
-                  <TextField
-                    label="Your Feedback (Minimum 50 characters)"
-                    multiline
-                    rows={6}
-                    value={feedbackText}
-                    onChange={(e) => setFeedbackText(e.target.value)}
-                    variant="outlined"
-                    fullWidth
-                    error={errors.feedbackText}
-                    helperText={
-                      errors.feedbackText
-                        ? feedbackText.length < 50
-                          ? "Your feedback must be at least 50 characters"
-                          : "Please provide your feedback"
-                        : ""
-                    }
+        <Box
+          sx={{
+            height: "100%",
+          }}
+        >
+          {feedbackType === "suggestQuestions" ? (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "20px",
+                flexGrow: 1,
+                width: "100%",
+              }}
+            >
+              <EditorContiner>
+                <TitleBar>
+                  <Heading>Suggest Question</Heading>
+                  <Autocomplete
+                    options={TotalTopic?.data}
+                    getOptionLabel={(option) => option.name}
                     sx={{
+                      width: "30%",
+                      "& .MuiInputBase-root": { height: 50 },
+                      "& .MuiOutlinedInput-root": { padding: "5px" },
+                    }}
+                    value={
+                      TotalTopic?.data.find((topic1) => topic1._id === topic) ||
+                      null
+                    }
+                    onChange={(e, value) => setTopic(value._id)}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Select Topic"
+                        variant="outlined"
+                        fullWidth
+                        error={errors.topic}
+                        helperText={errors.topic ? "Topic is required" : ""}
+                      />
+                    )}
+                  />
+                </TitleBar>
+                <Divider />
+                <ContentBox>
+                  <Heading>Question</Heading>
+                  <CustomTextField
+                    placeholder="Enter your question"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    error={errors.question}
+                    helperText={errors.question ? "Question is required" : ""}
+                  />
+
+                  <Divider style={{ margin: "16px 0", borderWidth: "1px" }} />
+                  <OptionBox
+                    options={options}
+                    setOptions={setOptions}
+                    correctOption={correctOption}
+                    setCorrectOption={setCorrectOption}
+                    explanation={explanation}
+                    setExplanation={setExplanation}
+                    errors={errors}
+                  />
+                  {/* <Divider /> */}
+                </ContentBox>
+              </EditorContiner>
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "column",
+                height: "100%",
+              }}
+            >
+              <TextField
+                label="Your Feedback (Minimum 50 characters)"
+                multiline
+                rows={6}
+                value={feedbackText}
+                onChange={(e) => setFeedbackText(e.target.value)}
+                variant="outlined"
+                fullWidth
+                error={errors.feedbackText}
+                helperText={
+                  errors.feedbackText
+                    ? feedbackText.length < 50
+                      ? "Your feedback must be at least 50 characters"
+                      : "Please provide your feedback"
+                    : ""
+                }
+                sx={{
+                  flexGrow: 1,
+                }}
+              />
+              {feedbackType === "bug" && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                    flexGrow: 1,
+                  }}
+                >
+                  <Button variant="outlined" component="label" fullWidth>
+                    Upload Screenshot (Max 2MB each, up to 3 screenshots)
+                    <input
+                      type="file"
+                      hidden
+                      multiple
+                      onChange={handleFileUpload}
+                    />
+                  </Button>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: "10px",
                       flexGrow: 1,
                     }}
-
-                  />
-                  {feedbackType === "bug" && (
-                    <Box sx={{ display: "flex", flexDirection: "column", gap: "10px", flexGrow: 1 }}>
-                      <Button variant="outlined" component="label" fullWidth>
-                        Upload Screenshot (Max 2MB each, up to 3 screenshots)
-                        <input type="file" hidden multiple onChange={handleFileUpload} />
-                      </Button>
-                      <Box sx={{ display: "flex", flexDirection: "row", gap: "10px", flexGrow: 1 }}>
-                        {screenshots.map((screenshot, index) => (
-                          <Box
-                            key={index}
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "5px",
-                              position: "relative",
-                            }}
-                          >
-                            <img
-                              src={URL.createObjectURL(screenshot)}
-                              alt={`Screenshot ${index}`}
-                              style={{
-                                width: 50,
-                                height: 50,
-                                objectFit: "cover",
-                                borderRadius: "5px",
-                              }}
-                            />
-                            <IconButton
-                              color="error"
-                              size="small"
-                              sx={{
-                                position: "absolute",
-                                top: 0,
-                                right: -15,
-                              }}
-                              onClick={() => {
-                                const updatedScreenshots = screenshots.filter((_, i) => i !== index);
-                                setScreenshots(updatedScreenshots);
-                              }}
-                            >
-                              <CloseIcon />
-                            </IconButton>
-                          </Box>
-                        ))}
+                  >
+                    {screenshots.map((screenshot, index) => (
+                      <Box
+                        key={index}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "5px",
+                          position: "relative",
+                        }}
+                      >
+                        <img
+                          src={URL.createObjectURL(screenshot)}
+                          alt={`Screenshot ${index}`}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            objectFit: "cover",
+                            borderRadius: "5px",
+                          }}
+                        />
+                        <IconButton
+                          color="error"
+                          size="small"
+                          sx={{
+                            position: "absolute",
+                            top: 0,
+                            right: -15,
+                          }}
+                          onClick={() => {
+                            const updatedScreenshots = screenshots.filter(
+                              (_, i) => i !== index
+                            );
+                            setScreenshots(updatedScreenshots);
+                          }}
+                        >
+                          <CloseIcon />
+                        </IconButton>
                       </Box>
-                    </Box>
-                  )}
+                    ))}
+                  </Box>
                 </Box>
-              )
-          }
+              )}
+            </Box>
+          )}
         </Box>
         <Button
           variant="contained"
@@ -517,7 +541,7 @@ const FeedBack = () => {
               backgroundColor: "Black",
               boxShadow: "2px 3px #FFDA55",
             },
-            mt:'20px'
+            mt: "20px",
           }}
           startIcon={
             isLoading ? (
@@ -530,8 +554,8 @@ const FeedBack = () => {
           {isLoading
             ? "Submitting..."
             : isSuccess
-              ? "Feedback Submitted!"
-              : "Submit"}
+            ? "Feedback Submitted!"
+            : "Submit"}
         </Button>
       </Box>
     </Box>

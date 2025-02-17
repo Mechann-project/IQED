@@ -19,7 +19,10 @@ export const CareerApi = createApi({
     getCourses: builder.query({
       query: () => `/Careerpath`,
     }),
+    getTopicsAll: builder.query({
+      query: () => `/topicsall`,
+    }),
   }),
 });
 
-export const { useGetCoursesQuery } = CareerApi;
+export const { useGetCoursesQuery,useGetTopicsAllQuery } = CareerApi;
