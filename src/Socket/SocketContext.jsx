@@ -2,10 +2,11 @@
 import React, { Children, createContext, useContext } from "react";
 
 import { io } from "socket.io-client";
+import { BaseAPIUrl } from "../../Web.Config";
 
 const SocketContext = createContext();
 
-// // const socket = io(`${BaseAPIUrl}`); 
+const socket = io(`${BaseAPIUrl}`); 
 
 
 
