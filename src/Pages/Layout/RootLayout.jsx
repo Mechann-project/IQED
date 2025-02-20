@@ -34,7 +34,6 @@ const RootLayout = () => {
       sx={{ backgroundImage: `url(${backgroundImage})` }}
       className="Root-BackGround"
     >
-      {/* Future use of SocketProvider */}
       <SocketProvider>
         <Outlet />
       </SocketProvider>

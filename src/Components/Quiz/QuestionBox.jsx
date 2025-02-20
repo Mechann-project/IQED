@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import { Box, Modal, Typography } from "@mui/material";
 import { OptionButton } from "../../Common";
+import { useSelector } from "react-redux";
 
 const QuestionBox = ({ index, Question }) => {
-  const [fade, setFade] = useState(false); 
+  const QuizState = useSelector((state) => state.QuizState);
+  const [fade, setFade] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(Question);
   const [animationInProgress, setAnimationInProgress] = useState(false);
-  const [imageFade, setImageFade] = useState(false); 
+  const [imageFade, setImageFade] = useState(false);
   const [open, setOpen] = useState(false);
   const [visibleQuestion, setVisibleQuestion] = useState(Question);
   const [visibleIndex, setvisibleIndex] = useState(index);
-  const [isFirstRender, setIsFirstRender] = useState(true); 
+  const [isFirstRender, setIsFirstRender] = useState(true);
+  const isLive = QuizState?.isLive;
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -19,22 +22,22 @@ const QuestionBox = ({ index, Question }) => {
       if (isFirstRender) {
         setFade(true);
         setImageFade(true);
-        setIsFirstRender(false); 
+        setIsFirstRender(false);
       } else {
         setAnimationInProgress(true);
         setFade(false);
 
         const timer = setTimeout(() => {
-          setCurrentQuestion(Question); 
-          setImageFade(false); 
+          setCurrentQuestion(Question);
+          setImageFade(false);
           setTimeout(() => {
             setVisibleQuestion(Question);
             setvisibleIndex(index);
-            setImageFade(true); 
-            setFade(true); 
-            setAnimationInProgress(false); 
-          }, 500); 
-        }, 500); 
+            setImageFade(true);
+            setFade(true);
+            setAnimationInProgress(false);
+          }, 500);
+        }, 500);
 
         return () => clearTimeout(timer);
       }
@@ -140,6 +143,45 @@ const QuestionBox = ({ index, Question }) => {
             />
           ))}
         </Box>
+
+        {(visibleQuestion.correctAnswer.explanation !== "" && !isLive) &&
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "cenetr",
+              maxHeight: { xs: "40vh", md: "55vh" },
+              minHeight: "20vh",
+            }}
+            gap={1}
+          >
+            <Typography
+              // variant="body"
+              align="center"
+              sx={{
+                fontWeight: "600",
+                fontSize: { lg: "20px", md: "15px", xs: "10px" },
+                color: "white",
+              }}
+            >
+              Explanation
+            </Typography>
+            <Typography
+              // variant="body"
+              align="center"
+              sx={{
+                fontWeight: "600",
+                fontSize: { lg: "20px", md: "15px", xs: "10px" },
+                color: "white",
+              }}
+            >
+              {visibleQuestion.correctAnswer.explanation}
+            </Typography>
+
+          </Box>
+        }
       </Box>
 
       <Modal open={open} onClose={handleClose}>

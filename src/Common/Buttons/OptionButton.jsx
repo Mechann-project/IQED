@@ -17,7 +17,8 @@ const OptionButton = ({ quiz, type = "text", content, index }) => {
   const isLive = QuizState?.isLive;
   const backgroundColor = !isLive? iamSelected  ? isCorrectAnswer? "#06b410":"#c90909":"#02216F": "#02216F";
   const color = iamSelected && isAnswered && isCorrectAnswer && !isLive ? "#02216F" : "#ffffff";
-  const bgcolor = !isLive ? isCorrectAnswer? "#06b410":iamSelected?"#c90909":"#02216F":"#02216F"
+  const bgcolor = 
+  !isLive ? QuizState.type === "Challenge" ?"#02216F":isCorrectAnswer? "#06b410":iamSelected?"#c90909":"#02216F":"#02216F"
   const handleClick = () => {
     if (!isAnimating) {
       dispatch(
