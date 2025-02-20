@@ -15,7 +15,7 @@ export const UserApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["User","challenge"],
+  tagTypes: ["User","challenge","orders"],
   endpoints: (builder) => ({
     GetUser: builder.query({
       query: () => ({ url: `get` }),
@@ -59,7 +59,7 @@ export const UserApi = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["challenge"],
+      invalidatesTags: ["challenge","orders"],
     }),
     getleaderboard: builder.query({
       query: () => ({ url: `leaderboard` }),
@@ -70,8 +70,8 @@ export const UserApi = createApi({
       providesTags: ["challenge"],
     }),
     getOrder: builder.query({
-      query: () => ({ url: `ordersbyid` }),
-      providesTags: ["challenge"],
+      query: () => ({ url: `orders` }),
+      providesTags: ["orders"],
     }),
     getChallengeById: builder.query({
       query: (productId) => ({ url: `challenge/${productId}` }),
@@ -92,5 +92,5 @@ export const {
   useGetChallengeQuery,
   useUpdateChallengeMutation,
   useGetChallengeByIdQuery,
-  useCraeteOrderMutation,useCheckUserOrderQuery
+  useCraeteOrderMutation,useCheckUserOrderQuery,useGetOrderQuery
 } = UserApi;

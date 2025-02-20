@@ -13,6 +13,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useNavigate } from "react-router-dom";
 import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { useGetOrderQuery } from "../../Redux/API/User.Api";
 // Dummy order data
 const dummyOrders = [
   {
@@ -149,7 +150,9 @@ const OrderHeader = () => (
 
 const YourOrders = () => {
   const theme = useTheme();
+  const { data, isLoading } = useGetOrderQuery();
   const isSm = useMediaQuery(theme.breakpoints.down("sm"));
+  console.log(data);
   return (
     <Box
       sx={{
@@ -176,7 +179,6 @@ const YourOrders = () => {
         }}
       >
         <Typography
-         
           sx={{
             fontWeight: "bold",
             color: "Black",
@@ -206,7 +208,7 @@ const YourOrders = () => {
             }}
           >
             <OrderHeader />
-            {dummyOrders.map((order, index) => (
+            {data?.orders?.map((order, index) => (
               <OrderRow key={order.orderId} order={order} index={index} />
             ))}
           </Box>
