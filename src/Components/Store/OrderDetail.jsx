@@ -10,6 +10,7 @@ import {
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useNavigate, useParams } from "react-router-dom";
 import { IQGemIcon, TShirtImg } from "../../assets";
+import { useGetOrderQuery } from "../../Redux/API/User.Api";
 
 // Dummy order data
 const dummyOrders = [
@@ -85,12 +86,12 @@ const OrderDetail = () => {
   const { orderId } = useParams();
 
   const handleBack = () => navigate("/challenge/orders");
-
+ const { data, isLoading } = useGetOrderQuery();
   // Find order details
-  const order = dummyOrders.find((o) => o.orderId === orderId);
-  const product = products.find((p) => p.productID === order?.productID);
+  const order = data?.orders.find((o) => o.orderId === orderId);
 
-  if (!order || !product) {
+
+  if (!order) {
     return (
       <Box sx={{ textAlign: "center", p: "20px" }}>
         <Typography variant="h6">Order not found</Typography>
@@ -158,8 +159,8 @@ const OrderDetail = () => {
         {/* Product Image */}
         <Box
           component="img"
-          src={product.image}
-          alt={product.name}
+          src={order.Image}
+          alt={order.productDetails.name}
           sx={{
             borderRadius: "10px",
             width: isSm ? "100%" : "20%",
@@ -185,44 +186,26 @@ const OrderDetail = () => {
           <Typography variant="body1" sx={{ fontWeight: "bold" }}>
             Order Status:
           </Typography>
-          <Typography variant="body1">{order.status}</Typography>
+          <Typography variant="body1">{order.orderStatus}</Typography>
 
           <Typography variant="body1" sx={{ fontWeight: "bold" }}>
             Order Placed:
           </Typography>
-          <Typography variant="body1">{order.orderPlaced}</Typography>
+          <Typography variant="body1">{order.OrderPlaced}</Typography>
 
           <Typography variant="body1" sx={{ fontWeight: "bold" }}>
             Item:
           </Typography>
-          <Typography variant="body1">{order.items}</Typography>
+          <Typography variant="body1">{order.productDetails.name} , {order.productDetails.description}</Typography>
 
           <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-            Price:
+          shipping Address:
           </Typography>
-          <Typography
-            variant="body1"
-            sx={{ display: "flex", alignItems: "center" }}
-          >
-            {product.discountedPrice}
-            
-              <img
-                src={IQGemIcon}
-                alt="gem"
-                width={20}
-                height={20}
-                style={{ marginLeft: "5px" }}
-              />
-            
+          <Typography variant="body1">{order.shippingAddress}</Typography>
+          <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+          Mobile Number:
           </Typography>
-          {product.type === "Clothing" && order.size && (
-            <>
-              <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-                Size:
-              </Typography>
-              <Typography variant="body1">{order.size}</Typography>
-            </>
-          )}
+          <Typography variant="body1">{order.mobileNumber}</Typography>
         </Box>
       </Box>
     </Box>

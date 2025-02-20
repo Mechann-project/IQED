@@ -62,9 +62,9 @@ const OrderRow = ({ order, index }) => {
       >
         {[
           { label: String(index + 1).padStart(2, "0") }, // Row number
-          { label: order.items }, // Items
-          { label: order.orderPlaced }, // Order placed date
-          { label: order.status }, // Status
+          { label: order.productDetails.name }, // Items
+          { label: order.OrderPlaced }, // Order placed date
+          { label: order.orderStatus }, // Status
         ].map((item, idx) => (
           <Box
             key={idx}
@@ -209,7 +209,7 @@ const YourOrders = () => {
           >
             <OrderHeader />
             {data?.orders?.map((order, index) => (
-              <OrderRow key={order.orderId} order={order} index={index} />
+              <OrderRow key={order._id} order={order} index={index} />
             ))}
           </Box>
         </Box>
