@@ -11,6 +11,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useNavigate, useParams } from "react-router-dom";
 import { IQGemIcon, TShirtImg } from "../../assets";
 import { useGetOrderQuery } from "../../Redux/API/User.Api";
+import { format } from "date-fns";
 
 // Dummy order data
 const dummyOrders = [
@@ -191,7 +192,7 @@ const OrderDetail = () => {
           <Typography variant="body1" sx={{ fontWeight: "bold" }}>
             Order Placed:
           </Typography>
-          <Typography variant="body1">{order.OrderPlaced}</Typography>
+          <Typography variant="body1">{ format(new Date( order?.OrderPlaced), "dd MMM yyyy p") }, </Typography>
 
           <Typography variant="body1" sx={{ fontWeight: "bold" }}>
             Item:

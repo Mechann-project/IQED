@@ -30,6 +30,7 @@
     "chart.js": "^4.4.6",
     "chartjs": "^0.3.24",
     "chartjs-plugin-annotation": "^3.1.0",
+    "date-fns": "^4.1.0",
     "flowbite-react": "^0.10.1",
     "fontkit": "^2.0.4",
     "formik": "^2.4.6",

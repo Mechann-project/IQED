@@ -123,7 +123,7 @@ const TotalQuests = () => {
             <Grid item xs={12} sm={12}>
               <QuestCard
                 isSideBar
-                icon={<AcUnitIcon />}
+                icon={<WhatshotIcon />}
                 title={"Streak Hunter"}
                 About={`You're on a ${UserData?.StreakQuest?.CurrentValue}-day streak Keep going for ${UserData?.StreakQuest?.targetValue} more days to unlock +${UserData?.StreakQuest?.rewardGem} IQ GEMS! 💎`}
                 current={UserData?.StreakQuest?.CurrentValue}
@@ -135,7 +135,7 @@ const TotalQuests = () => {
               <Grid item xs={12} sm={12}>
                 <QuestCard
                   isSideBar
-                  icon={<AcUnitIcon />}
+                  icon={<WhatshotIcon />}
                   title={
                     "Streak Hunter " +
                     (UserData?.StreakQuest?.targetValue +
@@ -172,7 +172,7 @@ const TotalQuests = () => {
               <Grid item xs={12} sm={12}>
                 <QuestCard
                   isSideBar
-                  icon={<AcUnitIcon />}
+                  icon={<WhatshotIcon />}
                   title={"Streak Hunter"}
                   About={`COMPLETED`}
                   current={1 + index * UserData?.StreakQuest?.StepUpValue}

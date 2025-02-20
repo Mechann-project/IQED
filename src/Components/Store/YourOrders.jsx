@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useGetOrderQuery } from "../../Redux/API/User.Api";
+import { format } from 'date-fns';
 // Dummy order data
 const dummyOrders = [
   {
@@ -62,9 +63,9 @@ const OrderRow = ({ order, index }) => {
       >
         {[
           { label: String(index + 1).padStart(2, "0") }, // Row number
-          { label: order.productDetails.name }, // Items
-          { label: order.OrderPlaced }, // Order placed date
-          { label: order.orderStatus }, // Status
+          { label: order?.productDetails?.name }, // Items
+          { label: format(new Date( order?.OrderPlaced), "dd MMM yyyy p") }, 
+          { label: order?.orderStatus }, 
         ].map((item, idx) => (
           <Box
             key={idx}
@@ -72,10 +73,14 @@ const OrderRow = ({ order, index }) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              textAlign:'center'
+
             }}
           >
             <Typography
               sx={{
+
+                width: '100%',
                 fontSize: { lg: "16px", sm: "12px", xs: "10px" },
                 mr: "20px",
               }}
