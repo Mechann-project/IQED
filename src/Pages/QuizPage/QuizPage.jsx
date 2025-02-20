@@ -155,11 +155,11 @@ const QuizPage = () => {
     >
       <Timer
         ref={timerRef}
-        initialTime={
-          quizState?.type == "Challenge"
+        initialTime={Math.round(
+          quizState?.type === "Challenge"
             ? quizState?.Challenge?.TestTime * 60
             : 60 * (quizState?.OneMinuteEqual * quizState?.questionsList.length)
-        }
+        )}
         start={!sessionLoading}
       />
       <QuestionDrawerList

@@ -28,7 +28,7 @@ const playSound = (sound) => {
 const Timer = forwardRef(({ start, initialTime, isMP = false, handleQuit, handlesubmit }, ref) => {
   const [time, setTime] = useState(initialTime);
   const [isRunning, setIsRunning] = useState(false);
-
+  console.log("initialTime",initialTime)
   useEffect(() => {
     if (start) setIsRunning(true);
   }, [start]);
