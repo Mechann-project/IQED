@@ -22,7 +22,6 @@ const SignInForm = ({ PageSwitch }) => {
       ForgetPassword({ toEmail: email, 
         url: "https://iqed-platform.vercel.app" 
         // url: "http://localhost:5173" 
-        
         }).unwrap(),
       {
         loading: "Sending email...",

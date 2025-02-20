@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { BaseAPIUrl } from "../../../../Web.Config";
 
 export const SignUpvalidSchema = [
   yup.object().shape({
@@ -9,8 +10,7 @@ export const SignUpvalidSchema = [
       .test("UserName", "User Name already exists", async (value) => {
         if (!value) return true; 
         try {
-          // const response = await fetch(`https://iqed-backend.vercel.app/auth/checkEmailExists?email=${value}`, {
-          const response = await fetch(`https://iqed-backend.vercel.app/auth/checkUserNameExists?UserName=${value}`, {
+          const response = await fetch(`${BaseAPIUrl}/auth/checkUserNameExists?UserName=${value}`, {
             method: "POST",
           });
           // const response = await useCheckEmailExistsMutation({email:value}).unwrap();
@@ -22,7 +22,7 @@ export const SignUpvalidSchema = [
       }),
     name: yup.string().required(),
     parentsName: yup.string().required(),
-    phoneNo: yup
+    mobileNumber: yup
       .string()
       .required("Phone number is required")
       .matches(/^\d{10}$/, "Phone number must be exactly 10 digits"),
@@ -42,8 +42,7 @@ export const SignUpvalidSchema = [
       .test("check-email", "Email already exists", async (value) => {
         if (!value) return true; // Skip the check for empty values
         try {
-          const response = await fetch(`https://iqed-backend.vercel.app/auth/checkEmailExists?email=${value}`, {
-          // const response = await fetch(`https://iqed-backend.vercel.app/auth/checkEmailExists?email=${value}`, {
+          const response = await fetch(`${BaseAPIUrl}/auth/checkEmailExists?email=${value}`, {
             method: "POST",
           });
           // const response = await useCheckEmailExistsMutation({email:value}).unwrap();

@@ -78,7 +78,7 @@ const SignUpForm = ({ PageSwitch }) => {
     userName: "",
     name: "",
     parentsName: "",
-    phoneNo:"",
+    mobileNumber:"",
     age: "",
     email: "",
     password: "",
@@ -189,7 +189,7 @@ const SignUpForm = ({ PageSwitch }) => {
                     <FormTextField field={"userName"} placeholder={"UserName"}/>
                     <FormTextField field={"name"} placeholder={"Name"} />
                     <FormTextField field={"parentsName"} placeholder={"Parents Name (Dad or mom)"} />
-                    <FormTextField field={"phoneNo"} type={"Number"} placeholder={"Phone No"} />
+                    <FormTextField field={"mobileNumber"} type={"Number"} placeholder={"mobile Number"} />
                     <FormTextField field={"age"} placeholder={"Age"} />
                     <FormTextField field={"schoolName"} placeholder={"SchoolName"} />
                     <FormTextField field={"grade"} placeholder={"Grade"} />

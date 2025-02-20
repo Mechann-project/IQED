@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Cookies from "js-cookie";
+import { BaseAPIUrl } from "../../../Web.Config";
 
 export const feedbackApi = createApi({
   reducerPath: "feedbackApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://iqed-backend.vercel.app/user",
-    // baseUrl: "http://localhost:3000/user",
+    baseUrl: `${BaseAPIUrl}/user`,
     credentials: "include",
     prepareHeaders: (headers) => {
       const token = Cookies.get("token");

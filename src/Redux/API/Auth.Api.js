@@ -1,15 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { BaseAPIUrl } from "../../../Web.Config";
 
 export const AuthApi = createApi({
   reducerPath: "AuthApi",
   baseQuery: fetchBaseQuery({
-    // baseUrl: "https://iqed-backend1-five.vercel.app/auth",
-    // baseUrl: "http://localhost:3000/auth",
-    baseUrl: "https://iqed-backend.vercel.app/auth",
-
+    baseUrl: `${BaseAPIUrl}/auth`,
     credentials: "include",
   }),
-  // baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/auth",credentials:"include" }),
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (data) => ({

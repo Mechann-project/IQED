@@ -34,14 +34,13 @@ const LevelCard = ({ level, onSelect, active,examUnlocked,Index }) => {
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center",
     };
-    const handleQuizCraetion = () => {
+    const handleQuizCraetion = (levelid) => {
       try {
         dispatch(resetQuiz());
         toast.promise(
           CreateQuizSession({
-            levelid:"679d3fd96aeede5b160420a7",
-            lessonid:"679d3fd96aeede5b160420ac",
-            topicId:"678ba5c339053772c9f93053",
+            levelid:levelid,
+            Type:"LevelTest",
             questionCount: 60,
           }).unwrap(),
           {
@@ -147,7 +146,7 @@ const LevelCard = ({ level, onSelect, active,examUnlocked,Index }) => {
               variant="contained"
               onClick={() => {
                 if (examUnlocked) {
-                  handleQuizCraetion();
+                  handleQuizCraetion(level._id);
                 } else {
                   toast.error(
                     <Box

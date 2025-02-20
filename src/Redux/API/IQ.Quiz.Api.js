@@ -1,11 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { BaseAPIUrl } from "../../../Web.Config";
 
 export const IQQuizApi = createApi({
   reducerPath: "IQQuizApi",
   baseQuery: fetchBaseQuery({
-    // baseUrl: "http://localhost:3000/IQ",
-    baseUrl: "https://iqed-backend.vercel.app/IQ",
-    // baseUrl: "https://iqed-backend1-five.vercel.app/IQ",
+    baseUrl: `${BaseAPIUrl}/IQ`,
     credentials: "include",
   }
 ),

@@ -1,13 +1,12 @@
 import { TroubleshootSharp } from "@mui/icons-material";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Cookies from "js-cookie";
+import { BaseAPIUrl } from "../../../Web.Config";
 
 export const QuizApi = createApi({
   reducerPath: "QuizApi",
   baseQuery: fetchBaseQuery({
-    // baseUrl: "https://iqed-backend1-five.vercel.app/quiz",
-    // baseUrl: "http://localhost:3000/quiz",
-    baseUrl: "https://iqed-backend.vercel.app/quiz",
+    baseUrl: `${BaseAPIUrl}/quiz`,
     credentials: "include",
     prepareHeaders: (headers) => {
       const token = Cookies.get("token");
@@ -20,10 +19,10 @@ export const QuizApi = createApi({
   tagTypes: ["User"],
   endpoints: (builder) => ({
     createQuizSession: builder.mutation({
-      query: ({ levelid, lessonid, topicId, questionCount }) => ({
+      query: ({ levelid, lessonid, topicId,Type, questionCount }) => ({
         url: "/createSession",
         method: "POST",
-        body: { levelid, lessonid, topicId, questionCount },
+        body: { levelid, lessonid, topicId,Type, questionCount },
       }),
     }),
     createChallengeSession: builder.mutation({

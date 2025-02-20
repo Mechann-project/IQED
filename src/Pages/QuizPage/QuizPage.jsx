@@ -158,12 +158,9 @@ const QuizPage = () => {
         initialTime={
           quizState?.type == "Challenge"
             ? quizState?.Challenge?.TestTime * 60
-            : quizState?.careerPath?.Lesson == "679d3fd96aeede5b160420aa"
-            ? 3 * 60
-            : quizState?.questionsList.length * 60
+            : 60 * (quizState?.OneMinuteEqual * quizState?.questionsList.length)
         }
         start={!sessionLoading}
-        
       />
       <QuestionDrawerList
         sessionState={quizState}

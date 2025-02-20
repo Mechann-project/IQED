@@ -12,9 +12,9 @@ const initialState = {
   loading: false,
   error: null,
   earnings:{},
-  valueBaseQuest:[],
+  XPQuests:{},
   CourseProgress:null,
-  AchivedQuest:[]
+  StreakQuest:{}
 };
 
 
