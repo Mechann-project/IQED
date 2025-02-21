@@ -3,26 +3,25 @@ import { BaseAPIUrl } from '../../../Web.Config';
 
 export const GameApi = createApi({
   reducerPath: 'GameApi',
-  baseUrl: `${BaseAPIUrl}/game`,
-  tagTypes: ["Game"], // Ensure correct backend URL
+  baseQuery: fetchBaseQuery({ baseUrl: `${BaseAPIUrl}/game` }), // Fixed this
+  tagTypes: ["Game"], 
   endpoints: (builder) => ({
-    getGameSession: builder.mutation({
+    getGameSession: builder.mutation({  // Can be a query if it's just fetching data
       query: ({ GameSessionId, SocketId }) => ({
-        url: `/Get`,  // Use the POST /Get route
+        url: `/Get`,
         method: 'POST',
-        body: { GameSessionId, SocketId },  // Pass the GameSessionId and index
+        body: { GameSessionId, SocketId },  
       }),
-      providesTags: ["Game"],
+      // Removed `providesTags`, since mutations don't typically use it.
     }),
     updateGameSessionAnswers: builder.mutation({
       query: ({ GameSessionId, SocketId, answeredQuestions, timeTaken }) => ({
-        url: `/update`,  // Use the POST /update route
+        url: `/update`,
         method: 'POST',
-        body: { GameSessionId, SocketId, answeredQuestions, timeTaken },  // Send the game session details
+        body: { GameSessionId, SocketId, answeredQuestions, timeTaken }, 
       }),
-      invalidatesTags: ["Game"],
+      invalidatesTags: ["Game"], // This correctly invalidates cache when data changes
     }),
-
   }),
 });
 

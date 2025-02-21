@@ -73,7 +73,7 @@ const GamePage = () => {
             time to see who really has what it takes!
           </Typography>
         </Box>
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -129,7 +129,7 @@ const GamePage = () => {
           >
             Join
           </Button>
-        </Box>
+        </Box> */}
       </Box>
       <GameTopicArea />
     </Box>

@@ -7,6 +7,7 @@ import { BaseAPIUrl } from "../../Web.Config";
 const SocketContext = createContext();
 
 const socket = io(`${BaseAPIUrl}`); 
+// const socket = io(` http://localhost:8080`); 
 
 
 

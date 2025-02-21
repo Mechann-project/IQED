@@ -22,7 +22,10 @@ export const CareerApi = createApi({
     getTopicsAll: builder.query({
       query: () => `/topicsall`,
     }),
+    getUnlockedTopics: builder.query({
+      query: () => `/unlockedtopics`,
+    }),
   }),
 });
 
-export const { useGetCoursesQuery,useGetTopicsAllQuery } = CareerApi;
+export const { useGetCoursesQuery,useGetTopicsAllQuery ,useGetUnlockedTopicsQuery} = CareerApi;
